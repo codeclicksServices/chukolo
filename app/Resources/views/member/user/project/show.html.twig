@@ -1,0 +1,261 @@
+{% extends 'member/base.html.twig' %}
+
+ {% block titleText %}
+  <h1><strong >{{ project.name |capitalize}}</strong></h1>
+     <h1><strong >({{ project.budget.minPrice}} - {{ project.budget.maxPrice }})</strong></h1>
+  {% endblock %}
+{% block breadCrumb %}
+
+    <ul class="nav nav-tabs" style="color: red">
+        <li id="projectProposals" class="active"><a class="card-title" href="#proposals" data-toggle="tab"><strong>Proposals</strong></a></li>
+        <li><a href="#management" data-toggle="tab"><strong>Management</strong></a></li>
+        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span>
+          <i class="fa fa-1x fa-ellipsis-h" aria-hidden="true"></i>
+          </span></a>
+            <ul class="dropdown-menu">
+                <li><a href="#projectDetails" data-toggle="tab">Project Details</a></li>
+                <li><a href="#upgrade" data-toggle="tab">Upgrade Project</a></li>
+                <li><a href={{ path('project_edit', { 'id': project.id }) }} >Edit</a></li>
+                <li><a  id="delete" href="#">Delete</a></li>
+                <li><a  id="close" href="#">Close</a></li>
+            </ul>
+        </li>
+
+    </ul>
+{% endblock %}
+
+{% block page %}
+
+
+    <div style="margin-top: -2em" class="col-sm-12">
+
+     <div class="bs-component">
+
+         {#
+            The tab content begings here
+          #}
+      <div style="margin-top: 3em" class="tab-content" id="myTabContent">
+            {#
+              The proposals
+            #}
+           <div class="tab-pane fade active in" id="proposals">
+               <div class="col-md-9">
+                   <div class="card">
+                      {# <div class="overlay">
+                           <div class="m-loader mr-20">
+                               <svg class="m-circular" viewBox="25 25 50 50">
+                                   <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="1"/>
+                               </svg>
+                           </div>
+                           <h3 class="l-text">Before you say Jack ...</h3>
+                       </div>#}
+
+
+                           <div class="bs-component">
+                               <ul class="nav nav-tabs">
+                                   <li class="active"><a href="#allProposals" data-toggle="tab">All Proposals</a></li>
+                               </ul>
+                               <div style="margin-top: 3em" class="tab-content" id="allProposalContent">
+                                   <div class="tab-pane fade active in" id="allProposals">
+                                     <div style="border-bottom: solid thin #a5a5a5; padding:  1em 1em 0 0; max-height: 13em" class="row">
+                                         <div class="col-sm-2">image goes</div>
+                                         <div class="col-sm-6">Hello. "Greetings from Webwing Technologies" -
+                                             As you mentioned, you want to build a website for Local Grocery
+                                             Store. We are most suits you as we have core experience of web d
+
+                                             eas into reality. SEO **** We provide you SEO friendly web
+                                             site which will include: - friend
+
+                                             Completed in 30 days From India </div>
+                                         <div class="col-sm-2">wW3C Standard Syntax, User-</div>
+                                         <div class="col-sm-2">
+                                             <div class="btn-group">
+                                                 <a class="btn btn-primary" href="#"><i class="fa fa-lg fa-tag"></i></a>
+                                                 <a class="btn btn-danger" href="#"><i class="fa fa-lg fa-trash"></i></a>
+                                             </div>
+                                         </div>
+                                     </div>
+                                   </div>
+
+                               </div>
+                           </div>
+
+
+                   </div>
+
+
+
+                   <div class="col-md-3"></div>
+               </div>
+           </div>
+          {#
+            The management
+          #}
+           <div class="tab-pane fade" id="management">
+            <p>management</p>
+           </div>
+
+
+          {#
+           The projectDetails
+         #}
+          <div class="tab-pane fade" id="projectDetails">
+              <div class="col-md-9">
+                  <div class="card">
+                      <h4 class="card-title">Project Description</h4>
+                      <hr />
+                      <div style="padding: 0 2em 3em" class="card-body">{{ project.description |title}}</div>
+                      <h4 class="card-title">Required Skills</h4>
+                      <div class="card-footer">
+
+                          {% for skill in project.skill %}
+                              <a  href="#">{{ skill.name}}</a>
+                          {% endfor %}
+
+
+                      </div>
+                  </div>
+              </div>
+
+              <div class="col-md-3"></div>
+          </div>
+
+          {#
+            The upgrade
+          #}
+          <div class="tab-pane fade" id="upgrade">
+              <div class="col-md-9">
+                  <div class="card">
+                      <h3 class="card-title">Project Upgrades</h3>
+                      <div class="row">
+                          <div class="col-md-6">
+
+                              <div class="toggle lg">
+                                  <label>
+                                      <input type="checkbox"><span class="button-indecator"></span>
+                                  </label>
+                              </div>
+
+                          </div>
+
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-3"></div>
+          </div>
+
+
+      </div>
+     </div>
+    </div>
+
+
+{% endblock %}
+{% block javascripts %}
+
+    <script src="{{ asset('assets/js/dashboard/jquery-2.1.4.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/plugins/pace.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/main.js') }}"></script>
+    {# Add ajax thingie that will update the city select box #}
+
+
+    <script src="{{ asset('assets/js/dashboard/plugins/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/plugins/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript">$('body').removeClass("sidebar-mini").addClass("sidebar-collapse");</script>
+    <script src="{{ asset('assets/js/dashboard/plugins/bootstrap-notify.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/plugins/sweetalert.min.js') }}"></script>
+
+
+
+
+
+    <script type="text/javascript">
+
+        $('#close').click(function(){
+            swal({
+                title: "Are you sure you wish to close this project?",
+                text: "By closing your project you will not be able to receive bids. Your project will be " +
+                "archived and cannot be reopened.",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, close it!",
+                cancelButtonText: "No, cancel Please!",
+                confirmButtonColor: "#DD6B55",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function(isConfirm) {
+                if (isConfirm) {
+
+                    //  create the ajax call that will close your project here
+
+                    swal("Closed!", "Your project has been closed.", "success");
+                } else {
+                    swal("Cancelled", "Your project is safe :)", "error");
+                }
+            });
+        });
+
+        $('#delete').click(function(){
+
+            swal({
+                title: "Are you sure you wish to Delete this project ?",
+                text: " By deleting your project no one will be able to view the project information, the attached files nor any of the" +
+                "bids on the project. This action cannot be undone."+
+                        "Delete your project now for NGN 800.00 ",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel Please!",
+                confirmButtonColor: "danger",
+                closeOnConfirm: false,
+                showLoaderOnConfirm: false,
+                closeOnCancel: false
+            }, function(isConfirm) {
+                if (isConfirm) {
+
+                    //  create the ajax call that will delete your project here
+
+
+                    swal("Deleted!", "Your project has been deleted.", "success");
+                } else {
+                    swal("Cancelled", "Your project is safe :)", "error");
+                }
+            });
+        });
+
+        $(document).ready(function () {
+            $('#projectProposals').click(function(){
+
+
+
+
+          //  alert('check');
+               /* // when category is selected provide the category skills
+                $.ajax({
+                    type: "POST",
+                //
+                    success: function(data) {
+                        // Remove current options
+                        $('#project_skill').html('');
+
+                        $.each(data, function(k, v) {
+
+                            $('#project_skill').append('<option value="' + v + '">' + k + '</option>');
+                        });
+                    }
+                });*/
+
+
+                return true;
+            });
+
+
+
+        });
+    </script>
+
+
+
+
+{% endblock %}

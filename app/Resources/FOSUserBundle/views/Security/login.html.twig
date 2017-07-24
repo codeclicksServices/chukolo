@@ -1,0 +1,61 @@
+{% extends 'layout.html.twig' %}
+
+
+{% block page %}
+    {% trans_default_domain 'FOSUserBundle' %}
+
+
+    <form action="{{ path("fos_user_security_check") }}" class="login-form" method="post">
+
+        {% if error %}
+            <h3 style="color: darkred" class="login-head"><i style="color: darkred" class="fa fa-lg fa-fw fa-window-close"></i>{{ error.messageKey|trans(error.messageData,
+                'security') |capitalize }}</h3>
+        {% else %}
+            <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>SIGN IN</h3>
+        {% endif %}
+
+
+
+
+        <div class="form-group">
+            <label class="control-label">USERNAME</label>
+            <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" placeholder="User name" autofocus class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label">PASSWORD</label>
+            <input type="password" id="password" name="_password" required="required" placeholder="Password" class="form-control" />
+        </div>
+        <div class="form-group">
+            <div class="utility">
+
+                <div class="animated-checkbox">
+                    <label class="semibold-text">
+                        <input type="checkbox" id="remember_me" name="_remember_me" /><span class="label-text">Stay Signed in</span>
+
+                    </label>
+                </div>
+
+                {% if error %}
+                    <p class="semibold-text mb-0"><a href="{{ path('fos_user_resetting_request') }}">
+                            <strong>Forgot Password ?</strong></a></p>
+                {% endif %}
+
+                <p class="semibold-text mb-0"> <a href="{{ path('member-registration') }}" class="">
+                        Don't have an account?
+                    </a></p>
+            </div>
+        </div>
+        <div class="form-group btn-container">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+            <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-sign-in fa-lg fa-fw"></i>SIGN IN</button>
+        </div>
+    </form>
+
+
+
+
+
+
+
+
+{% endblock %}

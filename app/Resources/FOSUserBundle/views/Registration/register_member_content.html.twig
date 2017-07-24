@@ -1,0 +1,65 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+
+
+<div class="account-container register">
+
+    <div class="content clearfix">
+
+        {{form_start(form, {'method': 'POST', 'attr':{'class': ''}})}}
+
+                    Email
+                    <div  style="color: red" class="col-2">
+                        {{ form_errors(form.email) }}
+                    </div>
+                    <div class="col-10">
+                       {{ form_widget(form.email) }}
+                    </div>
+
+                    User Name
+                    <div  style="color: red" class="col-2">
+                        {{ form_errors(form.username) }}
+                    </div>
+                    <div class="col-10">
+                        {{ form_widget(form.username) }}
+                    </div>
+
+                    Password
+                    <div  style="color: red" class="col-2">
+                        {{ form_errors(form.plainPassword.first) }}
+                    </div>
+                    <div style="color: #1b1f22" class="col-10">
+                        {{ form_widget(form.plainPassword.first) }}
+
+                    Confirm Password
+                    <div  style="color: red" >
+                        {{ form_errors(form.plainPassword.second) }}
+                    </div>
+                    {{ form_widget(form.plainPassword.second) }}
+
+                    Indicate your intention
+                    <div >
+                        {{ form_widget(form.intention) }}
+                    </div>
+
+
+                    <div >
+                     Agree with the Terms & Conditions.
+                     {{ form_widget(form.consent) }}
+                     </div>
+
+                        <div class="panel panel-footer">
+                            <input type="submit" value="{{ 'registration.submit'|trans }}"
+                                   class="btn btn-md btn-outline btn-success btn-block" />
+                        </div>
+
+            </div>
+
+
+
+            {{ form_end(form) }}
+
+    </div> <!-- /content -->
+
+</div> <!-- /account-container -->
+

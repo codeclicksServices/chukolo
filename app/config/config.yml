@@ -1,0 +1,213 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.yml }
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: en
+
+framework:
+    #esi: ~
+    #translator: { fallbacks: ['%locale%'] }
+    secret: '%secret%'
+    router:
+        resource: '%kernel.root_dir%/config/routing.yml'
+        strict_requirements: ~
+    form: ~
+    csrf_protection: ~
+    validation: { enable_annotations: true }
+    #serializer: { enable_annotations: true }
+    templating:
+        engines: ['twig']
+    default_locale: '%locale%'
+    trusted_hosts: ~
+    trusted_proxies: ~
+    session:
+        # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
+        handler_id:  session.handler.native_file
+        save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
+    fragments: ~
+    http_method_override: true
+    assets: ~
+    php_errors:
+        log: true
+
+# Twig Configuration
+twig:
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver: pdo_mysql
+        host: '%database_host%'
+        port: '%database_port%'
+        dbname: '%database_name%'
+        user: '%database_user%'
+        password: '%database_password%'
+        charset: UTF8
+        # if using pdo_sqlite as your database driver:
+        #   1. add the path in parameters.yml
+        #     e.g. database_path: "%kernel.root_dir%/../var/data/data.sqlite"
+        #   2. Uncomment database_path in parameters.yml.dist
+        #   3. Uncomment next line:
+        #path: '%database_path%'
+
+    orm:
+        auto_generate_proxy_classes: '%kernel.debug%'
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: '%mailer_transport%'
+    host: '%mailer_host%'
+    username: '%mailer_user%'
+    password: '%mailer_password%'
+    spool: { type: memory }
+
+assetic:
+    debug:          '%kernel.debug%'
+    use_controller: '%kernel.debug%'
+    filters:
+        cssrewrite: ~
+        scssphp:
+            formatter: 'Leafo\ScssPhp\Formatter\Compressed'
+        jsqueeze: ~
+
+
+
+fos_user:
+    db_driver: orm
+
+    firewall_name: main
+    from_email:
+        address: "%mailer_user%"
+        sender_name: "%mailer_user%"
+
+    user_class: AppBundle\Entity\User
+    service:
+        user_manager: pugx_user_manager
+        mailer: fos_user.mailer.twig_swift
+
+
+    resetting:
+        email:
+            template:   email/password_resetting.email.twig
+
+    registration:
+        confirmation:
+            enabled: false
+            template:   FOSUserBundle:Registration:email.txt.twig
+            from_email:
+                address:        support@refund.com.ng
+                sender_name:    refund Support Team
+
+
+
+pugx_multi_user:
+  users:
+    staff:
+        entity:
+          class: AppBundle\Entity\Staff
+        registration:
+          form:
+            type: AppBundle\Form\Type\StaffType
+            name: fos_user_registration_form
+            validation_groups:  [Registration, Default]
+         # template: AppBundle:Registration:employee.form.html.twig
+        profile:
+          form:
+            type: AppBundle\Form\Type\ProfileStaffType
+            name: fos_user_profile_form
+            validation_groups:  [Profile, Default]
+    member:
+        entity:
+          class: AppBundle\Entity\Member
+        registration:
+          form:
+            type: AppBundle\Form\Type\MemberType
+          template: FOSUserBundle:Registration:member.html.twig
+        profile:
+          form:
+            type: AppBundle\Form\Type\ProfileMemberType
+
+
+knp_paginator:
+    page_range: 10                     # default page range used in pagination control
+    default_options:
+        page_name: page                # page query parameter name
+        sort_field_name: sort          # sort field query parameter name
+        sort_direction_name: direction # sort direction query parameter name
+        distinct: true                 # ensure distinct results, useful when ORM queries are using GROUP BY statements
+    template:
+        pagination: KnpPaginatorBundle:Pagination:twitter_bootstrap_v3_pagination.html.twig     # sliding pagination controls template
+        sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
+
+
+
+
+dmishh_settings:
+
+    template: \member\user\settings.html.twig
+    cache_service: null
+    cache_lifetime: 3600
+    security:
+         manage_global_settings_role: ROLE_USER
+         users_can_manage_own_settings: true
+    serialization: php # database serialization mechanism (php|json)
+    settings:
+        my_first_setting:
+            scope: user # all, global
+            type: Symfony\Component\Form\Extension\Core\Type\TextType # any Symfony form type, or FQCN for Symfony >=3.0
+            options: # options passed to form
+                required: false
+            constraints:
+                Symfony\Component\Validator\Constraints\Range:
+                    min: 1
+                    max: 65535
+
+
+
+vich_uploader:
+    db_driver: orm
+
+    mappings:
+              project_file:
+                 uri_prefix:         /uploads/project/docs
+                 upload_destination: %kernel.root_dir%/../web/uploads/project/docs
+
+                 inject_on_load:     false
+                 delete_on_update:   true
+                 delete_on_remove:   true
+                 namer:              vich_uploader.namer_uniqid
+              banner_file:
+                 uri_prefix:         /uploads/suscription/docs
+                 upload_destination: %kernel.root_dir%/../web/uploads/suscription/docs
+
+                 inject_on_load:     false
+                 delete_on_update:   true
+                 delete_on_remove:   true
+                 namer:              vich_uploader.namer_uniqid
+              category_icon:
+                 uri_prefix:         /uploads/category/images
+                 upload_destination: %kernel.root_dir%/../web/uploads/category/images
+                 inject_on_load:     false
+                 delete_on_update:   true
+                 delete_on_remove:   true
+                 namer:              vich_uploader.namer_uniqid
+
+
+              category_logo:
+                               uri_prefix:         /uploads/category/images
+                               upload_destination: %kernel.root_dir%/../web/uploads/category/images
+                               inject_on_load:     false
+                               delete_on_update:   true
+                               delete_on_remove:   true
+                               namer:              vich_uploader.namer_uniqid
+
+
+

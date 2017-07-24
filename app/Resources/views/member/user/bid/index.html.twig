@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Bid list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Price</th>
+                <th>Commission</th>
+                <th>Visible</th>
+                <th>Deliverydate</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for bid in bids %}
+            <tr>
+                <td><a href="{{ path('bid_show', { 'id': bid.id }) }}">{{ bid.id }}</a></td>
+                <td>{{ bid.price }}</td>
+                <td>{{ bid.commission }}</td>
+                <td>{{ bid.visible }}</td>
+                <td>{% if bid.deliveryDate %}{{ bid.deliveryDate|date('Y-m-d') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('bid_show', { 'id': bid.id }) }}">show</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% if project is defined %}
+       <h2>{{ project.name }}</h2>
+        <hr />
+                <ul>
+                    <li> Bids {{ bid_count }}</li>
+                    <li> Average Bids </li>
+                    {#<li> {{ project.budget.BudgetName }} </li>#}
+                    <li> {{ project.state }} </li>
+                </ul>
+        <hr />
+        <p>
+        <div>
+        {{ form_start(form) }}
+        <table>
+            <tr><th>
+                    Bid :
+                </th>
+                <th>
+                    Deliver in
+                </th>
+            </tr>
+            <tr>
+                <td>Paid to you </td>  <td>{{ form_row(form.price) }} </td> <td>{{ form_row(form.deliveryDays) }} </td>
+            </tr>
+            <tr>
+                <td>Freelancer Project Fee </td> <td> 10% </td>
+            </tr>
+            <tr>
+                <td>Your bid </td> <td> NGN {% if bidValue %} {{ bidValue }}{% endif %} </td>
+            </tr>
+            <tr>
+                <td>{{ form_row(form.save) }}</td>
+            </tr>
+        </table>
+        {{ form_end(form) }}
+        </div>
+
+            {{ project.description }}
+        </p>
+        <hr />
+        <table>
+            <tr>
+                <th>
+                    <td>People Biding </td>
+                    <td>Reputation</td>
+                    <td>Bid</td>
+                </th>
+            </tr>
+            {% if bids %}
+            {% for bid in bids %}
+            <tr>
+                <td>profile</td>
+                <td>review</td>
+                <td>{{ bid.value }}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+        </table>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chukolo |Earn from your skill</title>
+    {% block stylesheets %}
+        <!-- CSS-->
+        <link href="{{ asset('assets/css/dashboard/main.css') }}" rel="stylesheet">
+        <!-- Font-icon css-->
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    {% endblock %}
+    -->
+</head>
+<body>
+<section class="material-half-bg">
+    <div class="cover"></div>
+</section>
+
+
+<section class="login-content">
+    <div class="logo">
+        <h1>Chukolo</h1>
+    </div>
+    <div class="login-box">
+
+
+    {% block page %}
+
+    {% endblock %}
+
+    </div>
+</section>
+</body>
+
+
+{% block javascripts %}
+    <script src="{{ asset('assets/js/dashboard/jquery-2.1.4.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/plugins/pace.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/main.js') }}"></script>
+
+{% endblock %}
+
+
+
+</html>

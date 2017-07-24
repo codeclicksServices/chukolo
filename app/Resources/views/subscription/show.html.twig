@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Subscription</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ subscription.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ subscription.name }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ subscription.description }}</td>
+            </tr>
+            <tr>
+                <th>Value</th>
+                <td>{{ subscription.value }}</td>
+            </tr>
+            <tr>
+                <th>Bannername</th>
+                <td>{{ subscription.bannerName }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('subscription_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('subscription_edit', { 'id': subscription.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

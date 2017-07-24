@@ -1,0 +1,40 @@
+{% extends 'profile/base.html.twig'%}
+  {% block navItems %}
+
+      <li class="active">
+          <a href="{{ path("home") }}">
+              <i class="ti-panel"></i>
+              <p>Home</p>
+          </a>
+      </li>
+
+
+  {% endblock %}
+
+ {% block pageName %}
+     Reset
+ {% endblock %}
+
+{% block breadCrumb %}
+    <ol class="breadcrumb">
+        <li><strong>You are here:</strong></li>
+        <li>Dashboard</li>
+        <li><strong>Reset</strong></li>
+
+    </ol>
+{% endblock %}
+
+
+  {% block pageContent %}
+
+
+{% block fos_user_content %}
+    <ol class="breadcrumb">
+        <li><strong>You are here :</strong></li>
+        <li><a href="{{ path('home') }}">Home</a></li>
+        <li class="active"><a href="#"><strong>Reset</strong></a></li>
+    </ol>
+
+    {% include "FOSUserBundle:Resetting:reset_content.html.twig" %}
+{% endblock fos_user_content %}
+{% endblock %}

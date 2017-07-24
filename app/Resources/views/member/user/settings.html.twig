@@ -1,0 +1,525 @@
+{% extends 'member/base.html.twig' %}
+
+
+
+
+
+
+ {% block breadCrumb %}
+
+ {% endblock %}
+
+
+
+{% block page %}
+
+
+
+    <div class="row">
+        <div style="margin-bottom: 2em" class="col-md-3">
+            <div class=" p-0">
+                <div class="card-body">
+                    <ul class="nav nav-pills nav-stacked mail-nav">
+                        <li class="active"><a href="#profile" data-toggle="tab">Profile</a></li>
+                        <li><a href="#notification" data-toggle="tab">Notification</a></li>
+                        <li><a href="#verification" data-toggle="tab">Verification</a></li>
+                        <li><a href="#finance" data-toggle="tab">Payment & Finance</a></li>
+                        <li><a href="#account" data-toggle="tab">Account</a></li>
+                    </ul>
+
+                </div>
+                {#
+                #}
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="card">
+                <div class="tab-content" id="myTabContent">
+
+                    <div class="tab-pane fade active in" id="profile">
+                        <form class="bs-component">
+
+                        <h2 class="card-title settings-header-title">Profile Details</h2>
+                        <hr />
+
+                        <div class="card-body settings-card-padding">
+
+                        <h4 class="card-title">Name</h4>
+                           <div class="row">
+                               <div class="col-sm-6 form-group">
+                                       <label class="control-label" for="inputDefault">First name *</label>
+                                       <input class="form-control" id="inputDefault" type="text">
+
+                               </div>
+                               <div class="col-sm-6 form-group">
+                                   <label class="control-label" for="inputDefault">Last Name *</label>
+                                   <input class="form-control" id="inputDefault" type="text">
+                               </div>
+                           </div>
+                        </div>
+                              <hr />
+                            <div class="card-body settings-card-padding">
+                            <h4 class="card-title">Address</h4>
+                            <div class="row">
+                                <div class="col-sm-12 form-group">
+                                    <label class="control-label" for="inputDefault">Address *</label>
+                                    <input class="form-control" id="inputDefault" type="text">
+
+                                </div>
+                                <div class="col-sm-12 form-group">
+                                    <label class="control-label" for="inputDefault">City *</label>
+                                    <input class="form-control" id="inputDefault" type="text">
+
+                                </div>
+
+                                <div class="col-sm-6 form-group">
+                                    <label class="control-label" for="inputDefault">State/Province *</label>
+                                    <input class="form-control" id="inputDefault" type="text">
+
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <label class="control-label" for="inputDefault">Country *</label>
+                                    <input class="form-control" id="inputDefault" type="text">
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <label class="control-label" for="inputDefault">Company</label>
+                                    <input class="form-control" id="inputDefault" type="text">
+
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <label class="control-label" for="inputDefault">Location *</label>
+                                    <input class="form-control" id="inputDefault" type="text">
+                                </div>
+                            </div>
+
+
+                       </div>
+
+                        <div style="padding: 2em 4em; background-color: #CCCCCC"  class="card-footer">
+                            <button class="btn btn-primary icon-btn" type="button">
+                                <i class="fa fa-fw fa-lg fa-check-circle"></i>Save Settings</button>
+                        </div>
+                        </form>
+                    </div>
+
+                    <div class="tab-pane fade" id="notification">
+
+
+                            <h2 class="card-title settings-header-title ">Notifications</h2>
+                            <hr />
+
+                            <div class="card-body settings-card-padding">
+                                <form class="bs-component">
+                                <h4 class="card-title">Email</h4>
+                                <div class="row">
+                                    <div class="col-sm-6 form-group">
+                                        <label class="control-label" for="inputDefault">Email (primary)*</label>
+                                        <input class="form-control" value="{{ app.user.email }}" readonly="readonly" id="inputDefault" type="email">
+
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label class="control-label" for="inputDefault">Notification Email (secondary)*</label>
+                                        <input class="form-control" id="inputDefault" value="" name="notification_email" type="email">
+
+                                    </div>
+                                    <div class="col-sm-12 form-group">
+                                        <blockquote class="blockquote-reverse">
+                                            <p>Please Note: the primary email address is your login email. </p><small>Notification email is where we send you
+                                                notice of the happenings on chukolo <cite title="Source Title">If for any reason you are not comfortable receiving
+                                                    emails on your primary email address you
+                                                can exclusively set a notification email.</cite></small>
+                                        </blockquote>
+
+                                    </div>
+                                </div>
+
+                               </form>
+                                <div style="padding: 1em 3em;">
+                                    <button class="btn btn-primary icon-btn" type="button">
+                                        <i class="fa fa-fw fa-lg fa-check-circle"></i>Save Settings</button>
+                                </div>
+                            </div>
+                            <hr />
+                        <form >
+                            <div class="card-body settings-card-padding">
+                                <h4 class="card-title">Notification of the latest post</h4>
+
+                                <div class="row">
+
+                                    <div class="col-xs-2">
+                                        <div class="toggle-flip">
+                                            <label>
+                                                <input type="checkbox"><span class="flip-indecator" data-toggle-on="ON" data-toggle-off="OFF"></span>
+                                            </label>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-10">
+                                            <span class="notification-label-text">When project get posted that match my skils</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <hr />
+                            <div class="card-body settings-card-padding">
+                                <h4 class="card-title">Notification of the latest local jobs</h4>
+
+                                <div class="row">
+
+                                    <div class="col-xs-2">
+                                        <div class="toggle-flip">
+                                            <label>
+                                                <input type="checkbox"><span class="flip-indecator" data-toggle-on="ON" data-toggle-off="OFF"></span>
+                                            </label>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-10">
+                                        <span class="notification-label-text">When a local job in my location is posted</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <hr />
+                            <div class="card-body settings-card-padding">
+                                <h4 class="card-title">Emails for messages</h4>
+
+                                <div class="row">
+
+                                    <div class="col-xs-2">
+                                        <div class="toggle-flip">
+                                            <label>
+                                                <input type="checkbox"><span class="flip-indecator" data-toggle-on="ON" data-toggle-off="OFF"></span>
+                                            </label>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-10">
+                                        <span class="notification-label-text">When you receive a message from a contact </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-2">
+                                        <div class="toggle-flip">
+                                            <label>
+                                                <input type="checkbox"><span class="flip-indecator" data-toggle-on="ON" data-toggle-off="OFF"></span>
+                                            </label>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-10">
+                                        <span class="notification-label-text">When you receive a message about a project </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-2">
+                                        <div class="toggle-flip">
+                                            <label>
+                                                <input type="checkbox"><span class="flip-indecator" data-toggle-on="ON" data-toggle-off="OFF"></span>
+                                            </label>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-10">
+                                        <span class="notification-label-text">When you receive a message from chukolo staff </span>
+                                    </div>
+                                  </div>
+
+                            </div>
+                            <hr />
+
+
+                            <div class="card-body settings-card-padding">
+                                <h4 class="card-title">News and Announcement</h4>
+
+                                <div class="row">
+
+                                    <div class="col-xs-2">
+                                        <div class="toggle-flip">
+                                            <label>
+                                                <input type="checkbox"><span class="flip-indecator" data-toggle-on="ON" data-toggle-off="OFF"></span>
+                                            </label>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-10">
+                                        <span class="notification-label-text">News and announcements from Chukolo </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-2">
+                                        <div class="toggle-flip">
+                                            <label>
+                                                <input type="checkbox"><span class="flip-indecator" data-toggle-on="ON" data-toggle-off="OFF"></span>
+                                            </label>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-10">
+                                        <span class="notification-label-text">A buyer awards you a project  </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-2">
+                                        <div class="toggle-flip">
+                                            <label>
+                                                <input type="checkbox"><span class="flip-indecator" data-toggle-on="ON" data-toggle-off="OFF"></span>
+                                            </label>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-10">
+                                        <span class="notification-label-text">A freelancer requests you to release a milestone payment </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-2">
+                                        <div class="toggle-flip">
+                                            <label>
+                                                <input type="checkbox"><span class="flip-indecator" data-toggle-on="ON" data-toggle-off="OFF"></span>
+                                            </label>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-10">
+                                        <span class="notification-label-text">We notify you of the top bidder for your project</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-2">
+                                        <div class="toggle-flip">
+                                            <label>
+                                                <input type="checkbox"><span class="flip-indecator" data-toggle-on="ON" data-toggle-off="OFF"></span>
+                                            </label>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-10">
+                                        <span class="notification-label-text">We notify you of the latest activity regarding Services. </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                        </form>
+
+                    </div>
+                    <div class="tab-pane fade" id="verification">
+
+
+                            <h2 class="card-title settings-header-title">Verification & Trust </h2>
+                            <hr />
+
+                        <div class="card-body settings-card-padding">
+
+                            <h4 class="card-title">What is a trust score?</h4>
+                            <div class="row">
+                                <div class="col-sm-12 form-group">
+                                    <p>
+                                        The Freelancer Trust Score is at the core of how we handle verification,
+                                        trust, and payments. The Trust Score is a value between 0-100 that indicates
+                                        to what extent we have been able to verify who a user says they are. Employers
+                                        and freelancers who are the safest to work with are those who put in more effort
+                                        to verify themselves to become highly trusted users.
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                        <hr />
+
+                        <div class="card-body settings-card-padding">
+
+
+                            <div class="row">
+                                <div class="col-sm-7 form-group">
+                                    <p>
+                                        Your current score
+                                    </p>
+                                </div>
+                                <div class="col-sm-5 form-group">
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <hr />
+
+
+                        <div class="card-body settings-card-padding">
+
+
+                            <div class="row">
+                                <div class="col-sm-7 form-group">
+                                    <p>
+                                        email
+                                    </p>
+                                </div>
+                                <div class="col-sm-5 form-group">
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <hr />
+                        <div class="card-body settings-card-padding">
+
+
+                            <div class="row">
+                                <div class="col-sm-7 form-group">
+                                    <p>
+                                     phone
+                                    </p>
+                                </div>
+                                <div class="col-sm-5 form-group">
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <hr />
+                        <div class="card-body settings-card-padding">
+
+
+                            <div class="row">
+                                <div class="col-sm-7 form-group">
+                                    <p>
+                                       Linked in
+                                    </p>
+                                </div>
+                                <div class="col-sm-5 form-group">
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <hr />
+                        <div class="card-body settings-card-padding">
+
+
+                            <div class="row">
+                                <div class="col-sm-7 form-group">
+                                    <p>
+                                        facebook
+                                    </p>
+                                </div>
+                                <div class="col-sm-5 form-group">
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <hr />
+                        <div class="card-body settings-card-padding">
+
+
+                            <div class="row">
+                                <div class="col-sm-7 form-group">
+                                    <p>
+                                        Authenticate Credit Card
+                                    </p>
+                                </div>
+                                <div class="col-sm-5 form-group">
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <hr />
+
+                    </div>
+
+                    <div class="tab-pane fade" id="finance">
+
+                        <h2 class="card-title settings-header-title">Payment & Finance</h2>
+                        <hr />
+
+                        <div class="card-body settings-card-padding">
+                            <h4 class="card-title">Payment Methods</h4>
+                            <a class="btn btn-primary icon-btn" href="" target="_blank"><i class="fa fa-plus"></i>Chane Password</a>
+                        </div>
+                        <hr />
+
+
+                        <div class="card-body settings-card-padding">
+                            <h4 class="card-title">My Currency</h4>
+                          <div class="row">
+                              <div class="col-sm-3">
+                                  <select class="form-control" id="currency">
+                                      <optgroup label="Select Currency">
+                                          <option>NGN</option>
+                                      </optgroup>
+                                  </select>
+                              </div>
+                          </div>
+                        </div>
+                        <hr />
+
+
+                    </div>
+
+
+
+                    <div class="tab-pane fade" id="account">
+                     <h2 class="card-title settings-header-title">Account</h2>
+                        <hr />
+
+                        <div class="card-body settings-card-padding">
+                            <h4 class="card-title">Hall of Fame Settings</h4>
+                            <div class="row">
+                                <div class="col-xs-2">
+                                    <div class="toggle-flip">
+                                        <label>
+                                            <input type="checkbox"><span class="flip-indecator" data-toggle-on="ON" data-toggle-off="OFF"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-10">
+                                    <span class="notification-label-text">List me on the Chukolo Hall of fame, allowing Employers to hire me directly for projects</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-2">
+                                    <div class="toggle-flip">
+                                        <label>
+                                            <input type="checkbox"><span class="flip-indecator" data-toggle-on="ON" data-toggle-off="OFF"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-10">
+                                    <span class="notification-label-text">Allow Freelancers to follow me, notifying them of projects  I've posted</span>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="card-body settings-card-padding">
+                            <h4 class="card-title">Account Type</h4>
+
+                            <div class="animated-radio-button">
+
+                                <p>I am looking to :</p>
+                                <label>
+                                    <input name="accountType"  type="radio"><span class="label-text">Work</span>
+                                </label>
+                                <label>
+                                    <input name="accountType" type="radio"><span class="label-text">Hire</span>
+                                </label>
+                            </div>
+
+                        </div>
+                        <hr />
+                        <div class="card-body settings-card-padding">
+                            <h4 class="card-title">Login Settings</h4>
+                            <a class="btn btn-primary icon-btn" href="" target="_blank"><i class="f"></i>Chane Password</a>
+                        </div>
+                        </div>
+
+                    </div>
+            </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

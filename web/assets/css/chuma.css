@@ -1,0 +1,27 @@
+@charset "utf-8";
+/*
+ * 	@author :akoh.chuma@gmail.com
+ *	v1.2.10
+ */
+
+
+
+body {
+    background-color: #EBE8E4;
+    color: #222;
+    font-family: cursive;
+    font-weight: 300;
+    font-size: 15px;
+}
+
+
+
+.notification-label-text{
+    font-weight: bolder; font-size: medium
+}
+.settings-card-padding{
+    padding: 0.2em 3.5em
+}
+.settings-header-title{
+    padding: 0.5em 1.5em
+}

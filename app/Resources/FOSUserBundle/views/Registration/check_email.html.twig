@@ -1,0 +1,33 @@
+{% extends 'profile/base.html.twig'%}
+
+
+{% block pageContent %}
+
+
+    <ol class="breadcrumb">
+        <li><strong>You are here :</strong></li>
+        <li><a href="{{ path('home') }}">Home</a></li>
+        <li class="active"><a href=""><strong>Confirm Email</strong></a></li>
+    </ol>
+
+
+    {% trans_default_domain 'FOSUserBundle' %}
+    <div class="col-sm-8 col-sm-offset-2">
+    <div class="card">
+        {% block fos_user_content %}
+            <div class="alert-block">
+
+
+                    <div class="panel panel-body ">
+                        <div class="alert-info">
+                        <p style="color: black;">A confirmation email has been sent to the email address you registered with  <br />
+                         please check your INBOX or SPAM folder for email and confirm to continue   </p>
+
+                      </div>
+                    </div>
+            </div>
+
+        {% endblock fos_user_content %}
+    </div>
+    </div>
+{% endblock %}

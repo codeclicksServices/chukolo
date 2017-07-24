@@ -1,0 +1,11 @@
+{% extends "base2.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block content %}
+    {% block fos_user_content %}
+    <p>
+        {{ 'resetting.check_email'|trans({'%email%': email}) }}
+    </p>
+    {% endblock %}
+{% endblock %}

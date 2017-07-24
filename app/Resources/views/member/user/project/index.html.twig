@@ -1,0 +1,346 @@
+{% extends 'member/base.html.twig' %}
+
+
+
+
+
+
+ {% block titleText %}
+
+ {% endblock %}
+
+
+
+
+{% block page %}
+       <div class="row">
+           <div class="col-sm-9">
+
+           </div>
+           <div class="col-sm-3">
+               <ul class="nav nav-tabs  pager">
+                   <li class="active"><a href="#freelancer" data-toggle="tab"><strong>Freelancer</strong></a></li>
+                   <li><a href="#employer" data-toggle="tab"><strong>Employer</strong></a></li>
+               </ul>
+           </div>
+
+       </div>
+    <div class="col-md-12">
+        <div class="tab-content">
+
+            <div class="tab-pane active" id="freelancer">
+           {#  freelancer tab #}
+                <div class="col-sm-12">
+                    <h2 id="nav-tabs">Projects</h2>
+                    <div class="bs-component">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#activeBids" data-toggle="tab"><strong>Active Bids</strong></a></li>
+                            <li><a href="#currentWorks" data-toggle="tab"><strong>Current Jobs</strong></a></li>
+                            <li><a href="#doneJobs" data-toggle="tab"><strong>Past Jobs</strong></a></li>
+
+                        </ul>
+                        <div style="margin-top: 20px" class="tab-content" id="myTabContent">
+
+                            <div class="tab-pane fade active in" id="activeBids">
+
+
+
+                                        <table class="table table-hover">
+                                            <thead style="background-color: #222d32;color: white; font-weight: bolder;">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>First Name</th>
+                                                <th>Last Name</th>
+                                                <th>Username</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody class="card">
+                                            <tr>
+                                                <td>1</td>
+                                                <td>Mark</td>
+                                                <td>Otto</td>
+                                                <td>@mdo</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>Jacob</td>
+                                                <td>Thornton</td>
+                                                <td>@fat</td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>Larry</td>
+                                                <td>the Bird</td>
+                                                <td>@twitter</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+
+                            </div>
+
+                            <div class="tab-pane fade" id="currentWorks">
+                                <p></p>
+                            </div>
+
+                            <div class="tab-pane fade" id="doneJobs">
+                                <p>
+
+                                </p>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="tab-pane fade" id="employer">
+                {#  employer  tab #}
+                <div class="col-sm-12">
+                    <h2 id="nav-tabs">Projects</h2>
+
+
+
+                      {# project tab #}
+                       <div class="bs-component">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#open" data-toggle="tab"><strong>Open</strong></a></li>
+                            <li><a href="#workInProgress" data-toggle="tab"><strong>Work In Project </strong></a></li>
+                            <li><a href="#pastWork" data-toggle="tab"><strong>Past Project</strong></a></li>
+
+                        </ul>
+                        <div style="margin-top: 20px" class="tab-content" id="myTabContent">
+                            <div class="row">
+
+                            </div>
+                            <div class="tab-pane fadeInDown active in" id="open">
+
+
+                                <table class="table table-hover">
+                                    <thead style="background-color: #222d32;color: white; font-weight: bolder;"><tr><th>Project Name </th><th>Bids</th><th>Average Bid</th><th>Bid endDate</th><th>Actions</th></tr></thead>
+                                    <tbody class="card">
+                                        {% if  openProjects.getTotalItemCount %}
+                                            {% for project in openProjects %}
+                                                <tr>
+                                                    <td><a  href={{ path('manage_user_project', { 'id': project.id }) }}> {{ project.name |title }}</a></td>
+                                                    <td>{{ project.bid |length }}</td>
+                                                    <td>{{ project.averageBid }}</td>
+                                                    <td>{{ project.expire |date }}</td>
+                                                    <td  class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Select An Action</a>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a href={{ path('manage_user_project', { 'id': project.id }) }} >Project Details</a></li>
+                                                                <li><a href={{ path('manage_user_project', { 'id': project.id }) }} data-toggle="tab">Upgrade Project</a></li>
+                                                                <li><a href={{ path('project_edit', { 'id': project.id }) }} >Edit</a></li>
+                                                                <li><a  id="delete" href="#">Delete</a></li>
+                                                                <li><a  id="close" href="#">Close</a></li>
+                                                            </ul>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                                 <tr><td colspan="5">{{ knp_pagination_render(openProjects) }}</td></tr>
+                                        {% else %}
+                                                 <tr><td colspan="5">You Currently have no project open for bidding </td></tr>
+
+                                        {% endif %}
+                                    </tbody>
+                                </table>
+
+
+
+                            </div>
+
+                            <div class="tab-pane fade" id="workInProgress">
+
+                                <table class="table table-hover">
+                                    <thead style="background-color: #222d32;color: white; font-weight: bolder;">
+                                    <tr>
+                                        <th>Project Name </th>
+                                        <th>Freelancer</th>
+                                        <th>Awarded Bid</th>
+                                        <th>Deadline</th>
+                                        <th>Milestones</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody class="card">
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>@mdo</td>
+                                        <td>Otto</td>
+                                        <td>@mdo</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+
+                            </div>
+
+                            <div class="tab-pane fade" id="pastWork">
+                                <p>
+
+                                </p>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    {# end project tab #}
+
+
+
+                    {# archive  tab #}
+                   {# <div class="card p-0">
+                        <h4 class="card-title folder-head">
+                            <ul  style="background-color: #222d32;color: white; font-weight: bolder;display-list: inline">
+
+
+                                <li>Draft</li>
+                                <li>Project Type</li>
+                                <li>Action</li>
+
+                            </ul>
+
+
+                        </h4>
+                        <div class="card-body">
+                            <table class="table table-hover">
+
+                                <tbody class="card">
+                                <tr>
+
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+                                </tr>
+
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>#}
+                    {# end archive  tab #}
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block javascripts %}
+
+    <script src="{{ asset('assets/js/dashboard/jquery-2.1.4.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/plugins/pace.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/main.js') }}"></script>
+    {# Add ajax thingie that will update the city select box #}
+
+
+    <script src="{{ asset('assets/js/dashboard/plugins/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/plugins/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript">$('body').removeClass("sidebar-mini").addClass("sidebar-collapse");</script>
+    <script src="{{ asset('assets/js/dashboard/plugins/bootstrap-notify.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/plugins/sweetalert.min.js') }}"></script>
+
+
+
+
+
+    <script type="text/javascript">
+
+        $('#close').click(function(){
+            swal({
+                title: "Are you sure you wish to close this project?",
+                text: "By closing your project you will not be able to receive bids. Your project will be " +
+                "archived and cannot be reopened.",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, close it!",
+                cancelButtonText: "No, cancel Please!",
+                confirmButtonColor: "#DD6B55",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function(isConfirm) {
+                if (isConfirm) {
+
+                    //  create the ajax call that will close your project here
+
+                    swal("Closed!", "Your project has been closed.", "success");
+                } else {
+                    swal("Cancelled", "Your project is safe :)", "error");
+                }
+            });
+        });
+
+        $('#delete').click(function(){
+
+            swal({
+                title: "Are you sure you wish to Delete this project ?",
+                text: " By deleting your project no one will be able to view the project information, the attached files nor any of the" +
+                "bids on the project. This action cannot be undone."+
+                "Delete your project now for NGN 800.00 ",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel Please!",
+                confirmButtonColor: "danger",
+                closeOnConfirm: false,
+                showLoaderOnConfirm: false,
+                closeOnCancel: false
+            }, function(isConfirm) {
+                if (isConfirm) {
+
+                    //  create the ajax call that will delete your project here
+
+
+                    swal("Deleted!", "Your project has been deleted.", "success");
+                } else {
+                    swal("Cancelled", "Your project is safe :)", "error");
+                }
+            });
+        });
+
+        $(document).ready(function () {
+            $('#projectProposals').click(function(){
+
+
+
+
+                //  alert('check');
+                /* // when category is selected provide the category skills
+                 $.ajax({
+                 type: "POST",
+                 //
+                 success: function(data) {
+                 // Remove current options
+                 $('#project_skill').html('');
+
+                 $.each(data, function(k, v) {
+
+                 $('#project_skill').append('<option value="' + v + '">' + k + '</option>');
+                 });
+                 }
+                 });*/
+
+
+                return true;
+            });
+
+
+
+        });
+    </script>
+
+
+
+
+{% endblock %}
+
+

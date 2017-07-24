@@ -1,0 +1,71 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div class="fos_user_user_show">
+
+    <div class="col-lg-12 col-md-12">
+        <div class="card card-user">
+            <div class="image">
+
+            </div>
+            <div class="content">
+                <div class="author">
+                    <img class="avatar border-white" src="{{ asset('assets/img/avater.png') }}" alt="..."/>
+                    <h4 class="title">Hello <strong>{{ app.user.username }}</strong> !!!<br />
+
+                    </h4>
+                </div>
+                <p class="description text-center">
+                    "You are <strong style="color: #2e6da4">{{ app.user.firstName }} {{ app.user.lastName }}</strong><br>
+                    This is your phone number <strong style="color: #2e6da4">0{{ app.user.phone }}</strong> <br>
+                    You bank with <strong style="color: #2e6da4">{{ app.user.bank }}</strong><br>
+                    and your account number is
+                    {% if app.user.accountNumber|length < 10  %}
+
+                        {% if app.user.accountNumber|length == 9  %}
+
+                            <strong style="color: #2e6da4"> 0{{ app.user.accountNumber }}</strong>
+
+                        {% elseif app.user.accountNumber|length == 8  %}
+                            <strong style="color: #2e6da4">00{{ app.user.accountNumber }}</strong>
+
+                        {% elseif app.user.accountNumber|length == 7  %}
+                            <strong style="color: #2e6da4">000{{ app.user.accountNumber }}</strong>
+
+                        {% elseif app.user.accountNumber|length == 6  %}
+                            <strong style="color: #2e6da4" >0000{{ app.user.accountNumber }}</strong>
+
+                        {% elseif app.user.accountNumber|length == 5  %}
+                            <strong style="color: #2e6da4">00000{{ app.user.accountNumber }}</strong>
+
+
+                        {% endif %}
+                    {% else %}
+                        <strong style="color: #2e6da4">{{ app.user.accountNumber }}</strong>
+                    {% endif %}
+                    <br />
+
+                    we good ?"
+                </p>
+            </div>
+            <hr>
+            <div class="text-center">
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-1">
+                        <h5> <a href="{{ path("dashboard") }}">Done</a><br /><small>Go Back</small></h5>
+                    </div>
+                    <div class="col-md-4">
+
+                    </div>
+                    <div class="col-md-3">
+                        <h5> <a href="{{ path("fos_user_profile_edit") }}">Make Change</a><br /><small>edit</small></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+</div>

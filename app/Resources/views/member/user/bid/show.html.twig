@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Bid</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ bid.id }}</td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td>{{ bid.price }}</td>
+            </tr>
+            <tr>
+                <th>Commission</th>
+                <td>{{ bid.commission }}</td>
+            </tr>
+            <tr>
+                <th>Visible</th>
+                <td>{{ bid.visible }}</td>
+            </tr>
+            <tr>
+                <th>Delivery Date</th>
+                <td>{% if bid.deliveryDate %}{{ bid.deliveryDate|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('bid_index') }}">Back to the list</a>
+        </li>
+    </ul>
+{% endblock %}

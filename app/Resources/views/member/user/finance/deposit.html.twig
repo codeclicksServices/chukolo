@@ -1,0 +1,141 @@
+{% extends 'member/base.html.twig' %}
+
+
+
+
+
+{% block breadCrumb %}
+
+    <li class="active"><a class="btn btn-default" href="{{ path("finance_dashboard") }}">Finance</a></li>
+    <li><a class="btn btn-default" href="{{ path("transaction_history") }}">Transaction History</a></li>
+    <li><a class="btn btn-default" href="{{ path("verify_payment") }}">Verify Payment</a></li>
+    <li><a class="btn btn-default" href="{{ path("deposit_fund") }}">Deposit Fund</a></li>
+    <li><a class="btn btn-default" href="{{ path("withdraw_fund") }}">Withdraw Fund</a></li>
+
+
+{% endblock %}
+ {% block titleText %}
+
+ {% endblock %}
+
+
+
+
+{% block page %}
+
+    <div class="col-md-12">
+
+    </div>
+{% endblock %}
+
+
+{% block javascripts %}
+
+    <script src="{{ asset('assets/js/dashboard/jquery-2.1.4.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/plugins/pace.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/main.js') }}"></script>
+    {# Add ajax thingie that will update the city select box #}
+
+
+    <script src="{{ asset('assets/js/dashboard/plugins/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/plugins/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript">$('body').removeClass("sidebar-mini").addClass("sidebar-collapse");</script>
+    <script src="{{ asset('assets/js/dashboard/plugins/bootstrap-notify.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/plugins/sweetalert.min.js') }}"></script>
+
+
+
+
+
+    <script type="text/javascript">
+
+        $('#close').click(function(){
+            swal({
+                title: "Are you sure you wish to close this project?",
+                text: "By closing your project you will not be able to receive bids. Your project will be " +
+                "archived and cannot be reopened.",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, close it!",
+                cancelButtonText: "No, cancel Please!",
+                confirmButtonColor: "#DD6B55",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function(isConfirm) {
+                if (isConfirm) {
+
+                    //  create the ajax call that will close your project here
+
+                    swal("Closed!", "Your project has been closed.", "success");
+                } else {
+                    swal("Cancelled", "Your project is safe :)", "error");
+                }
+            });
+        });
+
+        $('#delete').click(function(){
+
+            swal({
+                title: "Are you sure you wish to Delete this project ?",
+                text: " By deleting your project no one will be able to view the project information, the attached files nor any of the" +
+                "bids on the project. This action cannot be undone."+
+                "Delete your project now for NGN 800.00 ",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel Please!",
+                confirmButtonColor: "danger",
+                closeOnConfirm: false,
+                showLoaderOnConfirm: false,
+                closeOnCancel: false
+            }, function(isConfirm) {
+                if (isConfirm) {
+
+                    //  create the ajax call that will delete your project here
+
+
+                    swal("Deleted!", "Your project has been deleted.", "success");
+                } else {
+                    swal("Cancelled", "Your project is safe :)", "error");
+                }
+            });
+        });
+
+        $(document).ready(function () {
+            $('#projectProposals').click(function(){
+
+
+
+
+                //  alert('check');
+                /* // when category is selected provide the category skills
+                 $.ajax({
+                 type: "POST",
+                 //
+                 success: function(data) {
+                 // Remove current options
+                 $('#project_skill').html('');
+
+                 $.each(data, function(k, v) {
+
+                 $('#project_skill').append('<option value="' + v + '">' + k + '</option>');
+                 });
+                 }
+                 });*/
+
+
+                return true;
+            });
+
+
+
+        });
+    </script>
+
+
+
+
+{% endblock %}
+
+

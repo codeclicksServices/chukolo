@@ -1,0 +1,31 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+
+#    service_name:
+#        class: AppBundle\Directory\ClassName
+#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+
+    app.form.registration:
+        class: AppBundle\Form\Type\MemberType
+        tags:
+              - { name: form.type, alias: app_user_registration }
+
+    app.form_project:
+        class: AppBundle\Form\Type\ProjectType
+        arguments: ["@doctrine.orm.entity_manager"]
+        tags:
+              - { name: form.type, alias: app_project_creation  }
+
+    app.eventlistener.project_creation_listener:
+        class: AppBundle\EventListener\ProjectListener
+        arguments: ["@router"]
+
+    app.user.registration_success:
+        class: AppBundle\EventListener\RegistrationListener
+        arguments: ["@router"]
+        tags:
+              - { name: kernel.event_subscriber }

@@ -1,0 +1,161 @@
+{% extends 'member/base.html.twig' %}
+
+
+ {% block breadCrumb %}
+
+ {% endblock %}
+{% block page %}
+
+
+
+ <div class="col-sm-7 ">
+
+
+         {{ form_start(form) }}
+    <ol >
+        <li>
+        <h2>  What type of work do you require ?</h2>
+            {{ form_row(form.category,{ 'id':'project_category'}) }}
+            {{ form_row(form.project,{ 'id':'project_sugestion'}) }}
+       <li> <h2>What is your project about ?</h2>
+
+
+       {{ form_row(form.name,{ 'id':'project_name'}) }}
+
+       </li>
+
+
+        <li><h2>Tell us more about your project</h2>
+            {{ form_row(form.skill,{'id': 'project_skill'}) }}
+        <br />
+        {{ form_row(form.description,{ 'id':'description'}) }}
+
+
+            <h3>Upload a file </h3>
+            {{ form_row(form.documentFile) }}
+        </li>
+
+        <li>
+            <h2>What budget do you have in mind for  your project</h2>
+            {{ form_row(form.budget) }}</li>
+        <li>
+           <h2>Get the most out of your project</h2>
+           {{ form_row(form.subscription) }}
+        </li>
+
+    </ol>
+         {{ form_end(form) }}
+
+
+ </div>
+
+
+
+<div class="col-sm-4">
+
+</div>
+{% endblock %}
+
+{% block javascripts %}
+
+    <script src="{{ asset('assets/js/dashboard/jquery-2.1.4.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/plugins/pace.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/main.js') }}"></script>
+    {# Add ajax thingie that will update the city select box #}
+
+
+    <script src="{{ asset('assets/js/dashboard/plugins/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/plugins/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript">$('body').removeClass("sidebar-mini").addClass("sidebar-collapse");</script>
+
+
+    <script type="text/javascript">
+
+        $('#demoDate').datepicker({
+            format: "dd/mm/yyyy",
+            autoclose: true,
+            todayHighlight: true
+        });
+
+        $('#project_skill').select2();
+        $('#project_sugestion').hide();
+
+    </script>
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+
+            $('#project_category').change(function(){
+
+                var val = $(this).val();
+
+
+
+                 // when category is selected provide the category skills
+                 $.ajax({
+                     type: "POST",
+                     url: "{{ url('get-category-new') }}?category_id=" + val,
+                     success: function(data) {
+                         // Remove current options
+                         $('#project_skill').html('');
+
+                         $.each(data, function(k, v) {
+
+                             $('#project_skill').append('<option value="' + v + '">' + k + '</option>');
+                         });
+                     }
+                 });
+
+
+               if(val > 0){
+
+                   $.ajax({
+                       type: "POST",
+                       url: "{{ url('suggest-category-projects') }}?category_id=" + val,
+                       success: function(data) {
+
+                           //show the project input field
+                           $('#project_sugestion').show();
+
+                           $('#project_sugestion').html('');
+
+                           $.each(data, function(k, v) {
+
+                               $('#project_sugestion').append('<option value="' + v + '">' + k + '</option>');
+                           });
+                       }
+                   });
+
+               }else {
+                   //hide the project sugestion if no category is choosen
+                   $('#project_sugestion').hide();
+               }
+                return false;
+            });
+
+
+            /*This action gets triggered any time a project sugestion is slected*/
+            $('#project_sugestion').change(function(){
+                //
+
+                var val = $(this).val();
+                //get the name of the selected option
+                var project_name = $(this).find(":selected").text();
+                //set the project name to the selected option
+                $('#project_name').val(project_name);
+
+                return false;
+            });
+        });
+    </script>
+
+
+
+
+{% endblock %}
+
+

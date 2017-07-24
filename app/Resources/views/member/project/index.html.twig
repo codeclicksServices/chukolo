@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Freelance Jobs</h1>
+       <div>show rescently completed jobs</div>
+    <hr />
+    <h1>Brows jobs</h1>
+
+    {% for job in rescentCompletedJob %}
+        <ul>
+        <li><a href="{{ path('project_show', { 'id': job.id }) }}">{{ job.name }}</a></li>
+        </ul>
+    {% endfor %}
+
+
+
+  
+
+    
+{% endblock %}

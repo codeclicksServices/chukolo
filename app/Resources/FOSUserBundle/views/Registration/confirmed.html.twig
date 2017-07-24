@@ -1,0 +1,44 @@
+{% extends "profile/base.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block nav %}{% endblock %}
+
+{% block content %}
+    {% block fos_user_content %}
+     <div class="row">
+        <div class="col-sm-8 col-md-offset-2" >
+       <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="alert alert-success">
+                    <i class="fa fa-check-circle fa-fw" style="font-size:40px;"></i> Welcome to REFUND
+                </div>
+            </div>
+            <!-- .panel-body -->
+        </div>
+     </div>
+        <div class="row">
+            <div class="col-sm-8 col-md-offset-2" >
+                <div class="login-panel panel panel-default">
+                    <div style="text-align:center;  padding: 50px;">
+                        <p>{{ 'registration.confirmed'|trans({'%username%': user.username}) }}</p>
+                        <h3>You'll be able to sign to REFUND with  <strong>{{ user.username }}</strong> as your username </h3>
+                        {% if is_granted("ROLE_PARTICIPANT") %}
+                            <a  href="{{ path("donate-dashboard") }}"
+                                class="btn btn-lg btn-outline btn-success" >
+                                <strong>Continue To Your Dashboard Here</strong></a>
+                        {% else %}
+                            <a  href="{{ path("admin") }}"
+                                class="btn btn-lg btn-outline btn-success" ><strong>
+                                    Continue To Your Dashboard Here</strong></a>
+                        {% endif %}
+                        {% if targetUrl %}
+                            <p><a href="{{ targetUrl }}">{{ 'registration.back'|trans }}</a></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endblock fos_user_content %}
+{% endblock %}

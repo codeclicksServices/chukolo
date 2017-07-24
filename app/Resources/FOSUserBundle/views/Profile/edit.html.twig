@@ -1,0 +1,56 @@
+{% extends "profile/base.html.twig" %}
+
+
+  {% block navItems %}
+
+      <li>
+          <a href="{{ path("dashboard") }}">
+              <i class="ti-panel"></i>
+              <p>Dashboard</p>
+          </a>
+      </li>
+      <li class="active">
+          <a href="{{ path("fos_user_profile_edit") }}">
+              <i class="ti-user"></i>
+              <p>User Profile</p>
+          </a>
+      </li>
+      <li>
+          <a href="{{ path("transaction-dashboard") }}">
+              <i class="ti-view-list-alt"></i>
+              <p>Transactions</p>
+          </a>
+      </li>
+      <li>
+          <a href="{{ path("donate-dashboard") }}">
+              <i class="ti-money"></i>
+              <p>Donations</p>
+          </a>
+      </li>
+      <li>
+          <a href="{{ path("receive-dashboard") }}">
+              <i class="ti-wallet"></i>
+              <p>Reward</p>
+          </a>
+      </li>
+
+
+      <li class="active-pro">
+          <a href="{{ path("raise-ticket") }}">
+              <i class="ti-support"></i>
+              <p>Support</p>
+          </a>
+      </li>
+  {% endblock %}
+
+ {% block pageName %}
+     Profile Edit
+ {% endblock %}
+
+  {% block pageContent %}
+        {% block fos_user_content %}
+
+        {% include "FOSUserBundle:Profile:edit_content.html.twig" %}
+
+        {% endblock fos_user_content %}
+{% endblock %}
