@@ -32,9 +32,18 @@ class Subscription
      */
     protected $name;
     /**
+     * @ORM\Column(type="smallint", nullable=false,options={"comment":"value: 1 for project i.e is used as employer, 2 for bid used by freelancer  "})
+     */
+    protected $type;
+    /**
      * @ORM\Column(type="text",nullable=true)
      */
     protected $description;
+
+    /**
+     * @ORM\Column(type="text",nullable=true)
+     */
+    protected $note;
     /**
 
     /**
@@ -66,7 +75,10 @@ class Subscription
      */
     private $project;
 
-
+    /**
+     * @ORM\ManyToMany(targetEntity="Bid", mappedBy="subscription")
+     */
+    private $bid;
 
     /**
      * Get id
@@ -244,5 +256,107 @@ class Subscription
     public function getProject()
     {
         return $this->project;
+    }
+
+    /**
+     * Add bid
+     *
+     * @param \AppBundle\Entity\Bid $bid
+     *
+     * @return Subscription
+     */
+    public function addBid(\AppBundle\Entity\Bid $bid)
+    {
+        $this->bid[] = $bid;
+
+        return $this;
+    }
+
+    /**
+     * Remove bid
+     *
+     * @param \AppBundle\Entity\Bid $bid
+     */
+    public function removeBid(\AppBundle\Entity\Bid $bid)
+    {
+        $this->bid->removeElement($bid);
+    }
+
+    /**
+     * Get bid
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBid()
+    {
+        return $this->bid;
+    }
+
+    /**
+     * Set type
+     *
+     * @param integer $type
+     *
+     * @return Subscription
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return integer
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Get subscriptionLabel
+     *
+     * @return string
+     */
+ /*   public function getSubscriptionLabel(){
+        $name =$this->getName();
+        $note =$this->getNote();
+        $description =$this->getDescription();
+        $price =$this->getValue();
+
+        $qualifiedName = ' ';
+        $qualifiedName .= '<strong>'.$name.'</strong>';
+
+
+        return$qualifiedName;
+
+    }*/
+
+
+    /**
+     * Set note
+     *
+     * @param string $note
+     *
+     * @return Subscription
+     */
+    public function setNote($note)
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    /**
+     * Get note
+     *
+     * @return string
+     */
+    public function getNote()
+    {
+        return $this->note;
     }
 }

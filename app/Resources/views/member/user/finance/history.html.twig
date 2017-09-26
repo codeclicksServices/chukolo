@@ -6,8 +6,8 @@
 
 {% block breadCrumb %}
 
-    <li class="active"><a class="btn btn-default" href="{{ path("finance_dashboard") }}">Finance</a></li>
-    <li><a class="btn btn-default" href="{{ path("transaction_history") }}">Transaction History</a></li>
+    <li><a class="btn btn-default" href="{{ path("finance_dashboard") }}">Finance</a></li>
+    <li class="active"><a class="btn btn-default" href="{{ path("transaction_history") }}">Transaction History</a></li>
     <li><a class="btn btn-default" href="{{ path("verify_payment") }}">Verify Payment</a></li>
     <li><a class="btn btn-default" href="{{ path("deposit_fund") }}">Deposit Fund</a></li>
     <li><a class="btn btn-default" href="{{ path("withdraw_fund") }}">Withdraw Fund</a></li>
@@ -22,10 +22,354 @@
 
 
 {% block page %}
+    <div class="row">
+     <div class="col-sm-8"><h1>Transaction History</h1></div>
+        <div class="col-sm-4"><h1> <a  class="btn btn-success" href="#" >Make a Deposit</a></h1></div>
+    </div>
 
-    <div class="col-md-12">
+
+    <div class="row">
+
+        <div class="col-sm-12">
+            <ul class="nav nav-tabs">
+
+                <li class="active"><a href="#all" data-toggle="tab">All Transactions</a></li>
+                <li><a href="#milestones" data-toggle="tab">Milestones</a></li>
+                <li><a href="#invoices" data-toggle="tab">Invoices</a></li>
+                <li><a href="#pending" data-toggle="tab">Pending Transactions</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <div class="bs-component">
+
+                <div class="tab-content" id="myTabContent">
+
+                    <div class="tab-pane fade" id="all">
+
+                        <div class="row">
+                            <div class="col-sm-12">
+
+
+
+                                <div class="row">
+
+                                    <div class="col-sm-9"></div>
+                                    <div style="margin-bottom: 0.5em" class="col-sm-2 ">
+                                        <select class="form-control" id="currency">
+                                            <optgroup label="Select Currency">
+                                                <option>5</option> <option>10</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
+                                <table class="table table-hover  card">
+                                    <thead style="background-color: #222d32;color: white; font-weight: bolder;">
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Transaction</th>
+                                        <th>Invoice</th>
+                                        <th>Amount</th>
+                                        <th>Balance</th>
+
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <tr>
+                                        <td>Otto</td>
+                                        <td>@mdo</td>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>@mdo</td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                    <div class="tab-pane fade active in" id="invoices">
+                        <div class="row">
+                            <div class="col-sm-9">
+
+
+
+                            </div>
+                            <div class="col-sm-3">
+                                <ul class="nav-tabs  pager">
+                                    <li class="active"><a href="#incomingInvoice" data-toggle="tab">Incoming</a></li>
+                                    <li><a href="#outgoingInvoice" data-toggle="tab">Outgoing</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+
+
+                                <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane fade active in" id="incomingInvoice">
+
+                                        <div class="row">
+                                            <div style="margin-bottom: 0.5em" class="col-sm-2 pull-right">
+                                                <select class="form-control" id="currency">
+                                                    <optgroup label="Select Currency">
+                                                        <option>5</option> <option>10</option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+                                        <table class="table table-hover  card">
+                                            <thead style="background-color: #222d32;color: white; font-weight: bolder;">
+                                            <tr>
+                                                <th>Freelancer</th>
+                                                <th>Project name</th>
+                                                <th>Invoice Ref</th>
+                                                <th>Unpaid</th>
+                                                <th>Amount</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            <tr>
+
+                                                <td>Mark</td>
+                                                <td>Otto</td>
+                                                <td>@mdo</td>
+                                                <td>Mark</td>
+                                                <td>Otto</td>
+                                                <td>@mdo</td>
+
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tab-pane fade" id="outgoingInvoice">
+
+                                        <div class="row">
+                                            <div style="margin-bottom: 0.5em" class="col-sm-2 pull-right">
+                                                <select class="form-control" id="currency">
+                                                    <optgroup label="Select Currency">
+                                                        <option>5</option> <option>10</option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <table class="table table-hover card">
+                                            <thead style="background-color: #222d32;color: white; font-weight: bolder;">
+                                            <tr>
+                                                <th>Employer</th>
+                                                <th>Project name</th>
+                                                <th>Invoice Ref</th>
+                                                <th>Unpaid</th>
+                                                <th>Amount</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            <tr>
+                                                <td>Mark</td>
+                                                <td>Mark</td>
+                                                <td>Otto</td>
+                                                <td>@mdo</td>
+                                                <td>Mark</td>
+                                                <td>Otto</td>
+                                                <td>@mdo</td>
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="tab-pane fade" id="milestones">
+                        <div class="row">
+                            <div class="col-sm-9">
+
+                                <a style="margin-top: 1.6em" class="btn btn-success disabled" href="#" >Request a milestone</a>
+
+                            </div>
+                            <div class="col-sm-3">
+                                <ul class="nav-tabs  pager">
+                                    <li ><a class="active" href="#incomingMilestone" data-toggle="tab">Incoming</a></li>
+                                    <li><a href="#outgoingMilestone" data-toggle="tab">Outgoing</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+
+
+                                <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane fade active in" id="incomingMilestone">
+
+                                        <div class="row">
+                                            <div style="margin-bottom: 0.5em" class="col-sm-2 pull-right">
+                                                <select class="form-control" id="currency">
+                                                    <optgroup label="Select Currency">
+                                                        <option>5</option> <option>10</option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+                                        <table class="table table-hover  card">
+                                            <thead style="background-color: #222d32;color: white; font-weight: bolder;">
+                                            <tr>
+                                                <th>Created</th>
+                                                <th>Employer</th>
+                                                <th>Project name</th>
+                                                <th>Amount</th>
+                                                <th>Description</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            <tr>
+                                                <td>Otto</td>
+                                                <td>@mdo</td>
+                                                <td>Mark</td>
+                                                <td>Otto</td>
+                                                <td>@mdo</td>
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tab-pane fade" id="outgoingMilestone">
+
+                                        <div class="row">
+                                            <div style="margin-bottom: 0.5em" class="col-sm-2 pull-right">
+                                                <select class="form-control" id="currency">
+                                                    <optgroup label="Select Currency">
+                                                        <option>5</option> <option>10</option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <table class="table table-hover card">
+                                            <thead style="background-color: #222d32;color: white; font-weight: bolder;">
+                                            <tr>
+                                                <th>Created</th>
+                                                <th>Freelancer</th>
+                                                <th>Project name</th>
+                                                <th>Amount</th>
+                                                <th>Description</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            <tr>
+                                                <td>Otto</td>
+                                                <td>@mdo</td>
+                                                <td>Otto</td>
+                                                <td>@mdo</td>
+                                                <td>Mark</td>
+                                                <td>Otto</td>
+                                                <td>@mdo</td>
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="pending">
+
+                        <div class="row">
+                            <div class="col-sm-12">
+
+                                <div class="row">
+
+                                    <div class="col-sm-9"></div>
+                                    <div style="margin-bottom: 0.5em" class="col-sm-2 ">
+                                        <select class="form-control" id="currency">
+                                            <optgroup label="Select Currency">
+                                                <option>5</option> <option>10</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
+                                <table class="table table-hover  card">
+                                    <thead style="background-color: #222d32;color: white; font-weight: bolder;">
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Transaction</th>
+                                        <th>Reason</th>
+                                        <th>Amount</th>
+                                        <th>Expected Date of Resolution</th>
+                                        <th>Status</th>
+
+
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <tr>
+                                        <td>@mdo</td>
+                                        <td>Otto</td>
+                                        <td>@mdo</td>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>@mdo</td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
+
+
+
+
+
+
+
+
+
 {% endblock %}
 
 

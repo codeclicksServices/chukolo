@@ -37,7 +37,9 @@
                 <div class="tab-content" id="myTabContent">
 
                     <div class="tab-pane fade active in" id="profile">
-                        <form class="bs-component">
+
+                        {{ form_start(profileForm, {'attr': {'id': 'profileUpdate'}}) }}
+
 
                         <h2 class="card-title settings-header-title">Profile Details</h2>
                         <hr />
@@ -48,42 +50,113 @@
                            <div class="row">
                                <div class="col-sm-6 form-group">
                                        <label class="control-label" for="inputDefault">First name *</label>
-                                       <input class="form-control" id="inputDefault" type="text">
+
+                                   <div  style="color: red">
+                                       {{ form_errors(profileForm.firstName) }}
+                                   </div>
+                                       {{ form_widget(profileForm.firstName) }}
 
                                </div>
                                <div class="col-sm-6 form-group">
                                    <label class="control-label" for="inputDefault">Last Name *</label>
-                                   <input class="form-control" id="inputDefault" type="text">
+                                   <div  style="color: red">
+                                       {{ form_errors(profileForm.lastName) }}
+                                   </div>
+                                   {{ form_widget(profileForm.lastName) }}
                                </div>
                            </div>
                         </div>
+
+
+
+                            <hr />
+
+                            <div class="card-body settings-card-padding">
+
+                                <h4 class="card-title">About</h4>
+                                <div class="row">
+                                    <div class="col-sm-5 form-group">
+
+                                        <div class="animated-radio-button">
+
+                                            <label class="control-label" for="inputDefault">Gender</label><br />
+
+
+                                            <div  style="color: red">
+                                                {{ form_errors(profileForm.gender) }}
+                                            </div>
+                                            {{ form_widget(profileForm.gender) }}
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-7 form-group">
+                                        <label class="control-label" for="inputDefault">Profession *</label>
+                                        <div  style="color: red">
+                                            {{ form_errors(profileForm.profession) }}
+                                        </div>
+                                        {{ form_widget(profileForm.profession) }}
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="row">
+
+                                    <div class="col-sm-12 form-group">
+                                        <label class="control-label" for="inputDefault">About *</label>
+                                        <div  style="color: red">
+                                            {{ form_errors(profileForm.description) }}
+                                        </div>
+                                        {{ form_widget(profileForm.description) }}
+                                    </div>
+                                </div>
+                            </div>
                               <hr />
                             <div class="card-body settings-card-padding">
                             <h4 class="card-title">Address</h4>
                             <div class="row">
                                 <div class="col-sm-12 form-group">
                                     <label class="control-label" for="inputDefault">Address *</label>
-                                    <input class="form-control" id="inputDefault" type="text">
+                                    <div  style="color: red">
+                                        {{ form_errors(profileForm.address) }}
+                                    </div>
+                                    {{ form_widget(profileForm.address) }}
+
 
                                 </div>
                                 <div class="col-sm-12 form-group">
                                     <label class="control-label" for="inputDefault">City *</label>
-                                    <input class="form-control" id="inputDefault" type="text">
+
+                                    <div  style="color: red">
+                                        {{ form_errors(profileForm.city) }}
+                                    </div>
+                                    {{ form_widget(profileForm.city) }}
 
                                 </div>
 
                                 <div class="col-sm-6 form-group">
                                     <label class="control-label" for="inputDefault">State/Province *</label>
-                                    <input class="form-control" id="inputDefault" type="text">
+                                    <div  style="color: red">
+                                        {{ form_errors(profileForm.province) }}
+                                    </div>
+                                    {{ form_widget(profileForm.province) }}
 
                                 </div>
                                 <div class="col-sm-6 form-group">
                                     <label class="control-label" for="inputDefault">Country *</label>
-                                    <input class="form-control" id="inputDefault" type="text">
+
+                                    <div  style="color: red">
+                                        {{ form_errors(profileForm.country) }}
+                                    </div>
+                                    {{ form_widget(profileForm.country) }}
                                 </div>
                                 <div class="col-sm-6 form-group">
                                     <label class="control-label" for="inputDefault">Company</label>
-                                    <input class="form-control" id="inputDefault" type="text">
+                                    <div  style="color: red">
+                                        {{ form_errors(profileForm.company) }}
+                                    </div>
+                                    {{ form_widget(profileForm.company) }}
 
                                 </div>
                                 <div class="col-sm-6 form-group">
@@ -96,10 +169,10 @@
                        </div>
 
                         <div style="padding: 2em 4em; background-color: #CCCCCC"  class="card-footer">
-                            <button class="btn btn-primary icon-btn" type="button">
-                                <i class="fa fa-fw fa-lg fa-check-circle"></i>Save Settings</button>
+                            <input type="submit" value="Save Settings" class="btn btn-primary icon-btn" id="saveProfile"  />
+
                         </div>
-                        </form>
+                        {{ form_end(profileForm) }}
                     </div>
 
                     <div class="tab-pane fade" id="notification">
@@ -155,7 +228,7 @@
                                         </div>
                                     </div>
                                     <div class="col-xs-10">
-                                            <span class="notification-label-text">When project get posted that match my skils</span>
+                                            <span class="notification-label-text">When project get posted that match my skills</span>
                                     </div>
                                 </div>
 
@@ -435,7 +508,7 @@
 
                         <div class="card-body settings-card-padding">
                             <h4 class="card-title">Payment Methods</h4>
-                            <a class="btn btn-primary icon-btn" href="" target="_blank"><i class="fa fa-plus"></i>Chane Password</a>
+                            <a class="btn btn-primary icon-btn" href="" target="_blank"><i class="fa fa-plus"></i>Add Payment Method</a>
                         </div>
                         <hr />
 
@@ -464,19 +537,7 @@
                         <hr />
 
                         <div class="card-body settings-card-padding">
-                            <h4 class="card-title">Hall of Fame Settings</h4>
-                            <div class="row">
-                                <div class="col-xs-2">
-                                    <div class="toggle-flip">
-                                        <label>
-                                            <input type="checkbox"><span class="flip-indecator" data-toggle-on="ON" data-toggle-off="OFF"></span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-xs-10">
-                                    <span class="notification-label-text">List me on the Chukolo Hall of fame, allowing Employers to hire me directly for projects</span>
-                                </div>
-                            </div>
+
                             <div class="row">
                                 <div class="col-xs-2">
                                     <div class="toggle-flip">
@@ -519,7 +580,42 @@
 
 
             </div>
-        </div>
-    </div>
+
 {% endblock %}
 
+
+
+{% block javascripts %}
+
+
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+
+            /*
+             * update user profile  with ajax
+             */
+
+            $('#profileUpdate').submit(function(e) {
+
+                e.preventDefault();
+
+                var url = "{{ path('user_settings') }}";
+                var formSerialize = $(this).serialize();
+
+                $.post(url, formSerialize, function(response) {
+
+
+
+                }, 'JSON');
+            });
+
+
+
+
+
+        });
+    </script>
+{% endblock %}

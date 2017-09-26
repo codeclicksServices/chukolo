@@ -6,7 +6,7 @@
 
 
  {% block titleText %}
-
+     <h2 id="nav-tabs">Projects</h2>
  {% endblock %}
 
 
@@ -31,7 +31,7 @@
             <div class="tab-pane active" id="freelancer">
            {#  freelancer tab #}
                 <div class="col-sm-12">
-                    <h2 id="nav-tabs">Projects</h2>
+
                     <div class="bs-component">
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#activeBids" data-toggle="tab"><strong>Active Bids</strong></a></li>
@@ -42,52 +42,132 @@
                         <div style="margin-top: 20px" class="tab-content" id="myTabContent">
 
                             <div class="tab-pane fade active in" id="activeBids">
+                                <table class="table table-hover">
+                                    <thead style="background-color: #222d32;color: white; font-weight: bolder;">
+                                    <tr>
+                                        <th>Bids</th>
+                                        <th>Project </th>
+                                        <th>Average Bid</th>
+                                        <th>End date</th>
+                                        <th>Awarded Bids</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                    </thead>
 
-
-
-                                        <table class="table table-hover">
-                                            <thead style="background-color: #222d32;color: white; font-weight: bolder;">
+                                    <tbody class="card">
+                                    {% if  activeBids.getTotalItemCount %}
+                                        {% for bid in activeBids %}
                                             <tr>
-                                                <th>#</th>
-                                                <th>First Name</th>
-                                                <th>Last Name</th>
-                                                <th>Username</th>
+                                                <td>
+                                                    {{ bid.price }}
+                                                </td>
+                                                <td> {{ bid.project.name |title }}</td>
+                                                <td>
+                                                    {{ bid.project.averageBid |price }}
+                                                </td>
+                                                <td>{{ bid.project.bidEnd |date }}</td>
+                                                <td>
+                                                  {{ bid.project.bid |length }}
+                                                </td>
+                                                <td  class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Select An Action</a>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a  id="delete" href="#">Edit</a></li>
+                                                        <li><a  id="close" href="#">Withdraw</a></li>
+                                                    </ul>
+                                                </td>
                                             </tr>
-                                            </thead>
+                                        {% endfor %}
+                                        <tr><td colspan="5">{{ knp_pagination_render(activeBids) }}</td></tr>
+                                    {% else %}
+                                        <tr><td colspan="5">You Currently have no Active Bid </td></tr>
 
-                                            <tbody class="card">
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Mark</td>
-                                                <td>Otto</td>
-                                                <td>@mdo</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>Jacob</td>
-                                                <td>Thornton</td>
-                                                <td>@fat</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>Larry</td>
-                                                <td>the Bird</td>
-                                                <td>@twitter</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-
-
+                                    {% endif %}
+                                    </tbody>
+                                </table>
                             </div>
 
                             <div class="tab-pane fade" id="currentWorks">
-                                <p></p>
+                                <table class="table table-hover">
+                                    <thead style="background-color: #222d32;color: white; font-weight: bolder;">
+                                    <tr>
+                                        <th>Awarded Proposal</th>
+                                        <th>Project Name </th>
+                                        <th>Employer</th>
+                                        <th>Deadline</th>
+                                        <th>Milestones</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody class="card">
+                                    {% if  currentWorks.getTotalItemCount %}
+                                        {% for contract in currentWorks %}
+                                            <tr>
+                                                <td>
+                                                    {{ contract.id }}
+                                                </td>
+                                                <td> {{ contract.project.name |title }}</td>
+                                                <td>
+                                                  {{ contract.project.member.firstName |title }}  {{ contract.project.member.lastName |title }}
+                                                </td>
+
+                                                <td>{{ project.deadline |date }}</td>
+                                                <td>
+                                                    {% for payment in contract.milestone %}
+                                                        <span>{{ payment.amount |price }}</span><br>
+                                                    {% endfor %}
+                                                </td>
+                                                <td  class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Select An Action</a>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a href={{ path('manage_user_project', { 'id': project.id }) }} >Project Details</a></li>
+                                                        <li><a  id="delete" href="#">Pause</a></li>
+                                                        <li><a  id="close" href="#">Close</a></li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        <tr><td colspan="5">{{ knp_pagination_render(currentWorks) }}</td></tr>
+                                    {% else %}
+                                        <tr><td colspan="5">You Currently have no Active Project </td></tr>
+
+                                    {% endif %}
+                                    </tbody>
+                                </table>
                             </div>
 
                             <div class="tab-pane fade" id="doneJobs">
-                                <p>
+                                <table class="table table-hover">
+                                    <thead style="background-color: #222d32;color: white; font-weight: bolder;">
+                                    <tr>
+                                        <th>Awarded Proposal</th>
+                                        <th>Project Name </th>
+                                        <th>Employer</th>
+                                        <th>Completed</th>
+                                    </tr>
+                                    </thead>
 
-                                </p>
+                                    <tbody class="card">
+                                    {% if  doneJobs.getTotalItemCount %}
+                                        {% for contract in doneJobs %}
+                                            <tr>
+                                                <td>
+                                                    {{ contract.id }}
+                                                </td>
+                                                <td> {{ contract.project.name |title }}</td>
+                                                <td>
+                                                    {{ contract.project.member.firstName |title }}  {{ contract.project.member.lastName |title }}
+                                                </td>
+
+                                                <td>{{ project.completed |date }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        <tr><td colspan="5">{{ knp_pagination_render(doneJobs) }}</td></tr>
+                                    {% else %}
+                                        <tr><td colspan="5">You Currently have no Active Project </td></tr>
+
+                                    {% endif %}
+                                    </tbody>
+                                </table>
                             </div>
 
 
@@ -100,9 +180,6 @@
             <div class="tab-pane fade" id="employer">
                 {#  employer  tab #}
                 <div class="col-sm-12">
-                    <h2 id="nav-tabs">Projects</h2>
-
-
 
                       {# project tab #}
                        <div class="bs-component">
@@ -128,7 +205,7 @@
                                                     <td><a  href={{ path('manage_user_project', { 'id': project.id }) }}> {{ project.name |title }}</a></td>
                                                     <td>{{ project.bid |length }}</td>
                                                     <td>{{ project.averageBid }}</td>
-                                                    <td>{{ project.expire |date }}</td>
+                                                    <td>{{ project.bidEnd |date }}</td>
                                                     <td  class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Select An Action</a>
                                                             <ul class="dropdown-menu">
                                                                 <li><a href={{ path('manage_user_project', { 'id': project.id }) }} >Project Details</a></li>
@@ -158,35 +235,136 @@
                                     <thead style="background-color: #222d32;color: white; font-weight: bolder;">
                                     <tr>
                                         <th>Project Name </th>
-                                        <th>Freelancer</th>
+                                        <th>Freelancer(s)</th>
                                         <th>Awarded Bid</th>
-                                        <th>Deadline</th>
+                                         <th>Deadline</th>
                                         <th>Milestones</th>
                                         <th>Actions</th>
                                     </tr>
                                     </thead>
 
                                     <tbody class="card">
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                    </tr>
+                                    {% if  workingProjects.getTotalItemCount %}
+                                        {% for project in workingProjects %}
+                                            <tr>
+                                                <td><a  href={{ path('manage_user_project', { 'id': project.id }) }}> {{ project.name |title }}</a></td>
+                                                <td>
+                                                    {% for  bid in project.bid %}
+
+                                                        {% if  bid.state =='contract' %}
+                                                            {{ project.bid.member.firstName |title }}
+                                                            {{ project.bid.member.lastName |title }}
+                                                        {% endif %}
+
+                                                    {% endfor %}
+
+                                                </td>
+                                                <td>
+                                                    {% for  bid in project.bid %}
+
+                                                        {% if  bid.state =='contract' %}
+                                                            <h4>{{ bid.id }}</h4>
+                                                        {% endif %}
+
+                                                    {% endfor %}
+                                                </td>
+                                                <td>{{ project.deadline |date }}</td>
+                                                <td>
+                                                    {% for  bid in project.bid %}
+
+                                                   {% if  bid.state =='contract' %}
+                                                       <h4>contact id # {{ bid.id }}</h4>
+                                                       {% for milestone in bid.milestone %}
+                                                           <span>{{ milestone.amount |price }}</span><br>
+                                                       {% endfor %}
+
+                                                    {% endif %}
+
+
+                                                {% endfor %}
+                                                </td>
+                                                <td  class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Select An Action</a>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a href={{ path('manage_user_project', { 'id': project.id }) }} >Project Details</a></li>
+                                                        <li><a  id="delete" href="#">Pause</a></li>
+                                                        <li><a  id="close" href="#">Close</a></li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        <tr><td colspan="5">{{ knp_pagination_render(workingProjects) }}</td></tr>
+                                    {% else %}
+                                        <tr><td colspan="5">You Currently have no Active Project </td></tr>
+
+                                    {% endif %}
                                     </tbody>
                                 </table>
-
-
                             </div>
 
                             <div class="tab-pane fade" id="pastWork">
-                                <p>
+                                <table class="table table-hover">
+                                    <thead style="background-color: #222d32;color: white; font-weight: bolder;">
+                                    <tr>
+                                        <th>Project Name </th>
+                                        <th>Freelancer(s)</th>
+                                        <th>Awarded Bid</th>
+                                        <th>Deadline</th>
+                                        <th>Milestones</th>
 
-                                </p>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody class="card">
+                                    {% if  pastProjects.getTotalItemCount %}
+                                        {% for project in pastProjects %}
+                                            <tr>
+                                                <td><a  href={{ path('manage_user_project', { 'id': project.id }) }}> {{ project.name |title }}</a></td>
+                                                <td>
+                                                    {% for  bid in project.bid %}
+
+                                                        {% if  bid.state =='contract' %}
+                                                            {{ project.bid.member.firstName |title }}
+                                                            {{ project.bid.member.lastName |title }}
+                                                        {% endif %}
+
+                                                    {% endfor %}
+
+                                                </td>
+                                                <td>
+                                                    {% for  bid in project.bid %}
+
+                                                        {% if  bid.state =='contract' %}
+                                                            <h4>{{ bid.id }}</h4>
+                                                        {% endif %}
+
+                                                    {% endfor %}
+                                                </td>
+                                                <td>{{ project.deadline |date }}</td>
+                                                <td>
+                                                    {% for  bid in project.bid %}
+
+                                                        {% if  bid.state =='contract' %}
+                                                            <h4>contact id # {{ bid.id }}</h4>
+                                                            {% for milestone in bid.milestone %}
+                                                                <span>{{ milestone.amount |price }}</span><br>
+                                                            {% endfor %}
+
+                                                        {% endif %}
+
+
+                                                    {% endfor %}
+                                                </td>
+
+                                            </tr>
+                                        {% endfor %}
+                                        <tr><td colspan="5">{{ knp_pagination_render(pastProjects) }}</td></tr>
+                                    {% else %}
+                                        <tr><td colspan="5">You have not completed any job on chukolo yet </td></tr>
+
+                                    {% endif %}
+                                    </tbody>
+                                </table>
                             </div>
-
 
                         </div>
                     </div>
@@ -194,38 +372,6 @@
 
 
 
-                    {# archive  tab #}
-                   {# <div class="card p-0">
-                        <h4 class="card-title folder-head">
-                            <ul  style="background-color: #222d32;color: white; font-weight: bolder;display-list: inline">
-
-
-                                <li>Draft</li>
-                                <li>Project Type</li>
-                                <li>Action</li>
-
-                            </ul>
-
-
-                        </h4>
-                        <div class="card-body">
-                            <table class="table table-hover">
-
-                                <tbody class="card">
-                                <tr>
-
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                </tr>
-
-
-                                </tbody>
-                            </table>
-
-                        </div>
-                    </div>#}
-                    {# end archive  tab #}
 
                 </div>
             </div>

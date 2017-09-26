@@ -1,0 +1,1049 @@
+{% extends 'member/base.html.twig' %}
+
+      {% block breadCrumb %}
+            <li class="active"><a class="btn btn-default" href="{{ path("user_dashboard") }}">My Profile </a></li>
+            <li><a class="btn btn-default" href="{{ path("brows_user_services") }}">My Services</a></li>
+            <li><a class="btn btn-default" href="{{ path("brows_user_project") }}">My Rewards</a></li>
+      {% endblock %}
+
+
+{% block page %}
+    <div class="main-content">
+
+
+
+
+        <!-- header begin -->
+        <div style="
+                margin-top: -6.5em;
+                background-image: url({{ asset('assets/img/profile/background-cover/default.jpg') }});
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                height: 25em; " >
+            <div style="
+                background-color: rgba(0,0,0,0.45);
+                padding: 65px 0;
+                height: 25em;">
+
+            </div>
+        </div>
+        <!-- begin our story section -->
+    <div class="container ">
+      <div style="; margin-top: -2em;background-color: white" class=" row">
+
+
+
+
+          <div class="col-sm-9">
+          <div style="padding-left: 4em;padding-right: 4em" class="row">
+              <h3 class="text-center">{{ app.user.firstName }} {{ app.user.lastName }}</h3>
+              <h4 class="text-center">{{ app.user.profession}}</h4>
+              <p class="text-center" style="color: #0d1214">
+                  {{ app.user.description }}
+              </p>
+
+          </div>
+
+           <div style="background-color: #fafafa; min-height: 8em" class="row ">
+
+               <div class="tab-content" id="myTabContent">
+
+                   <div class="tab-pane fade" id="freelancer">
+                    <div class="row">
+                        <div  class="col-sm-4">
+                            <a  class="active btn btn-black" href="#employer" data-toggle="tab">View Employer Profile</a></div>
+                        <div class="col-sm-4">
+
+                               <div class="reputation">
+                                   <span>6.0</span>
+
+
+                                   <i class="fa fa-star" aria-hidden="true"></i>
+                                   <i class="fa fa-star" aria-hidden="true"></i>
+                                   <i class="fa fa-star-o" aria-hidden="true"></i>
+                                   <i class="fa fa-star-o" aria-hidden="true"></i>
+                                   <i class="fa fa-star-o" aria-hidden="true"></i>
+                                   <span>0 Reviews</span>
+
+                                   <div>
+                                       <span>NGN 0.0</span>
+                                       <i class="fa fa-circle" aria-hidden="true"></i>
+                                       <i class="fa fa-circle" aria-hidden="true"></i>
+                                       <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                       <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                       <i class="fa fa-circle-o" aria-hidden="true"></i>
+
+                                   </div>
+
+                               </div>
+
+
+                        </div>
+
+                        <div style="border-left: solid thin #e8e6e6"  class="col-sm-4">
+                            <div class="reputation">
+                                <span>65%</span> <span>On Time</span> <br />
+                                <span>5%</span>  <span>Repeat Hire Rate</span> <br />
+                                <span>20%</span> <span>Job Completion</span> <br />
+                                <span>5%</span>  <span>On budget</span><br />
+                            </div>
+                        </div>
+                    </div>
+
+
+                   </div>
+
+
+                   <div class="tab-pane fade active in" id="employer">
+
+
+
+                      <div class="row">
+                          <div class="col-sm-4">
+                              <a class="btn btn-black"  href="#freelancer" data-toggle="tab">View Freelancer Profile</a>
+                          </div>
+                          <div class="col-sm-4">
+
+                              <div class="reputation">
+                                  <span>6.0</span>
+
+
+                                  <i class="fa fa-star" aria-hidden="true"></i>
+                                  <i class="fa fa-star" aria-hidden="true"></i>
+                                  <i class="fa fa-star-o" aria-hidden="true"></i>
+                                  <i class="fa fa-star-o" aria-hidden="true"></i>
+                                  <i class="fa fa-star-o" aria-hidden="true"></i>
+                                  <span>Reviews</span>
+                                  <div>
+                                      <span>NGN 0.0</span>
+                                      <i class="fa fa-circle" aria-hidden="true"></i>
+                                      <i class="fa fa-circle" aria-hidden="true"></i>
+                                      <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                      <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                      <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                  </div>
+                              </div>
+                          </div>
+
+                          <div style="border-left: solid thin #e8e6e6"  class="col-sm-4">
+                              <div class="reputation">
+                                  <span>1</span> <span>Open Project</span> <br />
+                                  <span>0</span> <span>Active Project</span> <br />
+                                  <span>1</span> <span>Past Project</span> <br />
+                                  <span>2</span> <span>Total Project</span> <br />
+                              </div>
+                          </div>
+                      </div>
+
+                   </div>
+
+               </div>
+
+
+
+
+
+
+           </div>
+          </div>
+
+
+          <div style="border-left: solid thin #9dc1d3;" class="col-sm-3">
+
+            <div  style="min-height: 12em; margin-top: -7em;border-radius: 2px" class="row">
+               <img src="{{ asset('assets/img/profile/pp.jpeg') }}" style="height: 20em;width: 20em" alt="..." class=" img-thumbnail">
+            </div>
+              <div  style="min-height:16em; background-color: white" class="row">
+
+
+
+                   <h4 class="text-center">@{{ app.user }}<br /></h4>
+
+
+                    <ul  class="profile-badge-icon">
+                        <li><i class="fa fa-credit-card fa-2x" aria-hidden="true"></i></li>
+                        <li><i class="fa fa-envelope-o fa-2x" aria-hidden="true"></i></li>
+                        <li><i class="fa fa-user fa-2x" aria-hidden="true"></i></li>
+                        <li><i class="fa fa-phone fa-2x" aria-hidden="true"></i></li>
+                        <li><i class="fa fa-money fa-2x" aria-hidden="true"></i></li>
+                    </ul>
+                  <ul  class="profile-badge-writ-up">
+                      <li>Lagos,Nigeria</li>
+                      <li>Member Since Jan,2017</li>
+                      <li>0 Recommendation</li>
+                  </ul>
+                 <div class="pull-right" style="margin-top: 0;margin-right:0;z-index: 10;" >
+                      <a id="editProfile" class="btn btn-default" href="#edit"><i class="fa fa-edit fa-md">Edit Profile</i></a>
+                      <a id="done" class="btn btn-success" href="#save"><i class="fa fa-save fa-md">Done</i></a>
+                 </div>
+              </div>
+          </div>
+
+      </div>
+    </div>
+
+         <div class="main-content">
+        <section class="bg-light-gray">
+            <div class="container">
+
+                <div class="headline text-center">
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3">
+                            <h2 class="section-title">portfolio
+                            <a id="addPortfolio" class="btn btn-primary" href="#portfolio"><i class="fa fa-plus fa-lg"></i></a></h2>
+
+                        </div>
+                    </div>
+                </div> <!-- /.headline -->
+
+                <div class="portfolio-item-list">
+                    <div class="row">
+
+                        <div class="col-md-4 col-sm-6">
+                            <div class="portfolio-item">
+
+
+
+
+                                <div class="item-image">
+                                    <a href="">
+                                        <img src="{{ asset('assets/img/profile/card.png') }}" class="img-responsive center-block" alt="portfolio 1">
+                                        <div><span><i class="fa fa-plus"></i></span></div>
+                                    </a>
+
+                                </div>
+
+                                <div class="item-description">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                                    <span class="item-name">
+                                                        By anniekan
+                                                    </span>
+                                            <span>
+                                                        Graphic Design
+                                                    </span>
+                                        </div>
+                                        <div class="col-xs-6">
+                                                    <span class="like">
+                                                        <i class="fa fa-heart-o"></i>
+                                                        57
+                                                    </span>
+                                        </div>
+                                    </div>
+                                </div> <!-- end of /.item-description -->
+                            </div> <!-- end of /.portfolio-item -->
+                        </div>
+
+                        <div class="col-md-4 col-sm-6">
+                            <div class="portfolio-item">
+                                <div class="item-image">
+                                    <a href="">
+                                        <img src="{{ asset('assets/img/profile/jota.jpg') }}" class="img-responsive center-block" alt="portfolio 2">
+                                        <div><span><i class="fa fa-plus"></i></span></div>
+                                    </a>
+                                </div>
+
+                                <div class="item-description">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                                    <span class="item-name">
+                                                        Preciouse
+                                                    </span>
+                                            <span>
+                                                        Graphic Design
+                                                    </span>
+                                        </div>
+                                        <div class="col-xs-6">
+                                                    <span class="like">
+                                                        <i class="fa fa-heart-o"></i>
+                                                        55
+                                                    </span>
+                                        </div>
+                                    </div>
+                                </div> <!-- end of /.item-description -->
+                            </div> <!-- end of /.portfolio-item -->
+                        </div>
+
+                        <div class="col-md-4 col-sm-6">
+                            <div class="portfolio-item">
+                                <div id="test" class="item-image">
+                                    <a href="#">
+                                        <img src="{{ asset('assets/img/profile/egg.jpg') }}" class="img-responsive center-block" alt="portfolio 3">
+                                        <div><span><i class="fa fa-plus"></i></span></div>
+                                    </a>
+                                </div>
+
+                                <div class="item-description">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                                    <span class="item-name">
+                                                        Nimi Printz
+                                                    </span>
+                                            <span>
+                                                        Web Design
+                                                    </span>
+                                        </div>
+                                        <div class="col-xs-6">
+                                                    <span class="like">
+                                                        <i class="fa fa-heart-o"></i>
+                                                        576
+                                                    </span>
+                                        </div>
+                                    </div>
+                                </div> <!-- end of /.item-description -->
+                            </div> <!-- end of /.portfolio-item -->
+
+                        </div>
+
+
+
+                    </div>
+                </div> <!-- end of portfolio-item-list -->
+
+                <div id="morePortfolio"></div>
+                <div class="text-center">
+                    <a id="loadPortfolio" class="hidden-xs btn btn-white">
+                        Load More <span class="caret"></span>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        </div>
+
+
+
+
+
+        <div class="container">
+
+         <div class="row">
+
+            <div style="" class="col-sm-8">
+
+             <div style="margin-right: 2em" class="row">
+              {#
+            review row
+            #}
+             <div class="row card">
+
+                <h2  style="padding-bottom: .5em; margin-top: 0;padding-top: 0" class="section-title text-center">Reviews</h2>
+
+              <ul class="well">
+             <li class="row">
+
+                <div class="col-md-2">
+                    <img src="{{ asset('assets/img/profile/m.jpeg') }}" style="max-height: 9em" class="img-circle img-responsive center-block img-thumbnail">
+                </div>
+                <div class="col-md-10">
+                    <p class="comment-info">
+                        <strong>Ogunfemi </strong> <span>22 april 2017</span>
+                    </p>
+                    <p>
+                        Yes i worked akoh on my last project he service was great i sure will hire him again.
+                    </p>
+                </div>
+
+
+             </li>
+
+
+            </ul>
+             </div>
+
+                {#
+                Expirience
+                #}
+             <div class="row card">
+
+                <h2  style="padding-bottom: .5em; margin-top: 0;padding-top: 0" class="section-title text-center">Experience
+                <a id="addXP" class="btn btn-primary" href="#Experience"><i class="fa fa-plus fa-lg"></i></a></h2>
+
+              <ul class="well">
+                     <li class="row">
+                            <p class="comment-info">
+                                <strong>Ogunfemi </strong> <span>22 april 2017</span>
+                            </p>
+                            <p>
+                                Yes i worked akoh on my last project he service was great i sure will hire him again.
+                            </p>
+                     </li>
+              </ul>
+
+              <div style="border: thin solid #e89059; padding: 0.7em; background-color: #fafafa" id="addXPForm" >
+                    {{ form_start(xpForm, {'attr': {'id': 'xpForm'}}) }}
+                    <div class="row">
+
+                     <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="control-label">ORGANIZATION</label>
+                        <div  style="color: red">
+                            {{ form_errors(xpForm.organization) }}
+                        </div>
+                        {{ form_widget(xpForm.organization) }}
+                      </div>
+                     </div>
+
+                     <div class="col-sm-6">
+                       <div class="card-body">
+                            <label class="control-label">POSITION</label>
+                            <div  style="color: red">
+                                {{ form_errors(xpForm.position) }}
+                            </div>
+                            {{ form_widget(xpForm.position) }}
+                      </div>
+                     </div>
+                    </div>
+
+                    <div class="row">
+                     <div class="col-sm-5">
+                        <div class="card-body">
+                            <label class="control-label">START DATE</label>
+                            <div  style="color: red">
+                                {{ form_errors(xpForm.started) }}
+                            </div>
+                            {{ form_widget(xpForm.started,{'id': 'startDate'}) }}
+                      </div>
+                     </div>
+                      <div class="col-sm-2">   </div>
+
+                     <div class="col-sm-5">
+                         <div class="card-body">
+                             <label class="control-label">END DATE</label>
+                             <div  style="color: red">
+                                 {{ form_errors(xpForm.ended) }}
+                             </div>
+                             {{ form_widget(xpForm.ended,{'id': 'endDate'}) }}
+                         </div>
+                     </div>
+
+
+                    </div>
+                    <div class="row">
+
+                     <div class="col-sm-9">
+                     <div class="form-group">
+                            <label class="control-label">ROLES & RESPONSIBILITIES</label>
+                            <div  style="color: red">
+                                {{ form_errors(xpForm.role) }}
+                            </div>
+                            {{ form_widget(xpForm.role) }}
+                      </div>
+                     </div>
+                     <div class="col-sm-3">
+
+                    <div style="margin-top: 3em" class="btn-group">
+
+                         <input type="submit" value="Save" class="btn btn-primary" id="xpCommit"  />
+                         <a id="spinXp" class=" btn btn-primary spinners" href="#ok">
+                         <i class="fa fa-circle-o-notch fa-spin fa-1x fa-fw "></i>
+                          <span class="sr-only">Saving...</span></a>
+                        <a id="doneXp" class=" btn btn-danger" href="#Ok">Done</a>
+                    </div>
+                    </div>
+
+                    {{ form_end(xpForm) }}
+
+                     </div>
+             </div>
+
+
+
+             </div>
+               {#
+                Education
+                #}
+             <div class="row card">
+
+              <h2  style="padding-bottom: .5em; margin-top: 0;padding-top: 0" class="section-title text-center">Education
+                 <a id="addEducation" class="btn btn-primary" href="#addEducation"><i class="fa fa-plus fa-lg"></i></a></h2>
+              <ul class="well">
+             <li class="row">
+                    <p class="comment-info">
+                        <strong>Ogunfemi </strong> <span>22 april 2017</span>
+                    </p>
+                    <p>
+                        Yes i worked akoh on my last project he service was great i sure will hire him again.
+                    </p>
+             </li>
+
+
+            </ul>
+            <hr />
+            <div style="border: thin solid #e89059; padding: 0.7em; background-color: #fafafa" id="addEducationForm" >
+                    {{ form_start(educationForm, {'attr': {'id': 'educationForm'}}) }}
+                    <div class="row">
+
+
+
+                     <div class="col-sm-5">
+                      <div class="form-group">
+                        <label class="control-label">SCHOOL</label>
+                        <div  style="color: red">
+                            {{ form_errors(educationForm.school) }}
+                        </div>
+                        {{ form_widget(educationForm.school) }}
+                      </div>
+                     </div>
+
+                      <div class="col-sm-3">
+                      <div class="form-group">
+                        <label class="control-label">DEGREE</label>
+                        <div  style="color: red">
+                            {{ form_errors(educationForm.degree) }}
+                        </div>
+                        {{ form_widget(educationForm.degree) }}
+                      </div>
+                     </div>
+
+                      <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">FIELD OF STUDY</label>
+                        <div  style="color: red">
+                            {{ form_errors(educationForm.department) }}
+                        </div>
+                        {{ form_widget(educationForm.department) }}
+                      </div>
+                     </div>
+                    </div>
+
+                    <div class="row">
+                     <div class="col-sm-4">
+                        <div class="card-body">
+                            <label class="control-label">START YEAR </label>
+                            <div  style="color: red">
+                                {{ form_errors(educationForm.started.year) }}
+                            </div>
+                            {{ form_widget(educationForm.started.year,{'id': 'startDate'}) }}
+                            {{ form_widget(educationForm.started.month,{'id': 'startDate'}) }}
+                            {{ form_widget(educationForm.started.day,{'id': 'startDate'}) }}
+                      </div>
+                     </div>
+                      <div class="col-sm-4">
+                    <div class="card-body">
+                            <label class="control-label">END YEAR </label>
+                            <div  style="color: red">
+                                {{ form_errors(educationForm.ended) }}
+                            </div>
+                            {{ form_widget(educationForm.ended,{'id': 'endDate'}) }}
+                      </div>
+                     </div>
+                     <div class="col-sm-4">
+                      <div class="card-body">
+                            <label class="control-label">GRADE</label>
+                            <div  style="color: red">
+                                {{ form_errors(educationForm.grade) }}
+                            </div>
+                            {{ form_widget(educationForm.grade,{'id': 'educationGrade'}) }}
+                      </div>
+                     </div>
+
+                    </div>
+                    <div class="row">
+
+                     <div class="col-sm-9">
+                     <div class="form-group">
+                            <label class="control-label">NOTE </i> </label>
+                            <div  style="color: red">
+                                {{ form_errors(educationForm.note) }}
+                            </div>
+                            {{ form_widget(educationForm.note) }}
+                      </div>
+                     </div>
+                     <div class="col-sm-3">
+
+                    <div style="margin-top: 3em" class="btn-group">
+                        <input type="submit" value="Save" class="btn btn-primary" id="educationCommit"  />
+                         <a id="spinEducation" class=" btn btn-primary spinners" href="#ok">
+                         <i class="fa fa-circle-o-notch fa-spin fa-1x fa-fw "></i>
+                          <span class="sr-only">Saving...</span></a>
+
+                         <a id="doneEducation" class=" btn btn-danger" href="#EducationOk">Done</a>
+                    </div>
+                    </div>
+
+                    {{ form_end(educationForm) }}
+
+                     </div>
+             </div>
+             </div>
+
+
+                {#
+                   Education
+                #}
+             <div class="row card">
+
+                <h2  style="padding-bottom: .5em; margin-top: 0;padding-top: 0" class="section-title text-center">Publications
+                 <a id="addPublication" class="btn btn-primary" href="#Publications"><i class="fa fa-plus fa-lg"></i></a></h2>
+
+              <ul class="well">
+             <li class="row">
+
+
+
+                    <p class="comment-info">
+                        <strong>Ogunfemi </strong> <span>22 april 2017</span>
+                    </p>
+                    <p>
+                        Yes i worked akoh on my last project he service was great i sure will hire him again.
+                    </p>
+
+             </li>
+            </ul>
+
+               <hr />
+            <div style="border: thin solid #e89059; padding: 0.7em; background-color: #fafafa" id="addPublicationForm" >
+                    {{ form_start(publicationForm, {'attr': {'id': 'publicationForm'}}) }}
+                    <div class="row">
+                     <div class="col-sm-6">
+                        <div class="card-body">
+                            <label class="control-label">TITLE </label>
+                            <div  style="color: red">
+                                {{ form_errors(publicationForm.title) }}
+                            </div>
+                            {{ form_widget(publicationForm.title,{'id': 'startDate'}) }}
+
+                      </div>
+                     </div>
+
+                     <div class="col-sm-6">
+                      <div class="card-body">
+                            <label class="control-label">PUBLISHER</label>
+                            <div  style="color: red">
+                                {{ form_errors(publicationForm.publisher) }}
+                            </div>
+                            {{ form_widget(publicationForm.publisher,{'id': 'educationGrade'}) }}
+                      </div>
+                     </div>
+
+                    </div>
+                    <div class="row">
+
+                     <div class="col-sm-9">
+                     <div class="form-group">
+                            <label class="control-label">SUMMARY </i> </label>
+                            <div  style="color: red">
+                                {{ form_errors(publicationForm.summary) }}
+                            </div>
+                            {{ form_widget(publicationForm.summary) }}
+                      </div>
+                     </div>
+                     <div class="col-sm-3">
+
+                    <div style="margin-top: 3em" class="btn-group">
+                        <input type="submit" value="Save" class="btn btn-primary" id="publicationCommit"  />
+                         <a id="spinPublication" class=" btn btn-primary spinners" href="#ok">
+                         <i class="fa fa-circle-o-notch fa-spin fa-1x fa-fw "></i>
+                          <span class="sr-only">Saving...</span></a>
+
+                         <a id="donePublication" class=" btn btn-danger" href="#publicationOk">Done</a>
+                    </div>
+                    </div>
+
+                    {{ form_end(publicationForm) }}
+
+                     </div>
+             </div>
+
+
+
+             </div>
+            </div>
+
+            </div>
+            <div class="col-sm-4">
+             <div class="row">
+                {#
+                Education
+                #}
+             <div class="row card">
+
+                <h3  style="padding-bottom: .5em; margin-top: 0;padding-top: 0" class="card-title text-center">Verifications</h3>
+
+              <ul class="well">
+             <li class="row">
+
+
+                   <p class="comment-info">
+                        <strong>Ogunfemi </strong> <span>22 april 2017</span>
+                    </p>
+                    <p>
+                        Yes i worked akoh on my last project he service was great i sure will hire him again.
+                    </p>
+
+             </li>
+
+            </ul>
+             </div>
+               {#
+                   skills
+                #}
+             <div class="row card">
+
+                <h3  style="padding-bottom: .5em; margin-top: 0;padding-top: 0" class="card-title  text-center"> My Skills</h3>
+
+
+              <div class="well">
+
+                <table class="table">
+
+                <tbody>
+                {% if app.user.skill %}
+
+
+                {% for skill in app.user.skill %}
+                  <tr>
+                    <td>{{ skill.name |title }}</td>
+                    <td></td>
+
+                  </tr>
+                  {% endfor %}
+                {% endif %}
+                </tbody>
+              </table>
+                <span><a id="addSkill" class=" btn btn-success" href="#E">Add skill</a></span>
+                <span><a id="doneSkill" class=" btn btn-danger" href="#E">Done</a></span>
+             </div>
+
+                <div id="addSkillForm" >
+
+
+                {% for category in categories %}
+                <div class="topics">
+                    <div class="faq-c">
+
+                        <div class="faq-q">
+                            {{ category.name |title }} <span class="faq-t">+</span>
+                        </div>
+
+                        <div class="faq-a tag-widget">
+
+                            <div style="margin-right: 0.5em" class="tags animated-checkbox">
+                             {% for skill in category.skill %}
+
+
+                                {% if app.user.hasSkill(skill) %}
+                                {% else %}
+                                <label>
+                                  <input class="checkIt" type="checkbox" value={{ skill.id }}><span class="label-text">{{ skill.name |title }}</span>
+                                </label>
+                                {% endif %}
+
+
+                             {% endfor %}
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+                   {% endfor %}
+                </div>
+
+
+             </div>
+                {#
+                   Similar freelancers
+                #}
+             <div class="row card">
+
+                <h3  style="padding-bottom: .5em; margin-top: 0;padding-top: 0" class="card-title  text-center">Similar Freelancer</h3>
+
+              <ul class="well">
+             <li class="row">
+
+
+
+                    <p class="comment-info">
+                        <strong>Ogunfemi </strong> <span>22 april 2017</span>
+                    </p>
+                    <p>
+                        Yes i worked akoh on my last project he service was great i sure will hire him again.
+                    </p>
+
+
+
+             </li>
+
+            </ul>
+             </div>
+            </div>
+
+         </div>
+
+         </div>
+        </div>
+
+
+
+
+{% endblock %}
+
+
+
+{% block javascripts %}
+
+
+ {{ parent() }}
+
+  <script type="text/javascript">
+        $(document).ready(function () {
+
+
+     $('.js-datepicker').datepicker({
+      	format: "yyyy",
+      	autoclose: false,
+
+      });
+      $(function (){
+            $(".datepicker").datepicker({
+                weekStart: 1,
+                format : 'mm-yyyy'
+            });
+        });
+
+             /*hide all the toggleable items on page load*/
+
+             $('#done').hide();
+             $('#addPortfolio').hide();
+             $('#addEducation').hide();
+             $('#addXP').hide();
+             $('#addPublication').hide();
+             $('#addEducationForm').hide();
+             $('#addXPForm').hide();
+             $('#addSkill').hide();
+             $('#addSkillForm').hide();
+             $('#addPublicationForm').hide();
+
+             $('#doneSkill').hide();
+             /* hide spinners */
+             $('#spinEducation').hide();
+             $('#spinXp').hide();
+             $('#spinPublication').hide();
+
+
+
+            /* get triggered when edit is clicked */
+
+             $('#editProfile').click(function(){
+             $('#editProfile').hide();
+             $('#done').show();
+             $('#addPortfolio').show();
+             $('#addEducation').show();
+             $('#addXP').show();
+             $('#addPublication').show();
+             $('#addSkill').show();
+
+
+            });
+
+
+           /* get triggered when done is clicked */
+
+          $('#done').click(function(){
+
+             $('#done').hide();
+             $('#editProfile').show();
+
+              $('#addPortfolio').hide();
+              $('#addEducation').hide();
+              $('#addXP').hide();
+              $('#addPublication').hide();
+              $('#addEducationForm').hide();
+              $('#addSkillForm').hide();
+              $('#doneSkill').hide();
+               $('#addPublicationForm').hide();
+
+            });
+
+
+             /*
+              * education toggle
+              * */
+              $('#addEducation').click(function(){
+              $('#addEducation').hide();
+              $('#addEducationForm').show(); });
+              $('#doneEducation').click(function(){
+              $('#addEducationForm').hide();
+              $('#addEducation').show(); });
+
+              /*
+              * experience toggle
+              * */
+               $('#addXP').click(function(){
+               $('#addXP').hide();
+               $('#addXPForm').show(); });
+               $('#doneXp').click(function(){
+               $('#addXPForm').hide();
+               $('#addXP').show();});
+
+             /*
+              * publication toggle
+              * */
+               $('#addPublication').click(function(){
+               $('#addPublication').hide();
+               $('#addPublicationForm').show(); });
+               $('#donePublication').click(function(){
+               $('#addPublicationForm').hide();
+               $('#addPublication').show();});
+
+
+              /*
+               * add skill toggle
+               */
+              $('#addSkill').click(function(){
+              $('#addSkill').hide();
+              $('#doneSkill').show();
+              $('#addSkillForm').show(); });
+
+              $('#doneSkill').click(function(){
+              $('#addSkill').show();
+              $('#doneSkill').hide();
+              $('#addSkillForm').hide(); });
+
+
+
+               /*
+               *xp persist ajax
+               */
+            $('#xpForm').submit(function(e) {
+                   $('#spinXp').show();
+                    $('#xpCommit').hide();
+
+                e.preventDefault();
+
+                var url = "{{ path('my_profile', { 'userName': app.user}) }}";
+                var formSerialize = $(this).serialize();
+
+                $.post(url, formSerialize, function(response) {
+                    $('#spinXp').hide();
+                    $('#xpCommit').show();
+
+
+              $('#xpForm').trigger("reset");
+                }, 'JSON');
+            });
+
+
+
+               /*
+               *education persist ajax
+               */
+            $('#educationForm').submit(function(e) {
+                   $('#spinEducation').show();
+                    $('#educationCommit').hide();
+
+                e.preventDefault();
+
+                var url = "{{ path('my_profile', { 'userName': app.user}) }}";
+                var formSerialize = $(this).serialize();
+
+                $.post(url, formSerialize, function(response) {
+                    $('#spinEducation').hide();
+                    $('#educationCommit').show();
+
+
+              $('#educationForm').trigger("reset");
+                }, 'JSON');
+            });
+
+
+                /*
+               *education persist ajax
+               */
+            $('#publicationForm').submit(function(e) {
+                   $('#spinPublication').show();
+                    $('#publicationCommit').hide();
+
+                e.preventDefault();
+
+                var url = "{{ path('my_profile', { 'userName': app.user}) }}";
+                var formSerialize = $(this).serialize();
+
+                $.post(url, formSerialize, function(response) {
+                    $('#spinPublication').hide();
+                    $('#publicationCommit').show();
+
+
+              $('#publicationForm').trigger("reset");
+                }, 'JSON');
+            });
+
+
+
+
+
+
+
+            $('.checkIt').bind('click', function() {
+
+
+                if($(this).is(":checked")) {
+
+                    // checkbox is checked
+                var val = $(this).val();
+
+
+                 // when category is selected provide the category skills
+                 $.ajax({
+                     type: "POST",
+                     url: "{{ path('add-member-skill') }}?skill_id=" + val,
+                     success: function(data) {
+                         // Remove current options
+
+                       alert(val);
+                     }
+                 });
+
+                } else {
+                    // checkbox is not checked
+                       alert('ffffffffffffffffff');
+                }
+            });
+
+
+
+
+            $('#project_category').change(function(){
+                var val = $(this).val();
+
+
+
+
+                 $.ajax({
+                     type: "POST",
+                     url: "{{ url('get-category-new') }}?category_id=" + val,
+                     success: function(data) {
+                         // Remove current options
+                     }
+                 });
+
+
+                return false;
+            });
+
+             <!-- togle category and skills on click -->
+
+            $(".faq-q").click( function () {
+              var container = $(this).parents(".faq-c");
+              var answer = container.find(".faq-a");
+              var trigger = container.find(".faq-t");
+
+              answer.slideToggle(200);
+
+              if (trigger.hasClass("faq-o")) {
+                trigger.removeClass("faq-o");
+              }
+              else {
+                trigger.addClass("faq-o");
+              }
+            });
+
+
+        });
+    </script>
+{% endblock %}

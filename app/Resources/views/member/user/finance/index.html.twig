@@ -22,59 +22,269 @@
 
 
 {% block page %}
-  <div class="row">
-      <h1>Financial Dashboard</h1>
-  </div>
-    <div class="row">
-        <div class="col-lg-9">
+{# page title #}
+        <div class="row">
+            <h1>Financial Dashboard</h1>
+        </div>
 
-            <div class="bs-component">
+        <div class="row">
+            <div class="col-sm-9"><h3>Quick Statistics</h3></div>
+            <div class="col-sm-3">
+                <ul class="nav nav-tabs pager">
+                    <li class="active"><a href="#freelancerStat" data-toggle="tab">Employer</a></li>
+                    <li><a href="#employerStat" data-toggle="tab">Freelancer</a></li>
+                </ul>
+        </div>
+
+
+
+        <div class="row">
+       <div class="col-sm-12">
+           <div class="bs-component">
+
+               <div class="tab-content" id="myTabContent">
+                   <div class="tab-pane fade active in" id="employerStat">
+                       <div class="row">
+                           <div class="col-md-3">
+                               <div class="widget-small primary"><i class="icon fa fa-users fa-3x"></i>
+                                   <div class="info">
+                                       <h4>Projects Awarded</h4>
+                                       <p><b>5</b></p>
+                                   </div>
+                               </div>
+                           </div>
+
+                           <div class="col-md-3">
+                               <div class="widget-small warning"><i class="icon fa fa-files-o fa-3x"></i>
+                                   <div class="info">
+                                       <h4>Work In Progress</h4>
+                                       <p><b>10</b></p>
+                                   </div>
+                               </div>
+                           </div>
+                           <div class="col-md-3">
+                               <div class="widget-small danger"><i class="icon fa fa-star fa-3x"></i>
+                                   <div class="info">
+                                       <h4>Completion Rate</h4>
+                                       <p><b>50%</b></p>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="tab-pane fade" id="freelancerStat">
+                       <div class="row">
+                           <div class="col-md-3">
+                               <div class="widget-small primary"><i class="icon fa fa-users fa-3x"></i>
+                                   <div class="info">
+                                       <h4>Projects Posted</h4>
+                                       <p><b>5</b></p>
+                                   </div>
+                               </div>
+                           </div>
+
+                           <div class="col-md-3">
+                               <div class="widget-small warning"><i class="icon fa fa-files-o fa-3x"></i>
+                                   <div class="info">
+                                       <h4>Work In Progress</h4>
+                                       <p><b>10</b></p>
+                                   </div>
+                               </div>
+                           </div>
+                           <div class="col-md-3">
+                               <div class="widget-small danger"><i class="icon fa fa-star fa-3x"></i>
+                                   <div class="info">
+                                       <h4>Freelancers Hired</h4>
+                                       <p><b>500</b></p>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+
+               </div>
+           </div>
+       </div>
+    </div>
+
+
+         <hr />
+
+        <div class="row">
+            <div class="col-sm-3"><h3>Manage Transactions</h3></div>
+            <div class="col-sm-8">
                 <ul class="nav nav-tabs">
 
-                    <li>Manage Transactions</li>
                     <li class="active"><a href="#milestone" data-toggle="tab">Milestones</a></li>
                     <li><a href="#milestoneRequest" data-toggle="tab">Milestone Request</a></li>
                     <li><a href="#withdrawal" data-toggle="tab">Withdrawal</a></li>
-                    <li><a href="#history" data-toggle="tab">History</a></li>
                 </ul>
+            </div>
+        </div>
 
-                <div class="tab-content" id="myTabContent">
 
 
-                    <div class="tab-pane fade active in" id="milestone">
-                        <div class="row">
-                           <div class="col-sm-9">
+        <div class="row">
 
-                               <a style="margin-top: 1.6em" class="btn btn-success" href="#" >Create milestone</a>
+            <div class="col-lg-9">
 
-                           </div>
-                            <div class="col-sm-3">
-                                <ul class="nav-tabs  pager">
-                                    <li class="active"><a href="#incomingMilestone" data-toggle="tab">Incoming</a></li>
-                                    <li><a href="#outgoingMilestone" data-toggle="tab">Outgoing</a></li>
-                                </ul>
+                <div class="bs-component">
+
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade active in" id="milestone">
+                            <div class="row">
+                               <div class="col-sm-9">
+
+                                   <a style="margin-top: 1.6em" class="btn btn-success" href="#" >Create milestone</a>
+
+                               </div>
+                                <div class="col-sm-3">
+                                    <ul class="nav-tabs  pager">
+                                        <li class="active"><a href="#incomingMilestone" data-toggle="tab">Incoming</a></li>
+                                        <li><a href="#outgoingMilestone" data-toggle="tab">Outgoing</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+
+
+                                        <div class="tab-content" id="myTabContent">
+                                            <div class="tab-pane fade active in" id="incomingMilestone">
+
+                                                <div class="row">
+                                                    <div style="margin-bottom: 0.5em" class="col-sm-2 pull-right">
+                                                        <select class="form-control" id="currency">
+                                                            <optgroup label="Select Currency">
+                                                                <option>5</option> <option>10</option>
+                                                            </optgroup>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+
+                                                <table class="table table-hover  card">
+                                                    <thead style="background-color: #222d32;color: white; font-weight: bolder;">
+                                                    <tr>
+                                                        <th>Employer</th>
+                                                        <th>Project name</th>
+                                                        <th>Amount</th>
+                                                        <th>Description</th>
+                                                        <th>Status</th>
+                                                        <th>Action</th>
+
+                                                    </tr>
+                                                    </thead>
+
+                                                    <tbody>
+                                                    <tr>
+
+                                                        <td>Mark</td>
+                                                        <td>Otto</td>
+                                                        <td>@mdo</td>
+                                                        <td>Mark</td>
+                                                        <td>Otto</td>
+                                                        <td>@mdo</td>
+
+                                                    </tr>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="tab-pane fade" id="outgoingMilestone">
+
+                                                <div class="row">
+                                                    <div style="margin-bottom: 0.5em" class="col-sm-2 pull-right">
+                                                        <select class="form-control" id="currency">
+                                                            <optgroup label="Select Currency">
+                                                                <option>5</option> <option>10</option>
+                                                            </optgroup>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <table class="table table-hover card">
+                                                    <thead style="background-color: #222d32;color: white; font-weight: bolder;">
+                                                    <tr>
+                                                        <th>Freelancer</th>
+                                                        <th>Project name</th>
+                                                        <th>Amount</th>
+                                                        <th>Description</th>
+                                                        <th>Status</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                    </thead>
+
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>Mark</td>
+                                                        <td>Otto</td>
+                                                        <td>@mdo</td>
+                                                        <td>Mark</td>
+                                                        <td>Otto</td>
+                                                        <td>@mdo</td>
+                                                    </tr>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>
+
+                                </div>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-sm-12 card">
+
+                        <div class="tab-pane fade" id="milestoneRequest">
+                            <div class="row">
+                                <div class="col-sm-9">
+
+                                    <a style="margin-top: 1.6em" class="btn btn-success disabled" href="#" >Request a milestone</a>
+
+                                </div>
+                                <div class="col-sm-3">
+                                    <ul class="nav-tabs  pager">
+                                        <li ><a class="active" href="#incomingMilestoneRequest" data-toggle="tab">Incoming</a></li>
+                                        <li><a href="#outgoingMilestoneRequest" data-toggle="tab">Outgoing</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
 
 
                                     <div class="tab-content" id="myTabContent">
-                                        <div class="tab-pane fade active in" id="incomingMilestone">
-                                            <table class="table table-hover">
+                                        <div class="tab-pane fade active in" id="incomingMilestoneRequest">
+
+                                            <div class="row">
+                                                <div style="margin-bottom: 0.5em" class="col-sm-2 pull-right">
+                                                    <select class="form-control" id="currency">
+                                                        <optgroup label="Select Currency">
+                                                            <option>5</option> <option>10</option>
+                                                        </optgroup>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                            <table class="table table-hover  card">
                                                 <thead style="background-color: #222d32;color: white; font-weight: bolder;">
                                                 <tr>
-                                                    <th>#</th>
-                                                    <th>First Name</th>
-                                                    <th>Last Name</th>
-                                                    <th>Username</th>
+                                                    <th>Freelancer</th>
+                                                    <th>Project name</th>
+                                                    <th>Amount</th>
+                                                    <th>Description</th>
+                                                    <th>Action</th>
+
                                                 </tr>
                                                 </thead>
 
                                                 <tbody>
                                                 <tr>
-                                                    <td>1</td>
+                                                    <td>Otto</td>
+                                                    <td>@mdo</td>
                                                     <td>Mark</td>
                                                     <td>Otto</td>
                                                     <td>@mdo</td>
@@ -83,20 +293,33 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <div class="tab-pane fade" id="outgoingMilestone">
-                                            <table class="table table-hover">
+                                        <div class="tab-pane fade" id="outgoingMilestoneRequest">
+
+                                            <div class="row">
+                                                <div style="margin-bottom: 0.5em" class="col-sm-2 pull-right">
+                                                    <select class="form-control" id="currency">
+                                                        <optgroup label="Select Currency">
+                                                            <option>5</option> <option>10</option>
+                                                        </optgroup>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <table class="table table-hover card">
                                                 <thead style="background-color: #222d32;color: white; font-weight: bolder;">
                                                 <tr>
-                                                    <th>#</th>
-                                                    <th>First Name</th>
-                                                    <th>Last Name</th>
-                                                    <th>Username</th>
+                                                    <th>Employer</th>
+                                                    <th>Project name</th>
+                                                    <th>Amount</th>
+                                                    <th>Description</th>
+                                                    <th>Action</th>
                                                 </tr>
                                                 </thead>
 
                                                 <tbody>
                                                 <tr>
-                                                    <td>1</td>
+
+                                                    <td>Otto</td>
+                                                    <td>@mdo</td>
                                                     <td>Mark</td>
                                                     <td>Otto</td>
                                                     <td>@mdo</td>
@@ -108,30 +331,138 @@
 
                                     </div>
 
+                                </div>
                             </div>
                         </div>
-                    </div>
 
 
-                    <div class="tab-pane fade" id="milestoneRequest">
-                        <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-orig
-                            </p>
-                    </div>
+                        <div class="tab-pane fade" id="withdrawal">
+
+                            <div class="row">
+                                <div class="col-sm-12">
 
 
-                    <div class="tab-pane fade" id="withdrawal">
-                        <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-orig
-                        </p>
-                    </div>
 
-                    <div class="tab-pane fade" id="history">
-                        <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-orig
-                        </p>
+                                            <div class="row">
+
+                                                <div class="col-sm-9"> <a style="margin-bottom: 0.5em" class="btn btn-success" href="#" >Create milestone</a></div>
+                                                <div style="margin-bottom: 0.5em" class="col-sm-2 ">
+                                                    <select class="form-control" id="currency">
+                                                        <optgroup label="Select Currency">
+                                                            <option>5</option> <option>10</option>
+                                                        </optgroup>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <table class="table table-hover  card">
+                                                <thead style="background-color: #222d32;color: white; font-weight: bolder;">
+                                                <tr>
+                                                    <th>Request At</th>
+                                                    <th>Amount</th>
+                                                    <th>Details</th>
+                                                    <th>Status</th>
+                                                    <th>Processing Date</th>
+
+                                                </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                <tr>
+                                                    <td>Otto</td>
+                                                    <td>@mdo</td>
+                                                    <td>Mark</td>
+                                                    <td>Otto</td>
+                                                    <td>@mdo</td>
+                                                </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
                     </div>
                 </div>
             </div>
+
         </div>
-    </div>
+
+
+
+            <div class="row">
+                <div class="col-sm-3"><h3>Financial Position</h3></div>
+                <div class="col-sm-8">
+
+                </div>
+            </div>
+         <div class="row">
+             <div class="col-sm-6">
+                 <div class="card">
+                     <h3 class="card-title">Income</h3>
+                     <table class="table table-hover">
+
+
+                         <tbody>
+                         <tr>
+                             <th>Project Earning</th>
+                             <td>5000.00</td>
+                         </tr>
+
+                         <tr>
+                             <th>Other Earnings</th>
+                             <td>0.00</td>
+                         </tr>
+                         <tr>
+                             <th>Gross Income</th>
+                             <td>5000.00</td>
+                         </tr>
+                         </tbody>
+                     </table>
+                 </div>
+             </div>
+             <div class="col-sm-6">
+                 <div class="card">
+                     <h3 class="card-title">Expenses</h3>
+                     <table class="table table-hover">
+
+                         <tbody>
+                         <tr>
+                             <th>Project Payment</th>
+                             <td>5000.00</td>
+                         </tr>
+
+                         <tr>
+                             <th>Other Payment</th>
+                             <td>0.00</td>
+                         </tr>
+                         <tr>
+                             <th>Project Commission</th>
+                             <td>5000.00</td>
+                         </tr>
+                         <tr>
+                             <th>Membership</th>
+                             <td>50.00</td>
+                         </tr>
+
+                         <tr>
+                             <th>Project Upgrade</th>
+                             <td>502.00</td>
+                         </tr>
+                         <tr>
+                             <th>Total Expenses</th>
+                             <th>50.00</th>
+                         </tr>
+                         </tbody>
+
+                     </table>
+                 </div>
+             </div>
+
+         </div>
+
+
 {% endblock %}
 
 

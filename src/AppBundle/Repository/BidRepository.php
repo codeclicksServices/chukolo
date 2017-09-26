@@ -12,18 +12,45 @@ use Doctrine\ORM\EntityRepository;
  */
 class BidRepository extends EntityRepository
 {
-    public function ActiveAdverts($limit) {
-        return $this
-            ->createQueryBuilder('e')
-            ->select('e')
-            ->where('e.enabled <= :true')
-            ->andWhere('e.expired = :false')
-            ->setParameter('true',1)
-            ->setParameter('false',0)
-            ->orderBy('e.subscribeDate', 'DESC')
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult();
+    public function findMyBid($user,$stage=null,$searchParam=null,$limit=null)
+    {
+
+        $query = $this ->createQueryBuilder('l')
+            ->select('p')
+            ->from('AppBundle:Bid','p')
+            ->where('p.member = :member')
+            ->setParameter('member', $user);
+
+        if(!$stage == null){
+            //convert to lowercase because all the state is stored in the lowercase in the database
+            $transformedStage=strtolower($stage);
+            $query =  $query->andWhere('p.stage = :stage')
+                ->setParameter('stage', $transformedStage);
+
+        }
+
+
+        if(!$searchParam == null){
+
+            $cleanedParam  = '%'.trim($searchParam).'%';
+
+            $query = $query->andWhere('p.name LIKE :name')
+                ->orWhere('p.id LIKE :id')
+                ->setParameter('name',$cleanedParam)
+                ->setParameter('id',$cleanedParam);
+
+        }
+
+
+
+        if(!$limit == null){
+            $query = $query->setMaxResults($limit);
+        }
+
+        $query->orderBy('p.created', 'DESC');
+        $query = $query ->getQuery()->getResult();
+
+        return $query;
     }
 
 }

@@ -8,32 +8,39 @@
     <title>Chukolo |Earn from your skill</title>
     {% block stylesheets %}
         <!-- CSS-->
-        <link href="{{ asset('assets/css/dashboard/main.css') }}" rel="stylesheet">
+
+
+        <link href="{{ asset('assets/css/profile/style.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/profile/animate.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/css/chuma.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/dashboard/main.css') }}" rel="stylesheet">
+
+
+
         <!-- Font-icon css-->
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
     {% endblock %}
-
-
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries-->
     <!--if lt IE 9
     script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
     script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
     -->
-
+    <script type="text/javascript" src="{{ asset('assets/js/profile/modernizr.custom.97074.js') }}"></script>
 </head>
-<body class="sidebar-mini fixed">
+<body style="background-color: #fafafa;color: #6f4e37"  class="sidebar-mini fixed">
 
-<div class="wrapper">
+<div style="background-color: #fafafa" class="wrapper">
 
 
 
     <header class="main-header hidden-print"><a class="logo" href="#">Chukolo</a>
         <nav class="navbar navbar-static-top">
             <!-- Sidebar toggle button-->
-            <a class="sidebar-toggle" href="#" data-toggle="offcanvas"></a>
 
+            <a class="sidebar-toggle" href="#" data-toggle="offcanvas"></a>
 
             <!-- Navbar Right Menu-->
             <div class="navbar-custom-menu">
@@ -72,7 +79,7 @@
 
 
                             <li>
-                                <a class="media" href="javascript:;">
+                                <a class="media" href={{ path("exhibition-dashboard") }}>
                                     <span class="media-left media-icon"><span class="fa-stack fa-lg">
                                             <i class="fa fa-circle fa-stack-2x text-danger"></i>
                                             <i class="fa fa fa-trophy fa-stack-1x fa-inverse"></i>
@@ -83,7 +90,7 @@
                             </li>
 
                             <li>
-                                <a class="media" href="javascript:;">
+                                <a class="media" href={{ path("community-dashboard") }}>
                                     <span class="media-left media-icon"><span class="fa-stack fa-lg">
                                             <i class="fa fa-circle fa-stack-2x text-warning"></i>
                                             <i class="fa fa-comments-o fa-stack-1x fa-inverse"></i>
@@ -96,45 +103,43 @@
                         </ul>
                     </li>
                     <!--Notification Menu-->
-                    <li class="dropdown notification-menu"><a class="dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bell-o fa-lg"></i></a>
-                        <ul class="dropdown-menu">
+                    <li class="dropdown notification-menu"><a  href="{{ path('message_inbox') }}" ><i class="fa fa-envelope-o fa-lg"></i></a>
 
-                            <li class="not-head">You have 4 new notifications.</li>
-                            <li><a class="media" href="javascript:;"><span class="media-left media-icon"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-primary"></i><i class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></span>
-                                    <div class="media-body"><span class="block">Lisa sent you a mail</span><span class="text-muted block">2min ago</span></div></a></li>
-                            <li><a class="media" href="javascript:;"><span class="media-left media-icon"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-danger"></i><i class="fa fa-hdd-o fa-stack-1x fa-inverse"></i></span></span>
-                                    <div class="media-body"><span class="block">Server Not Working</span><span class="text-muted block">2min ago</span></div></a></li>
-                            <li><a class="media" href="javascript:;"><span class="media-left media-icon"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-success"></i><i class="fa fa-money fa-stack-1x fa-inverse"></i></span></span>
-                                    <div class="media-body"><span class="block">Transaction xyz complete</span><span class="text-muted block">2min ago</span></div></a></li>
-                            <li class="not-footer"><a href="#">See all notifications.</a></li>
-
-                        </ul>
                     </li>
                     <!-- User Menu-->
                     <li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user fa-lg"></i></a>
                         <ul class="dropdown-menu settings-menu">
                             <li><a href={{ path('user_settings') }}><i class="fa fa-cog fa-lg"></i> Settings</a></li>
-                            <li><a href="page-user.html"><i class="fa fa-user fa-lg"></i> Profile</a></li>
-                            <li><a href="page-login.html"><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
+                            <li><a href="{{ path("my_profile", { 'userName': app.user }) }}"><i class="fa fa-user fa-lg"></i> Profile</a></li>
+                            <li>
+                                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                    <a href= "{{ path('fos_user_security_logout') }}">
+                                        <i class="fa fa-sign-out fa-lg" aria-hidden="true"></i>
+                                        Logout
+                                    </a>
+
+                                {% endif %}
+
                         </ul>
                     </li>
+
+
                 </ul>
             </div>
-
 
         </nav>
     </header>
 
 
 
-    <!-- Side-Nav-->
-    <aside class="main-sidebar hidden-print">
+    <!-- Side-left-->
+    <aside  class="main-sidebar  hidden-print">
         <section class="sidebar">
             <div class="user-panel">
                 <div class="pull-left image"><img class="img-circle" src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg" alt="User Image"></div>
                 <div class="pull-left info">
-                    <p>John Doe</p>
-                    <p class="designation">Frontend Developer</p>
+                    <p>Chuma Akoh</p>
+                    <p class="designation">Full Stack Developer</p>
                 </div>
             </div>
             <!-- Sidebar Menu-->
@@ -146,18 +151,22 @@
                     <li class="treeview"><a href="#"><i class="fa fa-navicon"></i><span>Work</span><i class="fa fa-angle-right"></i></a>
                         <ul class="treeview-menu">
                             <li><a href="#"><i class="fa fa-circle-o"></i> Project With My Skills</a></li>
-                            <li><a href="#" target="_blank"><i class="fa fa-circle-o"></i>Brows Projects</a></li>
+                            <li><a href={{ path("brows_jobs") }} target="_blank"><i class="fa fa-circle-o"></i>Brows Projects</a></li>
                             <li><a href="#"><i class="fa fa-circle-o"></i> Brows Local Jobs</a></li>
                             <li><a href="#"><i class="fa fa-circle-o"></i> Brows Categories</a></li>
                         </ul>
                     </li>
-
                     <li class="treeview"><a href="#"><i class="fa fa-th-list"></i><span>Hire A freelancer</span><i class="fa fa-angle-right"></i></a>
                         <ul class="treeview-menu">
                             <li><a href="{{ path('project_create') }}"><i class="fa fa-circle-o"></i> Start a Project</a></li>
                             <li><a href="table-data-table.html"><i class="fa fa-circle-o"></i> Post Local Job</a></li>
-                            <li class="fc-divider"></li>
-                            <li><a href="table-basic.html"><i class="fa fa-circle-o"></i> Hall of Fame</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="treeview"><a href="#"><i class="fa fa-th-list"></i><span>Explore</span><i class="fa fa-angle-right"></i></a>
+                        <ul class="treeview-menu">
+
+                            <li><a href={{ path("exhibition-dashboard") }}><i class="fa fa-circle-o"></i>Exhibition</a></li>
                             <li><a href="table-data-table.html"><i class="fa fa-circle-o"></i> Brows Directory</a></li>
 
                         </ul>
@@ -182,25 +191,21 @@
 
 
 
-
     {# page haven #}
-    <div  class="content-wrapper">
+    <div style="padding: 0; margin: 0"  class="content-wrapper">
 
 
-        <div class="page-title hidden-print" style="padding: 0.2em 7em 0 6em; margin: -2.5em -5em 2em -6em;
+        <div class="page-title hidden-print" style="padding: .2em 1em 0 2em; margin: 3em 0 2em 0;
               background-color: white; min-height: 4.5em">
 
 
 
-
-
-                <ul style="background: none" class="nav nav-tabs" >
+                <ul style="background: none;" class="nav nav-tabs" >
 
                     {% block breadCrumb %}
 
                         <li><a class="btn btn-default" href="{{ path("user_dashboard") }}">Dashboard</a></li>
                         <li><a class="btn btn-default" href="{{ path("brows_user_project") }}">My Project</a></li>
-                        <li><a class="btn btn-default" href="{{ path("message_inbox") }}">Inbox</a></li>
                         <li><a class="btn btn-default" href="#">Feed Back</a></li>
                     {% endblock %}
                 </ul>
@@ -228,6 +233,22 @@
     <script src="{{ asset('assets/js/dashboard/main.js') }}"></script>
     <script src="{{ asset('assets/js/chuma.js') }}"></script>
     <script type="text/javascript">$('body').removeClass("sidebar-mini").addClass("sidebar-collapse");</script>
+    <script src="{{ asset('assets/js/dashboard/plugins/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/plugins/select2.min.js') }}"></script>
+
+
+
+
+
+    <script src="{{ asset('assets/js/profile/hoverdir.js') }}"></script>
+    <script src="{{ asset('assets/js/profile/script.js') }}"></script>
+    <script src="{{ asset('assets/js/profile/owl.carousel.js') }}"></script>
+
+
+
+
+
+
 {% endblock %}
 
 

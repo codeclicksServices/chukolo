@@ -28,11 +28,14 @@ class Member extends User
     public function __construct()
     {
         parent::__construct();
-        // your own logic
+
         $this->roles = array('ROLE_ MEMBER');
         $this->skill = new ArrayCollection();
         $this->project = new ArrayCollection();
         $this->category = new ArrayCollection();
+        $this->review = new ArrayCollection();
+        $this->milestone = new ArrayCollection();
+        $this->bid = new ArrayCollection();
     }
 
     /**
@@ -48,25 +51,13 @@ class Member extends User
      */
     protected $gender;
 
-
-
-
-
-
-
-    /**
-     * @ORM\Column(type="string", length=65,nullable=true, options={"comment":"value: is either hire or work"})
-     */
-    protected $accountType;
-    /**
-     * @ORM\Column(type="string", length=5,nullable=true, options={"comment":"value: local currency in nigeria it would be NGN"})
-     */
-    protected $currency;
-
-
-
-
     /*address*/
+
+
+    /**
+     * @ORM\Column(type="string", length=20,nullable=true, options={"comment":" value: residential address "})
+     */
+    protected $address;
     /**
      * @ORM\Column(type="string", length=20,nullable=true, options={"comment":"value:city of resident "})
      */
@@ -82,9 +73,9 @@ class Member extends User
      */
     protected $country;
     /**
-     * @ORM\Column(type="string", length=20,nullable=true, options={"comment":"value:current location of the user"})
+     * @ORM\Column(type="string", length=20,nullable=true, )
      */
-    protected $location;
+    protected $company;
 
     /**
      * @ORM\Column(type="integer", length=100,nullable=true)
@@ -92,7 +83,7 @@ class Member extends User
     protected $phone;
 
     /**
-     * @ORM\Column(type="integer",  length=65,nullable=false, options={"comment":"value: your trust level"})
+     * @ORM\Column(type="integer",  length=65,nullable=true, options={"default":1,"comment":"value: your trust level"})
      */
     protected $trustScore;
 
@@ -106,8 +97,6 @@ class Member extends User
      */
     protected $description;
 
-
- 
     /**
      * @ORM\Column(type="integer",nullable=true, options={"unsigned":true, "default":0})
      */
@@ -119,8 +108,8 @@ class Member extends User
     protected $updated;
 
     /**
-     * @ORM\Column(type="smallint")
-     *@Assert\NotBlank()
+     * @ORM\Column(type="smallint",nullable=true, options={"default":1})
+     *
      */
     protected $consent;
 
@@ -141,14 +130,69 @@ class Member extends User
      *  @ORM\OneToMany(targetEntity="Project", mappedBy="member")
      */
     protected $bid;
+
     /**
-     *  @ORM\OneToMany(targetEntity="Skill", mappedBy="member")
+     * @ORM\ManyToMany(targetEntity="Skill", inversedBy="member")
+     * @ORM\JoinTable(name="member_skills")
      */
-    protected $skill;
+    private $skill;
+
     /**
+     * check the functionality of this later
      *  @ORM\OneToMany(targetEntity="Category", mappedBy="member")
      */
     protected $category;
+
+    /**
+     *  @ORM\OneToMany(targetEntity="Review", mappedBy="member")
+     */
+    protected $review;
+
+    /**
+     *  @ORM\OneToMany(targetEntity="Milestone", mappedBy="employer")
+     */
+    protected $milestone;
+
+    /**
+     *  @ORM\OneToMany(targetEntity="Portfolio", mappedBy="owner")
+     */
+    protected $portfolio;
+    /**
+     *  @ORM\OneToMany(targetEntity="Education", mappedBy="owner")
+     */
+    protected $education;
+    /**
+     *  @ORM\OneToMany(targetEntity="Publication", mappedBy="owner")
+     */
+    protected $publication;
+
+
+    /**
+     *  @ORM\OneToMany(targetEntity="XP", mappedBy="owner")
+     */
+    protected $xp;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Experience", inversedBy="member")
+     * @ORM\JoinTable(name ="member_experience")
+     */
+    private $experience;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Verifiable", inversedBy="member")
+     * @ORM\JoinTable(name ="member_verification")
+     */
+    private $verified;
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -412,6 +456,21 @@ class Member extends User
         return $this->skill;
     }
 
+
+    /**
+     * Has skill
+     *
+     * @param \AppBundle\Entity\Skill $skill
+     * @return boolean
+     */
+    public function hasSkill(\AppBundle\Entity\Skill $skill)
+    {
+        if($this->skill->contains($skill)){
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Add category
      *
@@ -672,5 +731,349 @@ class Member extends User
     public function getTrustScore()
     {
         return $this->trustScore;
+    }
+
+    /**
+     * Set membership
+     *
+     * @param string $membership
+     *
+     * @return Member
+     */
+    public function setMembership($membership)
+    {
+        $this->membership = $membership;
+
+        return $this;
+    }
+
+    /**
+     * Get membership
+     *
+     * @return string
+     */
+    public function getMembership()
+    {
+        return $this->membership;
+    }
+
+    /**
+     * Add review
+     *
+     * @param \AppBundle\Entity\Review $review
+     *
+     * @return Member
+     */
+    public function addReview(\AppBundle\Entity\Review $review)
+    {
+        $this->review[] = $review;
+
+        return $this;
+    }
+
+    /**
+     * Remove review
+     *
+     * @param \AppBundle\Entity\Review $review
+     */
+    public function removeReview(\AppBundle\Entity\Review $review)
+    {
+        $this->review->removeElement($review);
+    }
+
+    /**
+     * Get review
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getReview()
+    {
+        return $this->review;
+    }
+
+    /**
+     * Add experience
+     *
+     * @param \AppBundle\Entity\Experience $experience
+     *
+     * @return Member
+     */
+    public function addExperience(\AppBundle\Entity\Experience $experience)
+    {
+        $this->experience[] = $experience;
+
+        return $this;
+    }
+
+    /**
+     * Remove experience
+     *
+     * @param \AppBundle\Entity\Experience $experience
+     */
+    public function removeExperience(\AppBundle\Entity\Experience $experience)
+    {
+        $this->experience->removeElement($experience);
+    }
+
+    /**
+     * Get experience
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getExperience()
+    {
+        return $this->experience;
+    }
+
+    /**
+     * Add verified
+     *
+     * @param \AppBundle\Entity\Verifiable $verified
+     *
+     * @return Member
+     */
+    public function addVerified(\AppBundle\Entity\Verifiable $verified)
+    {
+        $this->verified[] = $verified;
+
+        return $this;
+    }
+
+    /**
+     * Remove verified
+     *
+     * @param \AppBundle\Entity\Verifiable $verified
+     */
+    public function removeVerified(\AppBundle\Entity\Verifiable $verified)
+    {
+        $this->verified->removeElement($verified);
+    }
+
+    /**
+     * Get verified
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVerified()
+    {
+        return $this->verified;
+    }
+
+    /**
+     * Add milestone
+     *
+     * @param \AppBundle\Entity\Milestone $milestone
+     *
+     * @return Member
+     */
+    public function addMilestone(\AppBundle\Entity\Milestone $milestone)
+    {
+        $this->milestone[] = $milestone;
+
+        return $this;
+    }
+
+    /**
+     * Remove milestone
+     *
+     * @param \AppBundle\Entity\Milestone $milestone
+     */
+    public function removeMilestone(\AppBundle\Entity\Milestone $milestone)
+    {
+        $this->milestone->removeElement($milestone);
+    }
+
+    /**
+     * Get milestone
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMilestone()
+    {
+        return $this->milestone;
+    }
+
+    /**
+     * Add portfolio
+     *
+     * @param \AppBundle\Entity\Portfolio $portfolio
+     *
+     * @return Member
+     */
+    public function addPortfolio(\AppBundle\Entity\Portfolio $portfolio)
+    {
+        $this->portfolio[] = $portfolio;
+
+        return $this;
+    }
+
+    /**
+     * Remove portfolio
+     *
+     * @param \AppBundle\Entity\Portfolio $portfolio
+     */
+    public function removePortfolio(\AppBundle\Entity\Portfolio $portfolio)
+    {
+        $this->portfolio->removeElement($portfolio);
+    }
+
+    /**
+     * Get portfolio
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPortfolio()
+    {
+        return $this->portfolio;
+    }
+
+    /**
+     * Add education
+     *
+     * @param \AppBundle\Entity\Education $education
+     *
+     * @return Member
+     */
+    public function addEducation(\AppBundle\Entity\Education $education)
+    {
+        $this->education[] = $education;
+
+        return $this;
+    }
+
+    /**
+     * Remove education
+     *
+     * @param \AppBundle\Entity\Education $education
+     */
+    public function removeEducation(\AppBundle\Entity\Education $education)
+    {
+        $this->education->removeElement($education);
+    }
+
+    /**
+     * Get education
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEducation()
+    {
+        return $this->education;
+    }
+
+    /**
+     * Add xp
+     *
+     * @param \AppBundle\Entity\XP $xp
+     *
+     * @return Member
+     */
+    public function addXp(\AppBundle\Entity\XP $xp)
+    {
+        $this->xp[] = $xp;
+
+        return $this;
+    }
+
+    /**
+     * Remove xp
+     *
+     * @param \AppBundle\Entity\XP $xp
+     */
+    public function removeXp(\AppBundle\Entity\XP $xp)
+    {
+        $this->xp->removeElement($xp);
+    }
+
+    /**
+     * Get xp
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getXp()
+    {
+        return $this->xp;
+    }
+
+    /**
+     * Add publication
+     *
+     * @param \AppBundle\Entity\Publication $publication
+     *
+     * @return Member
+     */
+    public function addPublication(\AppBundle\Entity\Publication $publication)
+    {
+        $this->publication[] = $publication;
+
+        return $this;
+    }
+
+    /**
+     * Remove publication
+     *
+     * @param \AppBundle\Entity\Publication $publication
+     */
+    public function removePublication(\AppBundle\Entity\Publication $publication)
+    {
+        $this->publication->removeElement($publication);
+    }
+
+    /**
+     * Get publication
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPublication()
+    {
+        return $this->publication;
+    }
+
+    /**
+     * Set company
+     *
+     * @param string $company
+     *
+     * @return Member
+     */
+    public function setCompany($company)
+    {
+        $this->company = $company;
+
+        return $this;
+    }
+
+    /**
+     * Get company
+     *
+     * @return string
+     */
+    public function getCompany()
+    {
+        return $this->company;
+    }
+
+    /**
+     * Set address
+     *
+     * @param string $address
+     *
+     * @return Member
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
     }
 }

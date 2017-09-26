@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Bid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -80,7 +81,7 @@ class AjaxController extends Controller
      *
      * @Route("/category/project/suggest/skill", name="suggest-project-skills")
      */
-    public function ProjectSuggestiontAction(Request $request) {
+    public function ProjectSuggestionAction(Request $request) {
         if (! $request->isXmlHttpRequest()) {
             throw new NotFoundHttpException();
         }
@@ -101,4 +102,71 @@ class AjaxController extends Controller
         return new JsonResponse($result);
     }
 
+
+
+
+    /**
+     * add skill to a member
+     * before adding skill check the kind of member u r if you are free u have the amount of skill addable
+     *
+     * @Route("/member/skill", name="add-member-skill")
+     */
+    public function addMemberSkillAction(Request $request) {
+        if (! $request->isXmlHttpRequest()) {
+            throw new NotFoundHttpException();
+        }
+        $id = $request->query->get('skill_id');
+        $repo = $this->getDoctrine()->getRepository('AppBundle:Skill');
+         $skill=$repo->find($id);
+        // Get the skill id
+
+         $user =$this->getUser();
+
+         if (!$user->hasSkill($skill)){
+
+         $user->addSkill($skill);
+
+         $em = $this->getDoctrine()->getManager();
+         $em->persist($user);
+         $em->flush();
+
+         }
+
+
+
+        return new Response(json_encode(array('status'=>'success')));
+    }
+
+
+
+    /**
+     * update member detail
+     *
+     *
+     * @Route("/member/detail/update", name="update-member-profile")
+     */
+    public function updateMemberProfileAction(Request $request) {
+
+
+
+
+
+        $user = $this->getUser();
+
+        if ($user){
+
+
+
+
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+        }
+
+
+
+        return new Response(json_encode(array('status'=>'success')));
+    }
 }

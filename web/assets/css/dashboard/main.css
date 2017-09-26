@@ -3,6 +3,7 @@
  * Vali Admin
  * Author: Pratik Borsadiya
  * ================================*/
+/*@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800);*/
 @import url(https://fonts.googleapis.com/css?family=Lato:300,400,400i,700);
 @import url(https://fonts.googleapis.com/css?family=Niconne);
 /*
@@ -10,12 +11,19 @@
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 html {
+
+  font-size: 0.813em;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
 
 body {
-  margin: 0;
+
+  background-color: white;
+  font-family: 'Open Sans', sans-serif;;
+  font-weight: 400;
+  line-height: 1.45;
+  color: #333;
 }
 
 article,
@@ -55,6 +63,13 @@ template {
 a {
   background-color: transparent;
 }
+/*custom*/
+
+
+
+/*custom*/
+
+
 
 a:active,
 a:hover {
@@ -3611,7 +3626,7 @@ tbody.collapse.in {
 
 .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
   color: #009688;
-  border-bottom: 2px solid #009688;
+  border-bottom: 3px solid #009688;
   cursor: default;
 }
 
@@ -13724,7 +13739,7 @@ be a descendant of the grid when it is being dragged.
 .content-wrapper {
   height: 100%;
   z-index: 800;
-  background-color: #E5E5E5;
+  background-color: #fafafa;
   margin-left: 230px;
   z-index: 820;
   padding: 30px;

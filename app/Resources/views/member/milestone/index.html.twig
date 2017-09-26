@@ -1,0 +1,109 @@
+{% extends 'member/base.html.twig' %}
+
+
+{% block titleText %}
+    <h1>Set Up Milestone Payments </h1>
+{% endblock %}
+
+{% block breadCrumb  %}
+
+{% endblock %}
+
+{% block page %}
+<div class="container">
+
+
+           <div class="row">
+
+               <div class="col-md-4">
+                   <div class="feature-content text-center">
+                       <div class="feature-icon-box">
+                           <div class="feature-icon center-block">
+                               <i class="fa fa-pencil"></i>
+                           </div>
+                       </div> <!--  end of /.feature-icon-box  -->
+                       <div class="feature-info">
+                           <h3 class="feature-heading">CREATE &amp; DEPOSIT MILESTONE PAYMENT </h3>
+                           <p class="feature-description">
+                               Create a milestone payment so that {{ bid.member.firstName |title }} {{ bid.member.lastName |title }}
+                               can start working on this project right away.
+                           </p>  <!--   end of /.feature-description  -->
+                       </div> <!--   end of /.feature-info  -->
+                   </div> <!--  end of /.feature-content  -->
+               </div>
+
+               <div class="col-md-4">
+                   <div class="feature-content text-center">
+                       <div class="feature-icon-box">
+                           <div class="feature-icon center-block">
+                               <i class="fa fa-bank"></i>
+                           </div>
+                       </div> <!--  end of /.feature-icon-box  -->
+                       <div class="feature-info">
+                           <h3 class="feature-heading">SAVE </h3>
+                           <p class="feature-description">
+                               We securely hold your payment pending when the job will be delivered.
+                           </p>  <!--   end of /.feature-description  -->
+                       </div> <!--   end of /.feature-info  -->
+                   </div> <!--  end of /.feature-content  -->
+               </div>
+
+               <div class="col-md-4">
+                   <div class="feature-content text-center">
+                       <div class="feature-icon-box">
+                           <div class="feature-icon center-block">
+                               <i class="fa fa-thumbs-o-up"></i>
+                           </div>
+                       </div> <!--  end of /.feature-icon-box  -->
+                       <div class="feature-info">
+                           <h3 class="feature-heading">RELEASE PAYMENT</h3>
+                           <p class="feature-description">
+                               Only Release Payment to {{ bid.member.firstName |title }} {{ bid.member.lastName |title }}
+                               when you are 100% satisfied.
+                           </p>  <!--   end of /.feature-description  -->
+                       </div> <!--   end of /.feature-info  -->
+                   </div> <!--  end of /.feature-content  -->
+               </div>
+
+
+
+           </div>
+         <div class="row">
+             <div class="clearix"></div>
+             <div class="col-sm-10 col-sm-push-1">
+                 <div class="card">
+
+                     <div class="card-body3">
+                         <form class="form-inline">
+                             <div class="form-group">
+                                 <label class="control-label">Name</label>
+                                 <input class="form-control" type="text" placeholder="Enter your name">
+                             </div>
+                             <div class="form-group">
+                                 <label class="control-label">Email</label>
+                                 <input class="form-control" type="text" placeholder="Enter your email">
+                             </div>
+                             <div class="form-group">
+                                 <button class="btn btn-primary icon-btn" type="button">
+                                     <i class="fa fa-fw fa-lg fa-check-circle"></i>Create Milestone
+                                 </button>
+                                 <a href="{{ path('award-project', {'proposalId': bid.id }) }}">skip</a>
+
+                             </div>
+                         </form>
+                     </div>
+                 </div>
+             </div>
+         </div>
+</div>
+
+
+{% endblock %}
+
+
+
+{% block javascripts %}
+    {{ parent() }}
+
+
+{% endblock %}

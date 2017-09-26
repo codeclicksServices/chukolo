@@ -35,11 +35,93 @@ class  Membersetting extends Member
     protected $secondaryEmail;
 
     /**
-     * @ORM\Column(type="smallint", options={"comment":" Allow Freelancers to follow me, notifying them of projects I've posted"})
+     * @ORM\Column(type="smallint", options={"default":1,"comment":" Allow Freelancers to follow me, notifying them of projects I've posted"})
      *
      */
     protected $allowFollow;
 
+    /**
+     * @ORM\Column(type="string", length=65,nullable=false, options={"default":"work","comment":"value: is either hire or work"})
+     */
+    protected $accountType;
+    /**
+     * @ORM\Column(type="string", length=65,nullable=false, options={"default":"free","comment":"value: is either free or paid "})
+     */
+    protected $membership;
+    /**
+     * @ORM\Column(type="string", length=5,nullable=true, options={"default":"NGN","comment":"value: local currency in nigeria it would be NGN"})
+     */
+    protected $currency;
+
+    /**
+     * @ORM\Column(type="string", length=20,nullable=true, options={"comment":"value:current location of the user"})
+     */
+    protected $location;
+
+    /**
+     * @ORM\Column(type="smallint", options={"default":1,"comment":"When project get posted that match my skils"})
+     *
+     */
+    protected $notifyPostedJobs;
+
+    /**
+     * @ORM\Column(type="smallint", options={"default":1,"comment":" When a local job in my location is posted"})
+     *
+     */
+    protected $notifyLocalJobs;
+    /**
+     * @ORM\Column(type="smallint", options={"default":1,"comment":" When you receive a message from a contact"})
+     *
+     */
+    protected $notifyContactMessage;
+
+    /**
+     * @ORM\Column(type="smallint", options={"default":1,"comment":"When you receive a message about a project"})
+     *
+     */
+    protected $notifyProjectMessage;
+
+    /**
+     * @ORM\Column(type="smallint", options={"default":1,"comment":"When you receive a message from chukolo staff "})
+     *
+     */
+    protected $notifyStaffMessage;
+
+    /**
+     * @ORM\Column(type="smallint", options={"default":1,"comment":" News and announcements from Chukolo "})
+     *
+     */
+    protected $notifyChukoloNews;
+
+    /**
+     * @ORM\Column(type="smallint", options={"default":1,"comment":" A buyer awards you a project"})
+     *
+     */
+    protected $notifyAwardedJob;
+
+    /**
+     * @ORM\Column(type="smallint", options={"default":1,"comment":"A freelancer requests you to release a milestone payment  "})
+     *
+     */
+    protected $notifyReleaseMilestoneRequest;
+
+    /**
+     * @ORM\Column(type="smallint", options={"default":1,"comment":" An employer release a milestone payment "})
+     *
+     */
+    protected $notifyReleaseMilestone;
+
+    /**
+     * @ORM\Column(type="smallint", options={"default":1,"comment":"We notify you of the top bidder for your project."})
+     *
+     */
+    protected $notifyTopBidder;
+
+    /**
+     * @ORM\Column(type="smallint", options={"default":1,"comment":"We notify you of the latest activity regarding Services"})
+     *
+     */
+    protected $notifyServiceActivity;
 
 
 
@@ -100,5 +182,546 @@ class  Membersetting extends Member
     public function getAllowFollow()
     {
         return $this->allowFollow;
+    }
+
+
+    /**
+     * Set membership
+     *
+     * @param string $membership
+     *
+     * @return Membersetting
+     */
+    public function setMembership($membership)
+    {
+        $this->membership = $membership;
+
+        return $this;
+    }
+
+    /**
+     * Get membership
+     *
+     * @return string
+     */
+    public function getMembership()
+    {
+        return $this->membership;
+    }
+
+    /**
+     * Set notifyPostedJobs
+     *
+     * @param integer $notifyPostedJobs
+     *
+     * @return Membersetting
+     */
+    public function setNotifyPostedJobs($notifyPostedJobs)
+    {
+        $this->notifyPostedJobs = $notifyPostedJobs;
+
+        return $this;
+    }
+
+    /**
+     * Get notifyPostedJobs
+     *
+     * @return integer
+     */
+    public function getNotifyPostedJobs()
+    {
+        return $this->notifyPostedJobs;
+    }
+
+    /**
+     * Set notifyContactMessage
+     *
+     * @param integer $notifyContactMessage
+     *
+     * @return Membersetting
+     */
+    public function setNotifyContactMessage($notifyContactMessage)
+    {
+        $this->notifyContactMessage = $notifyContactMessage;
+
+        return $this;
+    }
+
+    /**
+     * Get notifyContactMessage
+     *
+     * @return integer
+     */
+    public function getNotifyContactMessage()
+    {
+        return $this->notifyContactMessage;
+    }
+
+    /**
+     * Set notifyProjectMessage
+     *
+     * @param integer $notifyProjectMessage
+     *
+     * @return Membersetting
+     */
+    public function setNotifyProjectMessage($notifyProjectMessage)
+    {
+        $this->notifyProjectMessage = $notifyProjectMessage;
+
+        return $this;
+    }
+
+    /**
+     * Get notifyProjectMessage
+     *
+     * @return integer
+     */
+    public function getNotifyProjectMessage()
+    {
+        return $this->notifyProjectMessage;
+    }
+
+    /**
+     * Set notifyLocalJobs
+     *
+     * @param integer $notifyLocalJobs
+     *
+     * @return Membersetting
+     */
+    public function setNotifyLocalJobs($notifyLocalJobs)
+    {
+        $this->notifyLocalJobs = $notifyLocalJobs;
+
+        return $this;
+    }
+
+    /**
+     * Get notifyLocalJobs
+     *
+     * @return integer
+     */
+    public function getNotifyLocalJobs()
+    {
+        return $this->notifyLocalJobs;
+    }
+
+    /**
+     * Set notifyStaffMessage
+     *
+     * @param integer $notifyStaffMessage
+     *
+     * @return Membersetting
+     */
+    public function setNotifyStaffMessage($notifyStaffMessage)
+    {
+        $this->notifyStaffMessage = $notifyStaffMessage;
+
+        return $this;
+    }
+
+    /**
+     * Get notifyStaffMessage
+     *
+     * @return integer
+     */
+    public function getNotifyStaffMessage()
+    {
+        return $this->notifyStaffMessage;
+    }
+
+    /**
+     * Set notifyChukoloNews
+     *
+     * @param integer $notifyChukoloNews
+     *
+     * @return Membersetting
+     */
+    public function setNotifyChukoloNews($notifyChukoloNews)
+    {
+        $this->notifyChukoloNews = $notifyChukoloNews;
+
+        return $this;
+    }
+
+    /**
+     * Get notifyChukoloNews
+     *
+     * @return integer
+     */
+    public function getNotifyChukoloNews()
+    {
+        return $this->notifyChukoloNews;
+    }
+
+    /**
+     * Set notifyAwardedJob
+     *
+     * @param integer $notifyAwardedJob
+     *
+     * @return Membersetting
+     */
+    public function setNotifyAwardedJob($notifyAwardedJob)
+    {
+        $this->notifyAwardedJob = $notifyAwardedJob;
+
+        return $this;
+    }
+
+    /**
+     * Get notifyAwardedJob
+     *
+     * @return integer
+     */
+    public function getNotifyAwardedJob()
+    {
+        return $this->notifyAwardedJob;
+    }
+
+    /**
+     * Set notifyReleaseMilestoneRequest
+     *
+     * @param integer $notifyReleaseMilestoneRequest
+     *
+     * @return Membersetting
+     */
+    public function setNotifyReleaseMilestoneRequest($notifyReleaseMilestoneRequest)
+    {
+        $this->notifyReleaseMilestoneRequest = $notifyReleaseMilestoneRequest;
+
+        return $this;
+    }
+
+    /**
+     * Get notifyReleaseMilestoneRequest
+     *
+     * @return integer
+     */
+    public function getNotifyReleaseMilestoneRequest()
+    {
+        return $this->notifyReleaseMilestoneRequest;
+    }
+
+    /**
+     * Set notifyReleaseMilestone
+     *
+     * @param integer $notifyReleaseMilestone
+     *
+     * @return Membersetting
+     */
+    public function setNotifyReleaseMilestone($notifyReleaseMilestone)
+    {
+        $this->notifyReleaseMilestone = $notifyReleaseMilestone;
+
+        return $this;
+    }
+
+    /**
+     * Get notifyReleaseMilestone
+     *
+     * @return integer
+     */
+    public function getNotifyReleaseMilestone()
+    {
+        return $this->notifyReleaseMilestone;
+    }
+
+    /**
+     * Set notifyTopBidder
+     *
+     * @param integer $notifyTopBidder
+     *
+     * @return Membersetting
+     */
+    public function setNotifyTopBidder($notifyTopBidder)
+    {
+        $this->notifyTopBidder = $notifyTopBidder;
+
+        return $this;
+    }
+
+    /**
+     * Get notifyTopBidder
+     *
+     * @return integer
+     */
+    public function getNotifyTopBidder()
+    {
+        return $this->notifyTopBidder;
+    }
+
+    /**
+     * Set notifyServiceActivity
+     *
+     * @param integer $notifyServiceActivity
+     *
+     * @return Membersetting
+     */
+    public function setNotifyServiceActivity($notifyServiceActivity)
+    {
+        $this->notifyServiceActivity = $notifyServiceActivity;
+
+        return $this;
+    }
+
+    /**
+     * Get notifyServiceActivity
+     *
+     * @return integer
+     */
+    public function getNotifyServiceActivity()
+    {
+        return $this->notifyServiceActivity;
+    }
+
+    /**
+     * Add review
+     *
+     * @param \AppBundle\Entity\Review $review
+     *
+     * @return Membersetting
+     */
+    public function addReview(\AppBundle\Entity\Review $review)
+    {
+        $this->review[] = $review;
+
+        return $this;
+    }
+
+    /**
+     * Remove review
+     *
+     * @param \AppBundle\Entity\Review $review
+     */
+    public function removeReview(\AppBundle\Entity\Review $review)
+    {
+        $this->review->removeElement($review);
+    }
+
+    /**
+     * Get review
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getReview()
+    {
+        return $this->review;
+    }
+
+    /**
+     * Add milestone
+     *
+     * @param \AppBundle\Entity\Milestone $milestone
+     *
+     * @return Membersetting
+     */
+    public function addMilestone(\AppBundle\Entity\Milestone $milestone)
+    {
+        $this->milestone[] = $milestone;
+
+        return $this;
+    }
+
+    /**
+     * Remove milestone
+     *
+     * @param \AppBundle\Entity\Milestone $milestone
+     */
+    public function removeMilestone(\AppBundle\Entity\Milestone $milestone)
+    {
+        $this->milestone->removeElement($milestone);
+    }
+
+    /**
+     * Get milestone
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMilestone()
+    {
+        return $this->milestone;
+    }
+
+    /**
+     * Add portfolio
+     *
+     * @param \AppBundle\Entity\Portfolio $portfolio
+     *
+     * @return Membersetting
+     */
+    public function addPortfolio(\AppBundle\Entity\Portfolio $portfolio)
+    {
+        $this->portfolio[] = $portfolio;
+
+        return $this;
+    }
+
+    /**
+     * Remove portfolio
+     *
+     * @param \AppBundle\Entity\Portfolio $portfolio
+     */
+    public function removePortfolio(\AppBundle\Entity\Portfolio $portfolio)
+    {
+        $this->portfolio->removeElement($portfolio);
+    }
+
+    /**
+     * Get portfolio
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPortfolio()
+    {
+        return $this->portfolio;
+    }
+
+    /**
+     * Add education
+     *
+     * @param \AppBundle\Entity\Education $education
+     *
+     * @return Membersetting
+     */
+    public function addEducation(\AppBundle\Entity\Education $education)
+    {
+        $this->education[] = $education;
+
+        return $this;
+    }
+
+    /**
+     * Remove education
+     *
+     * @param \AppBundle\Entity\Education $education
+     */
+    public function removeEducation(\AppBundle\Entity\Education $education)
+    {
+        $this->education->removeElement($education);
+    }
+
+    /**
+     * Get education
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEducation()
+    {
+        return $this->education;
+    }
+
+    /**
+     * Add xp
+     *
+     * @param \AppBundle\Entity\XP $xp
+     *
+     * @return Membersetting
+     */
+    public function addXp(\AppBundle\Entity\XP $xp)
+    {
+        $this->xp[] = $xp;
+
+        return $this;
+    }
+
+    /**
+     * Remove xp
+     *
+     * @param \AppBundle\Entity\XP $xp
+     */
+    public function removeXp(\AppBundle\Entity\XP $xp)
+    {
+        $this->xp->removeElement($xp);
+    }
+
+    /**
+     * Get xp
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getXp()
+    {
+        return $this->xp;
+    }
+
+    /**
+     * Add publication
+     *
+     * @param \AppBundle\Entity\Publication $publication
+     *
+     * @return Membersetting
+     */
+    public function addPublication(\AppBundle\Entity\Publication $publication)
+    {
+        $this->publication[] = $publication;
+
+        return $this;
+    }
+
+    /**
+     * Remove publication
+     *
+     * @param \AppBundle\Entity\Publication $publication
+     */
+    public function removePublication(\AppBundle\Entity\Publication $publication)
+    {
+        $this->publication->removeElement($publication);
+    }
+
+    /**
+     * Get publication
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPublication()
+    {
+        return $this->publication;
+    }
+
+    /**
+     * Set company
+     *
+     * @param string $company
+     *
+     * @return Membersetting
+     */
+    public function setCompany($company)
+    {
+        $this->company = $company;
+
+        return $this;
+    }
+
+    /**
+     * Get company
+     *
+     * @return string
+     */
+    public function getCompany()
+    {
+        return $this->company;
+    }
+
+    /**
+     * Set address
+     *
+     * @param string $address
+     *
+     * @return Membersetting
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
     }
 }

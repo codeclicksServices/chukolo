@@ -1,0 +1,219 @@
+{% extends 'member/base.html.twig' %}
+
+ {% block breadCrumb %}
+            <li><a class="btn btn-default" href="{{ path("user_dashboard") }}">My Profile </a></li>
+            <li class="active"><a class="btn btn-default" href="{{ path("brows_user_services") }}">My Services</a></li>
+            <li><a class="btn btn-default" href="{{ path("brows_user_project") }}">My Rewards</a></li>
+      {% endblock %}
+
+{% block page %}
+    <div class="main-content">
+
+
+
+
+
+         <div class="main-content">
+        <section class="bg-light-gray">
+            <div class="container">
+
+                <div class="headline text-center">
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3">
+                            <h2 class="section-title">My Services</h2>
+
+                        </div>
+                    </div>
+                </div> <!-- /.headline -->
+
+                <div class="portfolio-item-list">
+                    <div class="row">
+
+                        <div class="col-sm-3">
+                            <div class="portfolio-item">
+
+
+
+
+                                <div class="item-image">
+                                    <a href="">
+                                        <img src="{{ asset('assets/img/profile/card.png') }}" class="img-responsive center-block" alt="portfolio 1">
+                                        <div><span><i class="fa fa-plus"></i></span></div>
+                                    </a>
+
+                                </div>
+
+                                <div class="item-description">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                                    <span class="item-name">
+                                                        By anniekan
+                                                    </span>
+                                            <span>
+                                                        Graphic Design
+                                                    </span>
+                                        </div>
+                                        <div class="col-xs-6">
+                                                    <span class="like">
+                                                        <i class="fa fa-heart-o"></i>
+                                                        57
+                                                    </span>
+                                        </div>
+                                    </div>
+                                </div> <!-- end of /.item-description -->
+                            </div> <!-- end of /.portfolio-item -->
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="portfolio-item">
+                                <div class="item-image">
+                                    <a href="">
+                                        <img src="{{ asset('assets/img/profile/jota.jpg') }}" class="img-responsive center-block" alt="portfolio 2">
+                                        <div><span><i class="fa fa-plus"></i></span></div>
+                                    </a>
+                                </div>
+
+                                <div class="item-description">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                                    <span class="item-name">
+                                                        Preciouse
+                                                    </span>
+                                            <span>
+                                                        Graphic Design
+                                                    </span>
+                                        </div>
+                                        <div class="col-xs-6">
+                                                    <span class="like">
+                                                        <i class="fa fa-heart-o"></i>
+                                                        55
+                                                    </span>
+                                        </div>
+                                    </div>
+                                </div> <!-- end of /.item-description -->
+                            </div> <!-- end of /.portfolio-item -->
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="portfolio-item">
+                                <div id="test" class="item-image">
+                                    <a href="#">
+                                        <img src="{{ asset('assets/img/profile/egg.jpg') }}" class="img-responsive center-block" alt="portfolio 3">
+                                        <div><span><i class="fa fa-plus"></i></span></div>
+                                    </a>
+                                </div>
+
+                                <div class="item-description">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                                    <span class="item-name">
+                                                        Nimi Printz
+                                                    </span>
+                                            <span>
+                                                        Web Design
+                                                    </span>
+                                        </div>
+                                        <div class="col-xs-6">
+                                                    <span class="like">
+                                                        <i class="fa fa-heart-o"></i>
+                                                        576
+                                                    </span>
+                                        </div>
+                                    </div>
+                                </div> <!-- end of /.item-description -->
+                            </div> <!-- end of /.portfolio-item -->
+
+                        </div>
+
+
+                        <div class="col-sm-3">
+                            <div class="portfolio-item">
+                                <div id="test" class="item-image">
+                                    <a href="#">
+                                        <img src="{{ asset('assets/img/profile/egg.jpg') }}" class="img-responsive center-block" alt="portfolio 3">
+                                        <div><span><i class="fa fa-plus"></i></span></div>
+                                    </a>
+                                </div>
+
+                                <div class="item-description">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                                    <span class="item-name">
+                                                        Nimi Printz
+                                                    </span>
+                                            <span>
+                                                        Web Design
+                                                    </span>
+                                        </div>
+                                        <div class="col-xs-6">
+                                                    <span class="like">
+                                                        <i class="fa fa-heart-o"></i>
+                                                        576
+                                                    </span>
+                                        </div>
+                                    </div>
+                                </div> <!-- end of /.item-description -->
+                            </div> <!-- end of /.portfolio-item -->
+
+                        </div>
+
+                    </div>
+                </div> <!-- end of portfolio-item-list -->
+
+                <div id="morePortfolio"></div>
+                <div class="text-center">
+                    <a id="loadPortfolio" class="hidden-xs btn btn-white">
+                        Load More <span class="caret"></span>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        </div>
+
+
+
+
+
+
+{% endblock %}
+
+
+
+{% block javascripts %}
+ {{ parent() }}
+    <script type="text/javascript">
+        $(function() {
+
+            $('.portfolio-item > .item-image').each( function() { $(this).hoverdir({
+                hoverDelay : 75
+            }); } );
+
+        });
+
+           $('#delete').click(function(){
+
+            swal({
+                title: "Are you sure you wish to Delete this project ?",
+                text: " By deleting your p",
+                type: "warning",
+                showCancelButton: false,
+                confirmButtonText: "Yes, delete it!",
+
+                closeOnConfirm: true,
+            }, function(isConfirm) {
+                if (isConfirm) {
+
+                    //  create the ajax call that will delete your project here
+
+
+                    swal("Deleted!", "Your project has been deleted.", "success");
+                } else {
+                    swal("Cancelled", "Your project is safe :)", "error");
+                }
+            });
+        });
+
+</script>
+{% endblock %}

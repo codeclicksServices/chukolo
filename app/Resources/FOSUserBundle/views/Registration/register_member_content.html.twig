@@ -2,64 +2,66 @@
 
 
 
-<div class="account-container register">
+        {{form_start(form, {'method': 'POST', 'attr':{'class': 'reg-form'}})}}
 
-    <div class="content clearfix">
+            <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>SIGN IN</h3>
 
-        {{form_start(form, {'method': 'POST', 'attr':{'class': ''}})}}
 
-                    Email
-                    <div  style="color: red" class="col-2">
-                        {{ form_errors(form.email) }}
+                    <div class="form-group">
+                        <label class="control-label">EMAIL</label>
+                        <div  style="color: red">
+                            {{ form_errors(form.email) }}
+                        </div>
+                        {{ form_widget(form.email) }}
                     </div>
-                    <div class="col-10">
-                       {{ form_widget(form.email) }}
-                    </div>
+                    <div class="form-group">
+                        <label class="control-label">USERNAME</label>
 
-                    User Name
-                    <div  style="color: red" class="col-2">
-                        {{ form_errors(form.username) }}
-                    </div>
-                    <div class="col-10">
+                        <div  style="color: red" >
+                            {{ form_errors(form.username) }}
+                        </div>
                         {{ form_widget(form.username) }}
                     </div>
+                    <div class="form-group">
+                        <label class="control-label">PASSWORD</label>
 
-                    Password
-                    <div  style="color: red" class="col-2">
-                        {{ form_errors(form.plainPassword.first) }}
-                    </div>
-                    <div style="color: #1b1f22" class="col-10">
+                        <div  style="color: red" >
+                            {{ form_errors(form.plainPassword.first) }}
+                        </div>
                         {{ form_widget(form.plainPassword.first) }}
-
-                    Confirm Password
-                    <div  style="color: red" >
-                        {{ form_errors(form.plainPassword.second) }}
                     </div>
-                    {{ form_widget(form.plainPassword.second) }}
+                    <div class="form-group">
+                        <label class="control-label">CONFIRM PASSWORD</label>
 
-                    Indicate your intention
-                    <div >
-                        {{ form_widget(form.intention) }}
+                        <div  style="color: red" >
+                            {{ form_errors(form.plainPassword.second) }}
+                        </div>
+                        {{ form_widget(form.plainPassword.second,{'class': 'form-control'}) }}
                     </div>
 
-
-                    <div >
-                     Agree with the Terms & Conditions.
-                     {{ form_widget(form.consent) }}
-                     </div>
-
-                        <div class="panel panel-footer">
-                            <input type="submit" value="{{ 'registration.submit'|trans }}"
-                                   class="btn btn-md btn-outline btn-success btn-block" />
+                    <div class="form-group">
+                        <label class="control-label">I Want To</label>
+                        <div  style="color: red">
+                            {{ form_errors(form.intention) }}
+                        </div>
+                        <div class="animated-checkbox">
+                            {{ form_widget(form.intention,{'class': 'animated-checkbox'}) }}
                         </div>
 
-            </div>
-
-
+                    </div>
+                     <div class="form-group">
+                        <div class="utility">
+                            <div class="animated-checkbox">
+                                <label class="semibold-text">
+                                    Already have an account? <br />
+                                    <a href="{{ path('fos_user_security_login') }}">Login to your account</a>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group btn-container">
+                        <input type="submit" value="{{ 'registration.submit'|trans }}"
+                               class="btn btn-primary btn-block" />
+                    </div>
 
             {{ form_end(form) }}
-
-    </div> <!-- /content -->
-
-</div> <!-- /account-container -->
-

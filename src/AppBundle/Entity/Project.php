@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ *
  * @ORM\Entity
  * @ORM\Table(name="projects")
  * @ORM\HasLifecycleCallbacks
@@ -39,18 +40,7 @@ class Project
      */
     protected $description;
     /**
-     * @ORM\Column(type="datetime")
-     * date created
-     */
-    protected $created;
-
-    /**
-     * @ORM\Column(type="date",nullable=true, options={"comment":"this is use to make when the bidding will expire you canpurchase an extention or choose from the list of bids you have already"})
-     */
-    protected $expire;
-    /**
-     * @ORM\Column(type="integer",nullable=true,options={"comment":"value: is the price plus suscrubtions "})
-     *
+     * @ORM\Column(type="integer",nullable=true,options={"comment":"value: is the price plus subscriptions"})
      */
     protected $value;
     /**
@@ -65,13 +55,8 @@ class Project
      *
      */
     protected $averageBid;
-
     /**
-     * @ORM\Column(type="smallint",nullable=true)
-     */
-    protected $visible;
-    /**
-     * @ORM\Column(type="string", length=100,options={"comment":"current state of the project"})
+     * @ORM\Column(type="string", length=100,options={"comment":"current state of the project i.e Value: created, open,close,deleted,awarded,onGoing,pause,completed"})
      */
     protected $state;
     /**
@@ -79,18 +64,42 @@ class Project
      */
     protected $type;
     /**
-     * @ORM\Column(type="smallint",options={"comment":"discontinue a project"})
+     * @ORM\Column(type="date",nullable=true, options={"comment":"when the project is meant to be delivered"})
      */
-    protected $discontinue;
+    protected $deadline;
     /**
-     * @ORM\Column(type="smallint",options={"comment":"deleting a project"})
+     * @ORM\Column(type="smallint",options={"default":0,"comment":"if this project can be bid on"})
      */
-    protected $deleted;
+    protected $biddable;
+    /**
+     * @ORM\Column(type="smallint",options={"default":0,"comment":"marks that the project is in progress "})
+     */
+    protected $onGoing;
+    /**
+     * @ORM\Column(type="smallint",options={"default":0,"comment":"project has been awarded to at least one person "})
+     */
+    protected $awarded;
+    /**
+     * @ORM\Column(type="smallint",options={"default":0,"comment":"1 0 project can only be made visible if moderated is true"})
+     */
+    protected $moderated;
+    /**
+     * @ORM\Column(type="date",nullable=true, options={"comment":"job delivered date"})
+     */
+    protected $completed;
+    /**
+     * @ORM\Column(type="date",nullable=true, options={"comment":"can purchase an extension or choose from the list of bids you have already"})
+     */
+    protected $bidEnd;
     /**
      * @ORM\Column(type="integer",nullable=true,options={"comment":"how many people viewed the project"})
      */
     protected $viewed;
 
+    /**
+     * @ORM\Column(type="smallint",options={"default":0,"comment":"deleting a project"})
+     */
+    protected $deleted;
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      *
@@ -106,6 +115,26 @@ class Project
      * @var string
      */
     private $documentName;
+    /**
+     * @ORM\Column(type="datetime")
+     * date created
+     */
+    protected $created;
+
+
+
+    /**
+     * @ORM\Column(type="smallint",options={"default":0,"comment":"discontinue a project"})
+     */
+    protected $discontinue;
+
+
+
+
+
+
+
+
 
 
     /*
@@ -133,9 +162,6 @@ class Project
      */
     protected $bid;
 
-
-
-
     /**
      * @ORM\ManyToOne(targetEntity="Budget", inversedBy="project")
      */
@@ -147,6 +173,7 @@ class Project
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     protected $category;
+
 
 
 
@@ -765,5 +792,198 @@ class Project
     public function getDeleted()
     {
         return $this->deleted;
+    }
+
+    /**
+     * Set deadline
+     *
+     * @param \DateTime $deadline
+     *
+     * @return Project
+     */
+    public function setDeadline($deadline)
+    {
+        $this->deadline = $deadline;
+
+        return $this;
+    }
+
+    /**
+     * Get deadline
+     *
+     * @return \DateTime
+     */
+    public function getDeadline()
+    {
+        return $this->deadline;
+    }
+
+
+    /**
+     * Set completed
+     *
+     * @param \DateTime $completed
+     *
+     * @return Project
+     */
+    public function setCompleted($completed)
+    {
+        $this->completed = $completed;
+
+        return $this;
+    }
+
+    /**
+     * Get completed
+     *
+     * @return \DateTime
+     */
+    public function getCompleted()
+    {
+        return $this->completed;
+    }
+
+    /**
+     * Set biddable
+     *
+     * @param integer $biddable
+     *
+     * @return Project
+     */
+    public function setBiddable($biddable)
+    {
+        $this->biddable = $biddable;
+
+        return $this;
+    }
+
+    /**
+     * Get biddable
+     *
+     * @return integer
+     */
+    public function getBiddable()
+    {
+        return $this->biddable;
+    }
+
+    /**
+     * Set onGoing
+     *
+     * @param integer $onGoing
+     *
+     * @return Project
+     */
+    public function setOnGoing($onGoing)
+    {
+        $this->onGoing = $onGoing;
+
+        return $this;
+    }
+
+    /**
+     * Get onGoing
+     *
+     * @return integer
+     */
+    public function getOnGoing()
+    {
+        return $this->onGoing;
+    }
+
+    /**
+     * Set awarded
+     *
+     * @param integer $awarded
+     *
+     * @return Project
+     */
+    public function setAwarded($awarded)
+    {
+        $this->awarded = $awarded;
+
+        return $this;
+    }
+
+    /**
+     * Get awarded
+     *
+     * @return integer
+     */
+    public function getAwarded()
+    {
+        return $this->awarded;
+    }
+
+    /**
+     * Set moderated
+     *
+     * @param integer $moderated
+     *
+     * @return Project
+     */
+    public function setModerated($moderated)
+    {
+        $this->moderated = $moderated;
+
+        return $this;
+    }
+
+    /**
+     * Get moderated
+     *
+     * @return integer
+     */
+    public function getModerated()
+    {
+        return $this->moderated;
+    }
+
+    /**
+     * Set bidEnd
+     *
+     * @param \DateTime $bidEnd
+     *
+     * @return Project
+     */
+    public function setBidEnd($bidEnd)
+    {
+        $this->bidEnd = $bidEnd;
+
+        return $this;
+    }
+
+    /**
+     * Get bidEnd
+     *
+     * @return \DateTime
+     */
+    public function getBidEnd()
+    {
+        return $this->bidEnd;
+    }
+
+    /**
+     * Set terminated
+     *
+     * @param integer $terminated
+     *
+     * @return Project
+     */
+    public function setTerminated($terminated)
+    {
+        $this->terminated = $terminated;
+
+        return $this;
+    }
+
+    /**
+     * Get terminated
+     *
+     * @return integer
+     */
+    public function getTerminated()
+    {
+        return $this->terminated;
     }
 }

@@ -1,20 +1,189 @@
-{% extends 'base.html.twig' %}
+{% extends 'member/base.html.twig' %}
 
-{% block body %}
-    <h1>Freelance Jobs</h1>
-       <div>show rescently completed jobs</div>
+{% block page %}
+<div class="container">
+
+
+           <div class="row">
+               <h1 >Freelance Jobs</h1>
+           </div>
+
+
+                <div class="row">
+                    <h3 >Just concluded Jobs</h3>
+                </div>
+       <div class="row">
+
+           <div style="padding-top: 0;" class="col-sm-3 card">
+
+               <div  style="min-height: 8em;border-radius: 2px" class="row">
+                   <img src="{{ asset('assets/img/profile/1.jpeg') }}" style="height: 20em;width: 20em" alt="..." class=" img-thumbnail">
+               </div>
+               <div class="row">
+
+                   <h4 class="text-center">Draw a cow illusion<br /></h4>
+
+
+                   <ul class="reputation  card-footer">
+                       <li>
+                           <span>5.0</span>
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                           <i class="fa fa-star-o" aria-hidden="true"></i>
+                           <i class="fa fa-star-o" aria-hidden="true"></i>
+                           <i class="fa fa-star-o" aria-hidden="true"></i>
+
+                           <span>NGN 20,000</span>
+                       </li>
+
+
+                   </ul>
+
+               </div>
+
+           </div>
+           <div style="padding-top: 0;" class="col-sm-3 card">
+
+               <div  style="min-height: 8em;border-radius: 2px" class="row">
+                   <img src="{{ asset('assets/img/profile/2.jpg') }}" style="height: 20em;width: 20em" alt="..." class=" img-thumbnail">
+               </div>
+               <div class="row">
+
+                   <h4 class="text-center">Draw a cow illusion<br /></h4>
+
+
+                   <ul class="reputation  card-footer">
+                       <li>
+                           <span>5.0</span>
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                           <i class="fa fa-star-o" aria-hidden="true"></i>
+                           <i class="fa fa-star-o" aria-hidden="true"></i>
+                           <i class="fa fa-star-o" aria-hidden="true"></i>
+
+                           <span>NGN 20,000</span>
+                       </li>
+
+
+                   </ul>
+
+               </div>
+
+           </div>
+
+           <div style="padding-top: 0;" class="col-sm-3 card">
+
+               <div  style="min-height: 8em;border-radius: 2px" class="row">
+                   <img src="{{ asset('assets/img/profile/3.jpg') }}" style="height: 20em;width: 20em" alt="..." class=" img-thumbnail">
+               </div>
+               <div class="row">
+
+                   <h4 class="text-center">Make some creative art<br /></h4>
+
+
+                   <ul class="reputation  card-footer">
+                       <li>
+                           <span>5.0</span>
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                           <i class="fa fa-star-o" aria-hidden="true"></i>
+                           <i class="fa fa-star-o" aria-hidden="true"></i>
+                           <i class="fa fa-star-o" aria-hidden="true"></i>
+
+                           <span>NGN 20,000</span>
+                       </li>
+
+
+                   </ul>
+
+               </div>
+
+           </div>
+
+           <div style="padding-top: 0;" class="col-sm-3 card">
+
+               <div  style="min-height: 8em;border-radius: 2px" class="row">
+                   <img src="{{ asset('assets/img/profile/4.jpg') }}" style="height: 20em;width: 20em" alt="..." class=" img-thumbnail">
+               </div>
+               <div class="row">
+
+                   <h4 class="text-center">Paint the Sky  <br /></h4>
+
+
+                   <ul class="reputation  card-footer">
+                       <li>
+                           <span>5.0</span>
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                           <i class="fa fa-star-o" aria-hidden="true"></i>
+                           <i class="fa fa-star-o" aria-hidden="true"></i>
+                           <i class="fa fa-star-o" aria-hidden="true"></i>
+
+                           <span>NGN 30,000</span>
+                       </li>
+
+
+                   </ul>
+
+               </div>
+
+           </div>
+       </div>
+
+
     <hr />
+
+
+
+
+
     <h1>Brows jobs</h1>
 
-    {% for job in rescentCompletedJob %}
-        <ul>
-        <li><a href="{{ path('project_show', { 'id': job.id }) }}">{{ job.name }}</a></li>
-        </ul>
-    {% endfor %}
 
 
 
-  
 
-    
+        <table class="table table-hover">
+            <thead style="background-color: #222d32;color: white; font-weight: bolder;"><tr><th>Project </th><th>Bids</th><th>Bid endDate</th><th>Price</th></tr></thead>
+            <tbody class="card">
+            {% if  allJobs.getTotalItemCount %}
+                {% for job in allJobs %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('project_show', { 'id': job.id }) }}">{{ job.name |title }}</a><br />
+                            {{ job.description |capitalize }}<br />
+
+                           <p class="card-footer">
+                            {% for skill in job.skill %}
+                                <a  href="#">{{ skill.name}}</a>
+                            {% endfor %}
+                            </p>
+                            </td>
+                        <td>{{ job.bid |length }}</td>
+                        <td>{{ job.bidEnd |date }}</td>
+                        <td>{{ job.budget.budgetname }}</td>
+                    </tr>
+                {% endfor %}
+                <tr><td colspan="5">{{ knp_pagination_render(allJobs) }}</td></tr>
+            {% else %}
+                <tr><td colspan="5">You Currently have no project open for bidding </td></tr>
+
+            {% endif %}
+            </tbody>
+        </table>
+
+
+
+
+
+
+
+</div>
+{% endblock %}
+
+
+
+
+{% block javascripts %}
+    {{ parent() }}
 {% endblock %}

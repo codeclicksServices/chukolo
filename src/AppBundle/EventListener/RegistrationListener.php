@@ -32,7 +32,20 @@ class RegistrationListener implements EventSubscriberInterface
     public function onRegistrationSuccess(FormEvent $event)
     {
 
+
+      /*
+       *
+       * set the default settings
+       * */
+
+
+        $member = $event->getForm()->getData();
+
         /**
+         *
+         *
+         * set the default settings
+         *
          * get the intentions of the user
          * if the intent is is to hire create a project you want to hire for
          * if the intent  is to work  update your user entity with your
@@ -54,7 +67,7 @@ class RegistrationListener implements EventSubscriberInterface
 
         if ($intention == 'work'){
 
-            $url = $this->router->generate('admin');
+            $url = $this->router->generate('brows_jobs');
             $event->setResponse(new RedirectResponse($url));
         }
 

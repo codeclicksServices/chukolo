@@ -32,14 +32,22 @@ class MemberType extends AbstractType
 
         $builder
 
-            ->add('email', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\EmailType'), array('label' => 'form.email', 'translation_domain' => 'FOSUserBundle'))
-            ->add('username', null, array('label' => 'form.username', 'translation_domain' => 'FOSUserBundle'))
+            ->add('email', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\EmailType'),
+                array('label' => 'form.email',
+                    'attr'=>array("class"=>"form-control"),
+                    'translation_domain' => 'FOSUserBundle')
+
+            )
+
+
+            ->add('username', null, array('label' => 'form.username','attr'=>array("class"=>"form-control"), 'translation_domain' => 'FOSUserBundle'))
 
             ->add('plainPassword', LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\RepeatedType'), array(
                 'type' => LegacyFormHelper::getType('Symfony\Component\Form\Extension\Core\Type\PasswordType'),
                 'options' => array('translation_domain' => 'FOSUserBundle'),
-                'first_options' => array('label' => 'form.password'),
-                'second_options' => array('label' => 'form.password_confirmation'),
+                'first_options' => array('label' => 'form.password','attr'=>array("class"=>"form-control"),),
+                'second_options' => array('label' => 'form.password_confirmation', 'attr'=>array("class"=>"form-control"),
+                ),
                 'invalid_message' => 'fos_user.password.mismatch',
             ))
             ->add('intention', ChoiceType::class, array(
@@ -50,14 +58,9 @@ class MemberType extends AbstractType
                 ),
 
                 'mapped'=>false,
-                'expanded'=>false,
+                'expanded'=>true,
                 'multiple'=>false,
 
-            ))
-            ->add('consent', CheckboxType::class, array(
-                'label' => 'I consent',
-                'required'=>false,
-                'attr' => array('class'=>'form-contronjl')
             ));
 
     }

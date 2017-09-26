@@ -13,10 +13,6 @@
         {% else %}
             <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>SIGN IN</h3>
         {% endif %}
-
-
-
-
         <div class="form-group">
             <label class="control-label">USERNAME</label>
             <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" placeholder="User name" autofocus class="form-control"/>
@@ -30,14 +26,14 @@
 
                 <div class="animated-checkbox">
                     <label class="semibold-text">
-                        <input type="checkbox" id="remember_me" name="_remember_me" /><span class="label-text">Stay Signed in</span>
+                        <input type="checkbox" id="remember_me" name="_remember_me" /><span class="label-text">Stay Signed in</span><br>
 
                     </label>
                 </div>
 
                 {% if error %}
                     <p class="semibold-text mb-0"><a href="{{ path('fos_user_resetting_request') }}">
-                            <strong>Forgot Password ?</strong></a></p>
+                            <strong>Forgot Password ?</strong></a></p><br>
                 {% endif %}
 
                 <p class="semibold-text mb-0"> <a href="{{ path('member-registration') }}" class="">
@@ -50,12 +46,6 @@
             <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-sign-in fa-lg fa-fw"></i>SIGN IN</button>
         </div>
     </form>
-
-
-
-
-
-
 
 
 {% endblock %}

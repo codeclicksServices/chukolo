@@ -12,11 +12,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * for storing global settings
  * @ORM\Entity
  * @ORM\Table(name="settings")
  * @ORM\HasLifecycleCallbacks
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SettingRepository")
- *  @Vich\Uploadable
+ * @Vich\Uploadable
  */
 class  Settings
 {

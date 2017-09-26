@@ -49,11 +49,17 @@ class Skill
      */
     private $project;
 
+
+
     /**
-     * @ORM\ManyToOne(targetEntity="Member", inversedBy="skill")
-     * @ORM\JoinColumn(name="member_id",referencedColumnName="id", nullable=true )
+     *  @ORM\OneToMany(targetEntity="Portfolio", mappedBy="skill")
      */
-    protected $member;
+    protected $portfolio;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Member", mappedBy="skill")
+     */
+    private $member;
 
     /**
      * @ORM\ManyToMany(targetEntity="Category", mappedBy="skill")
@@ -267,5 +273,39 @@ class Skill
     public function getProject()
     {
         return $this->project;
+    }
+
+    /**
+     * Add portfolio
+     *
+     * @param \AppBundle\Entity\Portfolio $portfolio
+     *
+     * @return Skill
+     */
+    public function addPortfolio(\AppBundle\Entity\Portfolio $portfolio)
+    {
+        $this->portfolio[] = $portfolio;
+
+        return $this;
+    }
+
+    /**
+     * Remove portfolio
+     *
+     * @param \AppBundle\Entity\Portfolio $portfolio
+     */
+    public function removePortfolio(\AppBundle\Entity\Portfolio $portfolio)
+    {
+        $this->portfolio->removeElement($portfolio);
+    }
+
+    /**
+     * Get portfolio
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPortfolio()
+    {
+        return $this->portfolio;
     }
 }

@@ -25,3 +25,33 @@ body {
 .settings-header-title{
     padding: 0.5em 1.5em
 }
+
+.profile-badge-icon li {
+    display: inline;
+    padding: 0.5em;
+}
+
+.profile-badge-writ-up li {
+    font-weight: 600;
+    text-align: center;
+    padding: 0.2em;
+}
+
+.reputation span{
+    padding-left: .5em;
+    padding-right: .5em;
+}
+
+.reg-form{
+    padding: 3em;
+}
+
+.spinners {
+    display: none;
+}
+
+.fa-naira:before {
+    font-weight: 700;
+    /* font-family: YourWebApplicationFontFamily; */
+    content: '₦';
+}

@@ -118,7 +118,7 @@ pugx_multi_user:
             type: AppBundle\Form\Type\StaffType
             name: fos_user_registration_form
             validation_groups:  [Registration, Default]
-         # template: AppBundle:Registration:employee.form.html.twig
+          template: AppBundle:Registration:employee.form.html.twig
         profile:
           form:
             type: AppBundle\Form\Type\ProfileStaffType
@@ -130,10 +130,14 @@ pugx_multi_user:
         registration:
           form:
             type: AppBundle\Form\Type\MemberType
-          template: FOSUserBundle:Registration:member.html.twig
+            name: fos_user_registration_form
+            validation_groups:  [Registration, Default]
+          template: "FOSUserBundle:Registrazztion:member.html.twig"
         profile:
           form:
             type: AppBundle\Form\Type\ProfileMemberType
+
+
 
 
 knp_paginator:
@@ -179,7 +183,6 @@ vich_uploader:
               project_file:
                  uri_prefix:         /uploads/project/docs
                  upload_destination: %kernel.root_dir%/../web/uploads/project/docs
-
                  inject_on_load:     false
                  delete_on_update:   true
                  delete_on_remove:   true
@@ -187,7 +190,6 @@ vich_uploader:
               banner_file:
                  uri_prefix:         /uploads/suscription/docs
                  upload_destination: %kernel.root_dir%/../web/uploads/suscription/docs
-
                  inject_on_load:     false
                  delete_on_update:   true
                  delete_on_remove:   true
@@ -201,13 +203,19 @@ vich_uploader:
                  namer:              vich_uploader.namer_uniqid
 
 
+
               category_logo:
-                               uri_prefix:         /uploads/category/images
-                               upload_destination: %kernel.root_dir%/../web/uploads/category/images
-                               inject_on_load:     false
-                               delete_on_update:   true
-                               delete_on_remove:   true
-                               namer:              vich_uploader.namer_uniqid
+                 uri_prefix:         /uploads/category/images
+                 upload_destination: %kernel.root_dir%/../web/uploads/category/images
+                 inject_on_load:     false
+                 delete_on_update:   true
+                 delete_on_remove:   true
+                 namer:              vich_uploader.namer_uniqid
 
-
-
+              portfolio_file:
+                 uri_prefix:         /uploads/porfolio/images
+                 upload_destination: %kernel.root_dir%/../web/uploads/portfolio/images
+                 inject_on_load:     false
+                 delete_on_update:   true
+                 delete_on_remove:   true
+                 namer:              vich_uploader.namer_uniqid
