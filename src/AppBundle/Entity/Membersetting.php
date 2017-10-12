@@ -724,4 +724,72 @@ class  Membersetting extends Member
     {
         return $this->address;
     }
+
+    /**
+     * Add deposit
+     *
+     * @param \AppBundle\Entity\Deposit $deposit
+     *
+     * @return Membersetting
+     */
+    public function addDeposit(\AppBundle\Entity\Deposit $deposit)
+    {
+        $this->deposit[] = $deposit;
+
+        return $this;
+    }
+
+    /**
+     * Remove deposit
+     *
+     * @param \AppBundle\Entity\Deposit $deposit
+     */
+    public function removeDeposit(\AppBundle\Entity\Deposit $deposit)
+    {
+        $this->deposit->removeElement($deposit);
+    }
+
+    /**
+     * Get deposit
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDeposit()
+    {
+        return $this->deposit;
+    }
+
+    /**
+     * Add bank
+     *
+     * @param \AppBundle\Entity\MemberBank $bank
+     *
+     * @return Membersetting
+     */
+    public function addBank(\AppBundle\Entity\MemberBank $bank)
+    {
+        $this->bank[] = $bank;
+
+        return $this;
+    }
+
+    /**
+     * Remove bank
+     *
+     * @param \AppBundle\Entity\MemberBank $bank
+     */
+    public function removeBank(\AppBundle\Entity\MemberBank $bank)
+    {
+        $this->bank->removeElement($bank);
+    }
+
+    /**
+     * Get bank
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBank()
+    {
+        return $this->bank;
+    }
 }

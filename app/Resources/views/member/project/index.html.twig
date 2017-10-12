@@ -150,7 +150,10 @@
                 {% for job in allJobs %}
                     <tr>
                         <td>
-                            <a href="{{ path('project_show', { 'id': job.id }) }}">{{ job.name |title }}</a><br />
+                            {#
+                            //job is same as project
+                            #}
+                            <a href="{{ path('project_details', { 'projectId': job.id }) }}">{{ job.name |title }}</a><br />
                             {{ job.description |capitalize }}<br />
 
                            <p class="card-footer">
@@ -166,7 +169,7 @@
                 {% endfor %}
                 <tr><td colspan="5">{{ knp_pagination_render(allJobs) }}</td></tr>
             {% else %}
-                <tr><td colspan="5">You Currently have no project open for bidding </td></tr>
+                <tr><td colspan="5">Oh Crap!, No Job here check back again soonest </td></tr>
 
             {% endif %}
             </tbody>

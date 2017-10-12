@@ -39,7 +39,10 @@ class Subscription
      * @ORM\Column(type="text",nullable=true)
      */
     protected $description;
-
+    /**
+     * @ORM\Column(type="smallint", length=1)
+     */
+    protected $enabled;
     /**
      * @ORM\Column(type="text",nullable=true)
      */

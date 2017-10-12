@@ -137,6 +137,35 @@ class AjaxController extends Controller
         return new Response(json_encode(array('status'=>'success')));
     }
 
+    /**
+     * first stage of biding process
+     * @Route("/member/bid/initialize", name="initialize_biding")
+     */
+    public function initializeBidingAction(Request $request) {
+        if (! $request->isXmlHttpRequest()) {
+            throw new NotFoundHttpException();
+        }
+        $id = $request->query->get('skill_id');
+        $repo = $this->getDoctrine()->getRepository('AppBundle:Skill');
+        $skill=$repo->find($id);
+        // Get the skill id
+
+        $user =$this->getUser();
+
+        if (!$user->hasSkill($skill)){
+
+            $user->addSkill($skill);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+        }
+
+
+
+        return new Response(json_encode(array('status'=>'success')));
+    }
 
 
     /**
@@ -147,26 +176,13 @@ class AjaxController extends Controller
      */
     public function updateMemberProfileAction(Request $request) {
 
-
-
-
-
         $user = $this->getUser();
 
         if ($user){
-
-
-
-
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
-
         }
-
-
-
         return new Response(json_encode(array('status'=>'success')));
     }
 }

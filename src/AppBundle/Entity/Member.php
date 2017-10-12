@@ -149,6 +149,7 @@ class Member extends User
     protected $review;
 
     /**
+     * this is my source of fund
      *  @ORM\OneToMany(targetEntity="Milestone", mappedBy="employer")
      */
     protected $milestone;
@@ -165,7 +166,6 @@ class Member extends User
      *  @ORM\OneToMany(targetEntity="Publication", mappedBy="owner")
      */
     protected $publication;
-
 
     /**
      *  @ORM\OneToMany(targetEntity="XP", mappedBy="owner")
@@ -185,10 +185,15 @@ class Member extends User
     private $verified;
 
 
+    /**
+     *  @ORM\OneToMany(targetEntity="Deposit", mappedBy="member")
+     */
+    protected $deposit;
 
-
-
-
+    /**
+     *  @ORM\OneToMany(targetEntity="MemberBank", mappedBy="member")
+     */
+    protected $bank;
 
 
 
@@ -1075,5 +1080,73 @@ class Member extends User
     public function getAddress()
     {
         return $this->address;
+    }
+
+    /**
+     * Add deposit
+     *
+     * @param \AppBundle\Entity\Deposit $deposit
+     *
+     * @return Member
+     */
+    public function addDeposit(\AppBundle\Entity\Deposit $deposit)
+    {
+        $this->deposit[] = $deposit;
+
+        return $this;
+    }
+
+    /**
+     * Remove deposit
+     *
+     * @param \AppBundle\Entity\Deposit $deposit
+     */
+    public function removeDeposit(\AppBundle\Entity\Deposit $deposit)
+    {
+        $this->deposit->removeElement($deposit);
+    }
+
+    /**
+     * Get deposit
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDeposit()
+    {
+        return $this->deposit;
+    }
+
+    /**
+     * Add bank
+     *
+     * @param \AppBundle\Entity\MemberBank $bank
+     *
+     * @return Member
+     */
+    public function addBank(\AppBundle\Entity\MemberBank $bank)
+    {
+        $this->bank[] = $bank;
+
+        return $this;
+    }
+
+    /**
+     * Remove bank
+     *
+     * @param \AppBundle\Entity\MemberBank $bank
+     */
+    public function removeBank(\AppBundle\Entity\MemberBank $bank)
+    {
+        $this->bank->removeElement($bank);
+    }
+
+    /**
+     * Get bank
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBank()
+    {
+        return $this->bank;
     }
 }

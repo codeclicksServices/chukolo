@@ -718,27 +718,19 @@
                         <div class="faq-q">
                             {{ category.name |title }} <span class="faq-t">+</span>
                         </div>
-
                         <div class="faq-a tag-widget">
-
                             <div style="margin-right: 0.5em" class="tags animated-checkbox">
                              {% for skill in category.skill %}
-
-
                                 {% if app.user.hasSkill(skill) %}
+                                {# write skill removal#}
                                 {% else %}
                                 <label>
                                   <input class="checkIt" type="checkbox" value={{ skill.id }}><span class="label-text">{{ skill.name |title }}</span>
                                 </label>
                                 {% endif %}
-
-
                              {% endfor %}
                             </div>
                         </div>
-
-
-
                     </div>
                 </div>
                    {% endfor %}
@@ -973,46 +965,27 @@
                 }, 'JSON');
             });
 
-
-
-
-
-
-
             $('.checkIt').bind('click', function() {
-
-
                 if($(this).is(":checked")) {
 
                     // checkbox is checked
                 var val = $(this).val();
-
-
                  // when category is selected provide the category skills
                  $.ajax({
                      type: "POST",
                      url: "{{ path('add-member-skill') }}?skill_id=" + val,
                      success: function(data) {
                          // Remove current options
-
                        alert(val);
                      }
                  });
-
                 } else {
                     // checkbox is not checked
                        alert('ffffffffffffffffff');
                 }
             });
-
-
-
-
             $('#project_category').change(function(){
                 var val = $(this).val();
-
-
-
 
                  $.ajax({
                      type: "POST",
@@ -1021,8 +994,6 @@
                          // Remove current options
                      }
                  });
-
-
                 return false;
             });
 

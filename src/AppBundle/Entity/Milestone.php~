@@ -53,16 +53,17 @@ class Milestone
 
       /*
        * relationship
-       *
+       * milestone for a who through what contract which is the fund
        * by  member
        * for project
        */
 
     /**
+     *the person that is meant to receive the milestone i.e the freelancer
      * @ORM\ManyToOne(targetEntity="Member", inversedBy="milestone")
-     * @ORM\JoinColumn(name="employer_id",referencedColumnName="id", nullable=false )
+     * @ORM\JoinColumn(name="owner_id",referencedColumnName="id", nullable=false )
      */
-    protected $employer;
+    protected $owner;
 
     /**
      * contract is the same thing as bid after is awarded
@@ -71,7 +72,17 @@ class Milestone
      */
     protected $contract;
 
+    /**
+     * @ORM\OneToOne(targetEntity="Fund", mappedBy="milestone")
+     */
+    private $fund;
 
+
+    /**
+     * receipt for the payer
+     * @ORM\OneToOne(targetEntity="Invoice", mappedBy="milestone")
+     */
+    private $invoice;
 
 
     /**
@@ -275,5 +286,77 @@ class Milestone
     public function getEmployer()
     {
         return $this->employer;
+    }
+
+    /**
+     * Set owner
+     *
+     * @param \AppBundle\Entity\Member $owner
+     *
+     * @return Milestone
+     */
+    public function setOwner(\AppBundle\Entity\Member $owner)
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * Get owner
+     *
+     * @return \AppBundle\Entity\Member
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * Set fund
+     *
+     * @param \AppBundle\Entity\Fund $fund
+     *
+     * @return Milestone
+     */
+    public function setFund(\AppBundle\Entity\Fund $fund = null)
+    {
+        $this->fund = $fund;
+
+        return $this;
+    }
+
+    /**
+     * Get fund
+     *
+     * @return \AppBundle\Entity\Fund
+     */
+    public function getFund()
+    {
+        return $this->fund;
+    }
+
+    /**
+     * Set invoice
+     *
+     * @param \AppBundle\Entity\Invoice $invoice
+     *
+     * @return Milestone
+     */
+    public function setInvoice(\AppBundle\Entity\Invoice $invoice = null)
+    {
+        $this->invoice = $invoice;
+
+        return $this;
+    }
+
+    /**
+     * Get invoice
+     *
+     * @return \AppBundle\Entity\Invoice
+     */
+    public function getInvoice()
+    {
+        return $this->invoice;
     }
 }

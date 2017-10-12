@@ -53,4 +53,22 @@ class BidRepository extends EntityRepository
         return $query;
     }
 
+
+
+/*todo: you can never have more than one active bid for one project. enforce this
+*/
+    public function getMyProjectBid($member,$project) {
+        return $this
+            ->createQueryBuilder('e')
+            ->select('e')
+            ->where('e.member = :member')
+            ->andWhere('e.project = :project')
+            ->setParameter('member',$member)
+            ->setParameter('project', $project)
+            ->orderBy('e.id', 'DESC')
+         //   ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 }

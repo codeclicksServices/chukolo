@@ -53,12 +53,17 @@ class Bid implements TimeStampInterface
      * @ORM\Column(type="integer",options={"comment":"value: bid price + commission which will be debited from the employer " })
      */
     protected $value;
+    
+    /**
+     * @ORM\Column(type="integer",options={"comment":"value: for defining how many times the payment should be broken down i.e the maximum number of milestones " })
+     */
+    protected $numberOfMilestones;
     /**
      * @ORM\Column(type="string", length=30,options={"comment":"bid states include proposal,contract"})
      */
     protected $state;
     /**
-     * @ORM\Column(type="string", length=30,options={"comment":"bid stages include created,declined,awarded,progress,paused,terminated,completed"})
+     * @ORM\Column(type="string", length=30,options={"comment":"bid stages include initialize, created,declined,awarded,progress,paused,terminated,completed"})
      */
     protected $stage;
     /**
@@ -71,6 +76,11 @@ class Bid implements TimeStampInterface
      */
     protected $awarded;
 
+
+    /**
+     * @ORM\Column(type="smallint",options={"default":0, "comment":"if proposal has been created for this bid"})
+     */
+    protected $hasMilestoneProposal;
     /**
      * @ORM\Column(type="smallint",options={"default":1})
      */
@@ -135,6 +145,11 @@ class Bid implements TimeStampInterface
     protected $milestone;
 
     /**
+     *  @ORM\OneToMany(targetEntity="MilestoneProposal", mappedBy="bid")
+     */
+    protected $milestoneProposal;
+
+    /**+
      * Get id
      *
      * @return integer
@@ -626,5 +641,87 @@ class Bid implements TimeStampInterface
     public function getAwarded()
     {
         return $this->awarded;
+    }
+
+    /**
+     * Set numberOfMilestones
+     *
+     * @param integer $numberOfMilestones
+     *
+     * @return Bid
+     */
+    public function setNumberOfMilestones($numberOfMilestones)
+    {
+        $this->numberOfMilestones = $numberOfMilestones;
+
+        return $this;
+    }
+
+    /**
+     * Get numberOfMilestones
+     *
+     * @return integer
+     */
+    public function getNumberOfMilestones()
+    {
+        return $this->numberOfMilestones;
+    }
+
+    /**
+     * Set hasMilestoneProposal
+     *
+     * @param integer $hasMilestoneProposal
+     *
+     * @return Bid
+     */
+    public function setHasMilestoneProposal($hasMilestoneProposal)
+    {
+        $this->hasMilestoneProposal = $hasMilestoneProposal;
+
+        return $this;
+    }
+
+    /**
+     * Get hasMilestoneProposal
+     *
+     * @return integer
+     */
+    public function getHasMilestoneProposal()
+    {
+        return $this->hasMilestoneProposal;
+    }
+
+    /**
+     * Add milestoneProposal
+     *
+     * @param \AppBundle\Entity\MilestoneProposal $milestoneProposal
+     *
+     * @return Bid
+     */
+    public function addMilestoneProposal(\AppBundle\Entity\MilestoneProposal $milestoneProposal)
+    {
+        $this->milestoneProposal[] = $milestoneProposal;
+
+        return $this;
+    }
+
+    /**
+     * Remove milestoneProposal
+     *
+     * @param \AppBundle\Entity\MilestoneProposal $milestoneProposal
+     */
+    public function removeMilestoneProposal(\AppBundle\Entity\MilestoneProposal $milestoneProposal)
+    {
+        $this->milestoneProposal->removeElement($milestoneProposal);
+    }
+
+    /**
+     * Get milestoneProposal
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMilestoneProposal()
+    {
+        return $this->milestoneProposal;
     }
 }
