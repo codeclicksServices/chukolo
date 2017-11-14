@@ -187,7 +187,7 @@ vich_uploader:
                  delete_on_update:   true
                  delete_on_remove:   true
                  namer:              vich_uploader.namer_uniqid
-              banner_file:
+              icon_file:
                  uri_prefix:         /uploads/suscription/docs
                  upload_destination: %kernel.root_dir%/../web/uploads/suscription/docs
                  inject_on_load:     false
@@ -201,8 +201,6 @@ vich_uploader:
                  delete_on_update:   true
                  delete_on_remove:   true
                  namer:              vich_uploader.namer_uniqid
-
-
 
               category_logo:
                  uri_prefix:         /uploads/category/images

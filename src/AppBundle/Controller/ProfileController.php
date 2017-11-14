@@ -37,9 +37,6 @@ class ProfileController extends baseProfiler
      *
      */
 
-
-
-
     /*
      * 0 user  home
      */
@@ -229,20 +226,6 @@ class ProfileController extends baseProfiler
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /*
       * 2 user  project
       */
@@ -284,9 +267,14 @@ class ProfileController extends baseProfiler
         $workingProjectsQuery =$Project->findMyProject($user,'awarded');
         $openProjectsQuery =$Project->findMyProject($user,'open');
 
-        $activeBidsQuery =$Bid->findMyBid($user,'created');
-        $currentWorksQuery =$Bid->findMyBid($user,'progress');
-        $doneJobsQuery =$Bid->findMyBid($user,'completed');
+        $reviewingBidQuery =$Bid-> findMyUnreviewedBid($user);
+        $myAwardedBid = $Bid->  findMyAwardedBid($user);
+
+
+
+        $activeBidsQuery = $Bid->findMyBid($user,'created');
+        $currentWorksQuery = $Bid->findMyBid($user,'progress');
+        $doneJobsQuery = $Bid->findMyBid($user,'completed');
 
 
 
@@ -302,6 +290,7 @@ class ProfileController extends baseProfiler
         $activeBids = $paginator->paginate($activeBidsQuery,$request->query->getInt('page', 1),$pageLimit);
         $currentWorks = $paginator->paginate($currentWorksQuery,$request->query->getInt('page', 1),$pageLimit);
         $doneJobs = $paginator->paginate($doneJobsQuery,$request->query->getInt('page', 1),$pageLimit);
+        $reviewingBids = $paginator->paginate($reviewingBidQuery,$request->query->getInt('page', 1),$pageLimit);
 
 
 
@@ -312,6 +301,8 @@ class ProfileController extends baseProfiler
             'activeBids'=>$activeBids,
             'currentWorks'=>$currentWorks,
             'doneJobs'=>$doneJobs,
+            'reviewingBids'=>$reviewingBids,
+            'myAwardedBid'=>$myAwardedBid
         ));
     }
 
@@ -351,10 +342,6 @@ class ProfileController extends baseProfiler
             'project'=>$project,
             'milestoneForm' => $milestoneForm->createView(),
         ));
-    }
-
-    private function milestoneCreateAction()
-    {
     }
 
 

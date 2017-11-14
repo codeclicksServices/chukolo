@@ -2,30 +2,25 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\FundLog;
+use AppBundle\Entity\MilestoneProposal;
 use AppBundle\Entity\Project;
-use AppBundle\Entity\Bid;
+use AppBundle\Entity\ReservedFund;
 use AppBundle\Event\AppEvent;
 use AppBundle\Event\ProjectCreatedEvent;
-use AppBundle\Form\Type\BidType;
+use AppBundle\Form\Type\MilestoneProposalType;
 use AppBundle\Form\Type\ProjectType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\Model\UserInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 
 /**
  * Responsible for any action relating to hiring a freelancer .
  */
-class HireController extends Controller
+class HireController extends BaseController
 {
 
 
@@ -59,7 +54,7 @@ class HireController extends Controller
             $project->setDeleted(0);
             $project->setVisible(1);
             $project->setBiddable(1);
-            $project->setAwarded(1);
+            $project->setAwarded(0);
             $project->setModerated(0);
             $project->setOnGoing(0);
             $project->setState('pending');
@@ -149,87 +144,37 @@ class HireController extends Controller
     /**
      * entities.
      *
-     * @Route("/project/initialize/award/{proposalId}", name="initialize-project-award")
+     * @Route("/project/initialize/award/{bidId}", name="initialize-project-award")
      */
-    public function initializeAwardAction($proposalId)
+    public function initializeAwardAction(Request $request,$bidId)
     {
-        $bid  = $this->getDoctrine()->getManager()->getRepository('AppBundle:Bid')->find($proposalId);
+        $bid  = $this->getDoctrine()->getManager()->getRepository('AppBundle:Bid')->find($bidId);
 
 
+        $milestoneProposal = new MilestoneProposal();
+        $milestoneForm = $this->createForm(MilestoneProposalType::class,$milestoneProposal);
 
+        $milestoneForm->handleRequest($request);
 
+        if ($request->query->get('declineMilestoneProposal')== 1){
+          return  $this-> declineMilestoneProposal($bid,$request);
+        }
+        if ($request->query->get('acceptMilestoneProposal')== 1){
+            return  $this-> acceptMilestoneProposal($bid,$request);
+        }
+        if ($request->query->get('saveBid')== 1){
+            return  $this-> saveBid($bid,$request);
+        }
+        if ($request->query->get('awardBid')== 2){
+            return  $this-> awardProjectAction($bid);
+        }
 
-
-        return $this->render('member/milestone/index.html.twig', array(
+        return $this->render('member/user/project/award.html.twig', array(
+            'milestoneForm'=>$milestoneForm->createView(),
             'bid' => $bid,
         ));
     }
 
-
-    /**
-      * @Route("/project/award/{proposalId}", name="award-project")
-     */
-    public function awardProjectAction($proposalId)
-    {
-
-
-        $bid  = $this->getDoctrine()->getManager()->getRepository('AppBundle:Bid')->find($proposalId);
-        $project=$bid->getProject();
-        /*
-         * award processes one project can only  be awarded one person
-         */
-
-        if(!$project->getAwarded()== 1){
-            if($bid->getAwarded()==0){
-
-                /*
-                 * BID ACTION
-                 * if a bid is awarded the project
-                 * change  stage to awarded and leave state as proposal
-                 */
-                $bid->setStage('awarded');
-                $bid->setAwarded(1);
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($bid);
-                $em->flush();
-                /*
-                 * send email to the bidder
-                 */
-
-                /*
-                 * PROJECT ACTION
-                 * if a project is awarded
-                 * change  stage to awarded and leave state as proposal
-                 */
-
-                $project->setState('awarded');
-                $project->setAwarded(1);
-                $em =$this->getDoctrine()->getManager();
-                $em->persist($project);
-                $em->flush();
-                /*
-                 * redirect to project management
-                 */
-
-                return $this->redirect($this->generateUrl('manage_user_project',
-                    array('id' => $project->getId(),)));
-
-            }else{
-                //project already awarded to this bid
-
-                return $this->redirect($this->generateUrl('manage_user_project',
-                    array('id' => $project->getId(),)));
-            }
-        }else{
-            //project is awarded go to manage contract
-
-            return $this->redirect($this->generateUrl('manage_user_project',
-                array('id' => $project->getId(),)));
-        }
-
-
-
-    }
 
 
 

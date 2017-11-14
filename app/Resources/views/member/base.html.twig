@@ -46,7 +46,14 @@
             <div class="navbar-custom-menu">
                 <ul class="top-nav">
                     <!--Notification Menu-->
-                    <li class="dropdown "><a class="dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">NGN 0.00</a>
+                    <li class="dropdown "><a class="dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+                            {% if app.user.fund %}
+                            {{ app.user.fund.usableAmount |price }}
+
+                              {% else %}
+                                No acount for you
+                            {% endif %}
+                        </a>
                         <ul style="padding: 1em"  class="dropdown-menu">
                             <li style="padding: 2em 1.5em .2em">
                                  <i style="padding-left: 1.3em" class="fa fa-credit-card-alt fa-3x text-info" aria-hidden="true"></i>
@@ -151,8 +158,8 @@
                     <li class="treeview"><a href="#"><i class="fa fa-navicon"></i><span>Work</span><i class="fa fa-angle-right"></i></a>
                         <ul class="treeview-menu">
                             <li><a href="#"><i class="fa fa-circle-o"></i> Project With My Skills</a></li>
-                            <li><a href={{ path("brows_jobs") }} target="_blank"><i class="fa fa-circle-o"></i>Brows Projects</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Brows Local Jobs</a></li>
+                            <li><a href={{ path("brows_jobs") }} ><i class="fa fa-circle-o"></i>Brows Projects</a></li>
+                            <li><a href="#"target="_blank"><i class="fa fa-circle-o"></i> Brows Local Jobs</a></li>
                             <li><a href="#"><i class="fa fa-circle-o"></i> Brows Categories</a></li>
                         </ul>
                     </li>

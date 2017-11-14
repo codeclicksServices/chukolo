@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Entity;
 
+
 use Doctrine\Common\Collections\ArrayCollection;
 use PUGX\MultiUserBundle\Validator\Constraints\UniqueEntity;
 use FOS\UserBundle\Model\User as BaseUser;
@@ -36,6 +37,7 @@ class Member extends User
         $this->review = new ArrayCollection();
         $this->milestone = new ArrayCollection();
         $this->bid = new ArrayCollection();
+
     }
 
     /**
@@ -153,7 +155,10 @@ class Member extends User
      *  @ORM\OneToMany(targetEntity="Milestone", mappedBy="employer")
      */
     protected $milestone;
-
+    /**
+     * @ORM\OneToOne(targetEntity="Fund", mappedBy="owner")
+     */
+    private $fund;
     /**
      *  @ORM\OneToMany(targetEntity="Portfolio", mappedBy="owner")
      */
@@ -171,7 +176,10 @@ class Member extends User
      *  @ORM\OneToMany(targetEntity="XP", mappedBy="owner")
      */
     protected $xp;
-
+    /**
+     *  @ORM\OneToMany(targetEntity="FundLog", mappedBy="member")
+     */
+    protected $fundLog;
     /**
      * @ORM\ManyToMany(targetEntity="Experience", inversedBy="member")
      * @ORM\JoinTable(name ="member_experience")
@@ -194,6 +202,21 @@ class Member extends User
      *  @ORM\OneToMany(targetEntity="MemberBank", mappedBy="member")
      */
     protected $bank;
+
+    /**
+     * this is my source of fund
+     *  @ORM\OneToMany(targetEntity="ReservedFund", mappedBy="member")
+     */
+    protected $reservedFund;
+
+    /**
+     * @ORM\OneToMany(targetEntity="ChukoloFund", mappedBy="member")
+     */
+    private $chukoloFund;
+
+
+
+
 
 
 
@@ -250,78 +273,6 @@ class Member extends User
     }
 
     /**
-     * Set phone
-     *
-     * @param integer $phone
-     *
-     * @return Member
-     */
-    public function setPhone($phone)
-    {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-    /**
-     * Get phone
-     *
-     * @return integer
-     */
-    public function getPhone()
-    {
-        return $this->phone;
-    }
-
-    /**
-     * Set loginCount
-     *
-     * @param integer $loginCount
-     *
-     * @return Member
-     */
-    public function setLoginCount($loginCount)
-    {
-        $this->login_count = $loginCount;
-
-        return $this;
-    }
-
-    /**
-     * Get loginCount
-     *
-     * @return integer
-     */
-    public function getLoginCount()
-    {
-        return $this->login_count;
-    }
-
-    /**
-     * Set updated
-     *
-     * @param integer $updated
-     *
-     * @return Member
-     */
-    public function setUpdated($updated)
-    {
-        $this->updated = $updated;
-
-        return $this;
-    }
-
-    /**
-     * Get updated
-     *
-     * @return integer
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-    /**
      * Set gender
      *
      * @param string $gender
@@ -346,274 +297,27 @@ class Member extends User
     }
 
     /**
-     * Set profession
+     * Set address
      *
-     * @param string $profession
+     * @param string $address
      *
      * @return Member
      */
-    public function setProfession($profession)
+    public function setAddress($address)
     {
-        $this->profession = $profession;
+        $this->address = $address;
 
         return $this;
     }
 
     /**
-     * Get profession
+     * Get address
      *
      * @return string
      */
-    public function getProfession()
+    public function getAddress()
     {
-        return $this->profession;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     *
-     * @return Member
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * Add project
-     *
-     * @param \AppBundle\Entity\Project $project
-     *
-     * @return Member
-     */
-    public function addProject(\AppBundle\Entity\Project $project)
-    {
-        $this->project[] = $project;
-
-        return $this;
-    }
-
-    /**
-     * Remove project
-     *
-     * @param \AppBundle\Entity\Project $project
-     */
-    public function removeProject(\AppBundle\Entity\Project $project)
-    {
-        $this->project->removeElement($project);
-    }
-
-    /**
-     * Get project
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getProject()
-    {
-        return $this->project;
-    }
-
-    /**
-     * Add skill
-     *
-     * @param \AppBundle\Entity\Skill $skill
-     *
-     * @return Member
-     */
-    public function addSkill(\AppBundle\Entity\Skill $skill)
-    {
-        $this->skill[] = $skill;
-
-        return $this;
-    }
-
-    /**
-     * Remove skill
-     *
-     * @param \AppBundle\Entity\Skill $skill
-     */
-    public function removeSkill(\AppBundle\Entity\Skill $skill)
-    {
-        $this->skill->removeElement($skill);
-    }
-
-    /**
-     * Get skill
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getSkill()
-    {
-        return $this->skill;
-    }
-
-
-    /**
-     * Has skill
-     *
-     * @param \AppBundle\Entity\Skill $skill
-     * @return boolean
-     */
-    public function hasSkill(\AppBundle\Entity\Skill $skill)
-    {
-        if($this->skill->contains($skill)){
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Add category
-     *
-     * @param \AppBundle\Entity\Category $category
-     *
-     * @return Member
-     */
-    public function addCategory(\AppBundle\Entity\Category $category)
-    {
-        $this->category[] = $category;
-
-        return $this;
-    }
-
-    /**
-     * Remove category
-     *
-     * @param \AppBundle\Entity\Category $category
-     */
-    public function removeCategory(\AppBundle\Entity\Category $category)
-    {
-        $this->category->removeElement($category);
-    }
-
-    /**
-     * Get category
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
-
-    /**
-     * Add bid
-     *
-     * @param \AppBundle\Entity\Project $bid
-     *
-     * @return Member
-     */
-    public function addBid(\AppBundle\Entity\Project $bid)
-    {
-        $this->bid[] = $bid;
-
-        return $this;
-    }
-
-    /**
-     * Remove bid
-     *
-     * @param \AppBundle\Entity\Project $bid
-     */
-    public function removeBid(\AppBundle\Entity\Project $bid)
-    {
-        $this->bid->removeElement($bid);
-    }
-
-    /**
-     * Get bid
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getBid()
-    {
-        return $this->bid;
-    }
-
-    /**
-     * Set consent
-     *
-     * @param integer $consent
-     *
-     * @return Member
-     */
-    public function setConsent($consent)
-    {
-        $this->consent = $consent;
-
-        return $this;
-    }
-
-    /**
-     * Get consent
-     *
-     * @return integer
-     */
-    public function getConsent()
-    {
-        return $this->consent;
-    }
-
-    /**
-     * Set accountType
-     *
-     * @param string $accountType
-     *
-     * @return Member
-     */
-    public function setAccountType($accountType)
-    {
-        $this->accountType = $accountType;
-
-        return $this;
-    }
-
-    /**
-     * Get accountType
-     *
-     * @return string
-     */
-    public function getAccountType()
-    {
-        return $this->accountType;
-    }
-
-    /**
-     * Set currency
-     *
-     * @param string $currency
-     *
-     * @return Member
-     */
-    public function setCurrency($currency)
-    {
-        $this->currency = $currency;
-
-        return $this;
-    }
-
-    /**
-     * Get currency
-     *
-     * @return string
-     */
-    public function getCurrency()
-    {
-        return $this->currency;
+        return $this->address;
     }
 
     /**
@@ -689,30 +393,52 @@ class Member extends User
     }
 
     /**
-     * Set location
+     * Set company
      *
-     * @param string $location
+     * @param string $company
      *
      * @return Member
      */
-    public function setLocation($location)
+    public function setCompany($company)
     {
-        $this->location = $location;
+        $this->company = $company;
 
         return $this;
     }
 
     /**
-     * Get location
+     * Get company
      *
      * @return string
      */
-    public function getLocation()
+    public function getCompany()
     {
-        return $this->location;
+        return $this->company;
     }
 
+    /**
+     * Set phone
+     *
+     * @param integer $phone
+     *
+     * @return Member
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
 
+        return $this;
+    }
+
+    /**
+     * Get phone
+     *
+     * @return integer
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
 
     /**
      * Set trustScore
@@ -739,27 +465,272 @@ class Member extends User
     }
 
     /**
-     * Set membership
+     * Set profession
      *
-     * @param string $membership
+     * @param string $profession
      *
      * @return Member
      */
-    public function setMembership($membership)
+    public function setProfession($profession)
     {
-        $this->membership = $membership;
+        $this->profession = $profession;
 
         return $this;
     }
 
     /**
-     * Get membership
+     * Get profession
      *
      * @return string
      */
-    public function getMembership()
+    public function getProfession()
     {
-        return $this->membership;
+        return $this->profession;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Member
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set loginCount
+     *
+     * @param integer $loginCount
+     *
+     * @return Member
+     */
+    public function setLoginCount($loginCount)
+    {
+        $this->login_count = $loginCount;
+
+        return $this;
+    }
+
+    /**
+     * Get loginCount
+     *
+     * @return integer
+     */
+    public function getLoginCount()
+    {
+        return $this->login_count;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param integer $updated
+     *
+     * @return Member
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return integer
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * Set consent
+     *
+     * @param integer $consent
+     *
+     * @return Member
+     */
+    public function setConsent($consent)
+    {
+        $this->consent = $consent;
+
+        return $this;
+    }
+
+    /**
+     * Get consent
+     *
+     * @return integer
+     */
+    public function getConsent()
+    {
+        return $this->consent;
+    }
+
+    /**
+     * Add project
+     *
+     * @param \AppBundle\Entity\Project $project
+     *
+     * @return Member
+     */
+    public function addProject(\AppBundle\Entity\Project $project)
+    {
+        $this->project[] = $project;
+
+        return $this;
+    }
+
+    /**
+     * Remove project
+     *
+     * @param \AppBundle\Entity\Project $project
+     */
+    public function removeProject(\AppBundle\Entity\Project $project)
+    {
+        $this->project->removeElement($project);
+    }
+
+    /**
+     * Get project
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
+     * Add bid
+     *
+     * @param \AppBundle\Entity\Project $bid
+     *
+     * @return Member
+     */
+    public function addBid(\AppBundle\Entity\Project $bid)
+    {
+        $this->bid[] = $bid;
+
+        return $this;
+    }
+
+    /**
+     * Remove bid
+     *
+     * @param \AppBundle\Entity\Project $bid
+     */
+    public function removeBid(\AppBundle\Entity\Project $bid)
+    {
+        $this->bid->removeElement($bid);
+    }
+
+    /**
+     * Get bid
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBid()
+    {
+        return $this->bid;
+    }
+
+    /**
+     * Add skill
+     *
+     * @param \AppBundle\Entity\Skill $skill
+     *
+     * @return Member
+     */
+    public function addSkill(\AppBundle\Entity\Skill $skill)
+    {
+        $this->skill[] = $skill;
+
+        return $this;
+    }
+    /**
+
+     * @param \AppBundle\Entity\Skill $skill
+     * @return boolean
+     */
+    public function hasSkill(\AppBundle\Entity\Skill $skill)
+    {
+        if($this->skill->contains($skill)){
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * Remove skill
+     *
+     * @param \AppBundle\Entity\Skill $skill
+     */
+    public function removeSkill(\AppBundle\Entity\Skill $skill)
+    {
+        $this->skill->removeElement($skill);
+    }
+
+    /**
+     * Get skill
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSkill()
+    {
+        return $this->skill;
+    }
+
+    /**
+     * Add category
+     *
+     * @param \AppBundle\Entity\Category $category
+     *
+     * @return Member
+     */
+    public function addCategory(\AppBundle\Entity\Category $category)
+    {
+        $this->category[] = $category;
+
+        return $this;
+    }
+
+    /**
+     * Remove category
+     *
+     * @param \AppBundle\Entity\Category $category
+     */
+    public function removeCategory(\AppBundle\Entity\Category $category)
+    {
+        $this->category->removeElement($category);
+    }
+
+    /**
+     * Get category
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCategory()
+    {
+        return $this->category;
     }
 
     /**
@@ -797,74 +768,6 @@ class Member extends User
     }
 
     /**
-     * Add experience
-     *
-     * @param \AppBundle\Entity\Experience $experience
-     *
-     * @return Member
-     */
-    public function addExperience(\AppBundle\Entity\Experience $experience)
-    {
-        $this->experience[] = $experience;
-
-        return $this;
-    }
-
-    /**
-     * Remove experience
-     *
-     * @param \AppBundle\Entity\Experience $experience
-     */
-    public function removeExperience(\AppBundle\Entity\Experience $experience)
-    {
-        $this->experience->removeElement($experience);
-    }
-
-    /**
-     * Get experience
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getExperience()
-    {
-        return $this->experience;
-    }
-
-    /**
-     * Add verified
-     *
-     * @param \AppBundle\Entity\Verifiable $verified
-     *
-     * @return Member
-     */
-    public function addVerified(\AppBundle\Entity\Verifiable $verified)
-    {
-        $this->verified[] = $verified;
-
-        return $this;
-    }
-
-    /**
-     * Remove verified
-     *
-     * @param \AppBundle\Entity\Verifiable $verified
-     */
-    public function removeVerified(\AppBundle\Entity\Verifiable $verified)
-    {
-        $this->verified->removeElement($verified);
-    }
-
-    /**
-     * Get verified
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getVerified()
-    {
-        return $this->verified;
-    }
-
-    /**
      * Add milestone
      *
      * @param \AppBundle\Entity\Milestone $milestone
@@ -896,6 +799,30 @@ class Member extends User
     public function getMilestone()
     {
         return $this->milestone;
+    }
+
+    /**
+     * Set fund
+     *
+     * @param \AppBundle\Entity\Fund $fund
+     *
+     * @return Member
+     */
+    public function setFund(\AppBundle\Entity\Fund $fund = null)
+    {
+        $this->fund = $fund;
+
+        return $this;
+    }
+
+    /**
+     * Get fund
+     *
+     * @return \AppBundle\Entity\Fund
+     */
+    public function getFund()
+    {
+        return $this->fund;
     }
 
     /**
@@ -967,40 +894,6 @@ class Member extends User
     }
 
     /**
-     * Add xp
-     *
-     * @param \AppBundle\Entity\XP $xp
-     *
-     * @return Member
-     */
-    public function addXp(\AppBundle\Entity\XP $xp)
-    {
-        $this->xp[] = $xp;
-
-        return $this;
-    }
-
-    /**
-     * Remove xp
-     *
-     * @param \AppBundle\Entity\XP $xp
-     */
-    public function removeXp(\AppBundle\Entity\XP $xp)
-    {
-        $this->xp->removeElement($xp);
-    }
-
-    /**
-     * Get xp
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getXp()
-    {
-        return $this->xp;
-    }
-
-    /**
      * Add publication
      *
      * @param \AppBundle\Entity\Publication $publication
@@ -1035,51 +928,107 @@ class Member extends User
     }
 
     /**
-     * Set company
+     * Add xp
      *
-     * @param string $company
+     * @param \AppBundle\Entity\XP $xp
      *
      * @return Member
      */
-    public function setCompany($company)
+    public function addXp(\AppBundle\Entity\XP $xp)
     {
-        $this->company = $company;
+        $this->xp[] = $xp;
 
         return $this;
     }
 
     /**
-     * Get company
+     * Remove xp
      *
-     * @return string
+     * @param \AppBundle\Entity\XP $xp
      */
-    public function getCompany()
+    public function removeXp(\AppBundle\Entity\XP $xp)
     {
-        return $this->company;
+        $this->xp->removeElement($xp);
     }
 
     /**
-     * Set address
+     * Get xp
      *
-     * @param string $address
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getXp()
+    {
+        return $this->xp;
+    }
+
+
+
+    /**
+     * Add experience
+     *
+     * @param \AppBundle\Entity\Experience $experience
      *
      * @return Member
      */
-    public function setAddress($address)
+    public function addExperience(\AppBundle\Entity\Experience $experience)
     {
-        $this->address = $address;
+        $this->experience[] = $experience;
 
         return $this;
     }
 
     /**
-     * Get address
+     * Remove experience
      *
-     * @return string
+     * @param \AppBundle\Entity\Experience $experience
      */
-    public function getAddress()
+    public function removeExperience(\AppBundle\Entity\Experience $experience)
     {
-        return $this->address;
+        $this->experience->removeElement($experience);
+    }
+
+    /**
+     * Get experience
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getExperience()
+    {
+        return $this->experience;
+    }
+
+    /**
+     * Add verified
+     *
+     * @param \AppBundle\Entity\Verifiable $verified
+     *
+     * @return Member
+     */
+    public function addVerified(\AppBundle\Entity\Verifiable $verified)
+    {
+        $this->verified[] = $verified;
+
+        return $this;
+    }
+
+    /**
+     * Remove verified
+     *
+     * @param \AppBundle\Entity\Verifiable $verified
+     */
+    public function removeVerified(\AppBundle\Entity\Verifiable $verified)
+    {
+        $this->verified->removeElement($verified);
+    }
+
+    /**
+     * Get verified
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVerified()
+    {
+        return $this->verified;
     }
 
     /**
@@ -1148,5 +1097,110 @@ class Member extends User
     public function getBank()
     {
         return $this->bank;
+    }
+
+
+
+
+    /**
+     * Add fundLog
+     *
+     * @param \AppBundle\Entity\FundLog $fundLog
+     *
+     * @return Member
+     */
+    public function addFundLog(\AppBundle\Entity\FundLog $fundLog)
+    {
+        $this->fundLog[] = $fundLog;
+
+        return $this;
+    }
+
+    /**
+     * Remove fundLog
+     *
+     * @param \AppBundle\Entity\FundLog $fundLog
+     */
+    public function removeFundLog(\AppBundle\Entity\FundLog $fundLog)
+    {
+        $this->fundLog->removeElement($fundLog);
+    }
+
+    /**
+     * Get fundLog
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFundLog()
+    {
+        return $this->fundLog;
+    }
+
+    /**
+     * Add reservedFund
+     *
+     * @param \AppBundle\Entity\ReservedFund $reservedFund
+     *
+     * @return Member
+     */
+    public function addReservedFund(\AppBundle\Entity\ReservedFund $reservedFund)
+    {
+        $this->reservedFund[] = $reservedFund;
+
+        return $this;
+    }
+
+    /**
+     * Remove reservedFund
+     *
+     * @param \AppBundle\Entity\ReservedFund $reservedFund
+     */
+    public function removeReservedFund(\AppBundle\Entity\ReservedFund $reservedFund)
+    {
+        $this->reservedFund->removeElement($reservedFund);
+    }
+
+    /**
+     * Get reservedFund
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getReservedFund()
+    {
+        return $this->reservedFund;
+    }
+
+    /**
+     * Add chukoloFund
+     *
+     * @param \AppBundle\Entity\ChukoloFund $chukoloFund
+     *
+     * @return Member
+     */
+    public function addChukoloFund(\AppBundle\Entity\ChukoloFund $chukoloFund)
+    {
+        $this->chukoloFund[] = $chukoloFund;
+
+        return $this;
+    }
+
+    /**
+     * Remove chukoloFund
+     *
+     * @param \AppBundle\Entity\ChukoloFund $chukoloFund
+     */
+    public function removeChukoloFund(\AppBundle\Entity\ChukoloFund $chukoloFund)
+    {
+        $this->chukoloFund->removeElement($chukoloFund);
+    }
+
+    /**
+     * Get chukoloFund
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getChukoloFund()
+    {
+        return $this->chukoloFund;
     }
 }

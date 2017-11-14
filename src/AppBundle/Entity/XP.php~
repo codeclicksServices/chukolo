@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * this is for user working experience
  *
  * @ORM\Entity
- * @ORM\Table(name="workExperience")
+ * @ORM\Table(name="work_experience")
  * @ORM\HasLifecycleCallbacks
  * @ORM\Entity(repositoryClass="AppBundle\Repository\XPRepository")
  *  @Vich\Uploadable
@@ -29,8 +29,6 @@ class XP
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-
     /**
      * @ORM\Column(type="datetime")
      * date created

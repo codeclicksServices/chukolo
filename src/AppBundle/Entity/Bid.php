@@ -24,17 +24,14 @@ class Bid implements TimeStampInterface
 {
   use TimeStampTrait;
 
-
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
     /**
-    * @ORM\Column(type="integer")
+    * @ORM\Column(type="integer",options={"comment":"value: total price the employer will pay " })
     */
     protected $price;
     /**
@@ -42,7 +39,7 @@ class Bid implements TimeStampInterface
      */
     protected $deliveryDays;
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer",nullable=true)
      */
     protected $commission;
     /**
@@ -50,10 +47,9 @@ class Bid implements TimeStampInterface
      */
     protected $proposal;
     /**
-     * @ORM\Column(type="integer",options={"comment":"value: bid price + commission which will be debited from the employer " })
+     * @ORM\Column(type="string",options={"comment":"value: bid price - commission this is what will be paid to the freelancer " })
      */
     protected $value;
-    
     /**
      * @ORM\Column(type="integer",options={"comment":"value: for defining how many times the payment should be broken down i.e the maximum number of milestones " })
      */
@@ -63,34 +59,10 @@ class Bid implements TimeStampInterface
      */
     protected $state;
     /**
-     * @ORM\Column(type="string", length=30,options={"comment":"bid stages include initialize, created,declined,awarded,progress,paused,terminated,completed"})
+     * @ORM\Column(type="string", length=30,
+     *     options={"comment":"bid stages include draft, created,declined,awarded,progress,paused,terminated,completed"})
      */
     protected $stage;
-    /**
-     * @ORM\Column(type="smallint",options={"default":0,"comment":"value: is 0 and 1(yes/no)"})
-     */
-    protected $withdrawn;
-
-    /**
-     * @ORM\Column(type="smallint",options={ "default":0,"comment":"value: is 0 and 1(yes/no) when wit"})
-     */
-    protected $awarded;
-
-
-    /**
-     * @ORM\Column(type="smallint",options={"default":0, "comment":"if proposal has been created for this bid"})
-     */
-    protected $hasMilestoneProposal;
-    /**
-     * @ORM\Column(type="smallint",options={"default":1})
-     */
-    protected $visible;
-    /**
-     * @ORM\Column(type="smallint",options={ "default":0,"comment":"help to toggle the proposal list"})
-     */
-    protected $bookmark;
-
-
 
     /**
      * @ORM\Column(type="date",nullable=true,options={"comment":"the actual day you delivered the job"})
@@ -110,9 +82,67 @@ class Bid implements TimeStampInterface
      * date created
      */
     protected $endDate;
+    /**
+     * @ORM\Column(type="integer",nullable=true,options={"comment":"value: this is the worth of subscription this project has " })
+     */
+    protected $subscriptionsValue;
 
     /**
-     *relships
+     * @ORM\Column(type="string", length=30,
+     *     options={"comment":"this is use for keeping the state of bid creation from step 1 to 4  0=bidcreation1 = milestoneChoice,2=featureChoice, 3= summary and 4= completecreation this is when the stage is = created "})
+     */
+    protected $step;
+    /**
+     * @ORM\Column(type="smallint",options={"default":0,"comment":"value: is 0 and 1(yes/no)"})
+     */
+    protected $withdrawn;
+
+    /**
+     * @ORM\Column(type="smallint",options={ "default":0,"comment":"value: is 0 and 1(yes/no) when wit"})
+     */
+    protected $awarded;
+    /**
+     * @ORM\Column(type="date",nullable=true,options={"comment":"this is the day the project awarded to you would be expired "})
+     */
+    protected $awardExpireDate;
+    /**
+     * todo check if this not used remove it
+     * @ORM\Column(type="smallint",options={"default":0, "comment":"for checking if bid has  Subscription"})
+     */
+    protected $hasSubscriptions;
+
+
+    /**
+     * @ORM\Column(type="smallint",options={"default":1})
+     */
+    protected $visible;
+    /**
+     * @ORM\Column(type="smallint",options={ "default":0,"comment":"help to toggle the proposal list"})
+     */
+    protected $bookmark;
+    /**
+     * @ORM\Column(type="smallint",options={ "default":0,"comment":"marking this bid as save makes it stands out so you can easily finish the award process"})
+     */
+    protected $saved;
+    /**
+     * @ORM\Column(type="smallint",options={ "default":0,"comment":"when a bid is created it needs to be reviewed before the employer can see it "})
+     */
+    protected $reviewed;
+    /**
+     * @ORM\Column(type="smallint",options={ "default":0,"comment":"this is used to show weather this bid was accepted after is reviewed by chukolo admin"})
+     */
+    protected $accepted;
+    /**
+     * @ORM\Column(type="smallint",options={ "default":0,"comment":"states weather the freelancer accepts the employer offer or not "})
+     */
+    protected $acceptOffer;
+    /**
+     * @ORM\Column(type="smallint",options={ "default":0,"comment":"states weather the project has started or not "})
+     */
+    protected $started;
+
+    /**
+     *relaships
      * project
      * who is biding
      * suscriptions
@@ -128,6 +158,7 @@ class Bid implements TimeStampInterface
     protected $project;
 
     /**
+     * member here is the bidder
      * @ORM\ManyToOne(targetEntity="Member", inversedBy="bid")
      * @ORM\JoinColumn(name="member_id", referencedColumnName="id")
      */
@@ -149,7 +180,19 @@ class Bid implements TimeStampInterface
      */
     protected $milestoneProposal;
 
-    /**+
+    /**
+     * @ORM\OneToMany(targetEntity="ReservedFund", mappedBy="bid")
+     */
+    private $reservedFund;
+
+    /**
+     * @ORM\OneToMany(targetEntity="ChukoloFund", mappedBy="bid")
+     */
+    private $chukoloFund;
+
+
+
+    /**
      * Get id
      *
      * @return integer
@@ -420,6 +463,20 @@ class Bid implements TimeStampInterface
 
         return $this;
     }
+    /**
+     * Has Subscription
+     *
+     * @param \AppBundle\Entity\Subscription $subscription
+     * @return boolean
+     */
+    public function hasSubscription(\AppBundle\Entity\Subscription $subscription)
+    {
+        if($this->subscription->contains($subscription)){
+            return true;
+        }
+        return false;
+    }
+
 
     /**
      * Remove subscription
@@ -667,29 +724,6 @@ class Bid implements TimeStampInterface
         return $this->numberOfMilestones;
     }
 
-    /**
-     * Set hasMilestoneProposal
-     *
-     * @param integer $hasMilestoneProposal
-     *
-     * @return Bid
-     */
-    public function setHasMilestoneProposal($hasMilestoneProposal)
-    {
-        $this->hasMilestoneProposal = $hasMilestoneProposal;
-
-        return $this;
-    }
-
-    /**
-     * Get hasMilestoneProposal
-     *
-     * @return integer
-     */
-    public function getHasMilestoneProposal()
-    {
-        return $this->hasMilestoneProposal;
-    }
 
     /**
      * Add milestoneProposal
@@ -723,5 +757,367 @@ class Bid implements TimeStampInterface
     public function getMilestoneProposal()
     {
         return $this->milestoneProposal;
+    }
+
+    /**
+     * milestone
+     * @return boolean
+     * check if this has milestone proposal at all
+     */
+    public function hasMilestoneProposal()
+    {
+
+        $subscriptions =$this->getMilestoneProposal();
+
+        if($subscriptions->count()>0){
+            $activeProposal=array();
+            foreach ($subscriptions as $proposal){
+                //if this proposal status is not declined add it as an active proposal
+                if ($proposal->getStatus() != "declined"){
+                    //make sure its not an offer
+                    if($proposal->getType() == "proposal"){
+                        $activeProposal = $proposal;
+                    }
+                }
+            }
+            if(!empty($activeProposal)){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+
+    }
+    /**
+     * Has Subscription
+     * @return boolean
+     * check if this has milestone offer
+     */
+    public function hasMilestoneOffer()
+    {
+
+        $subscriptions =$this->getMilestoneProposal();
+        if($subscriptions->count()>0){
+
+            $activeProposal=array();
+            foreach ($subscriptions as $proposal){
+                //if this proposal status is not declined add it as an active proposal
+                if ($proposal->getStatus() != "declined"){
+                    //make sure its not an offer
+                    if($proposal->getType() == "offer"){
+                        $activeProposal = $proposal;
+                    }
+                }
+            }
+                if(!empty($activeProposal)) {
+                        return true;
+                    }else{
+                        return false;
+                }
+        }else{
+            return false;
+        }
+
+    }
+
+    /**
+     * Set step
+     *
+     * @param string $step
+     *
+     * @return Bid
+     */
+    public function setStep($step)
+    {
+        $this->step = $step;
+
+        return $this;
+    }
+
+    /**
+     * Get step
+     *
+     * @return string
+     */
+    public function getStep()
+    {
+        return $this->step;
+    }
+
+    /**
+     * Set hasSubscriptions
+     *
+     * @param integer $hasSubscriptions
+     *
+     * @return Bid
+     */
+    public function setHasSubscriptions($hasSubscriptions)
+    {
+        $this->hasSubscriptions = $hasSubscriptions;
+
+        return $this;
+    }
+
+    /**
+     * Get hasSubscriptions
+     *
+     * @return integer
+     */
+    public function getHasSubscriptions()
+    {
+        return $this->hasSubscriptions;
+    }
+
+    /**
+     * Set subscriptionsValue
+     *
+     * @param integer $subscriptionsValue
+     *
+     * @return Bid
+     */
+    public function setSubscriptionsValue($subscriptionsValue)
+    {
+        $this->subscriptionsValue = $subscriptionsValue;
+
+        return $this;
+    }
+
+    /**
+     * Get subscriptionsValue
+     *
+     * @return integer
+     */
+    public function getSubscriptionsValue()
+    {
+        return $this->subscriptionsValue;
+    }
+
+
+    /**
+     * Set reservedFund
+     *
+     * @param \AppBundle\Entity\ReservedFund $reservedFund
+     *
+     * @return Bid
+     */
+    public function setReservedFund(\AppBundle\Entity\ReservedFund $reservedFund = null)
+    {
+        $this->reservedFund = $reservedFund;
+
+        return $this;
+    }
+
+    /**
+     * Get reservedFund
+     *
+     * @return \AppBundle\Entity\ReservedFund
+     */
+    public function getReservedFund()
+    {
+        return $this->reservedFund;
+    }
+
+    /**
+     * Add reservedFund
+     *
+     * @param \AppBundle\Entity\ReservedFund $reservedFund
+     *
+     * @return Bid
+     */
+    public function addReservedFund(\AppBundle\Entity\ReservedFund $reservedFund)
+    {
+        $this->reservedFund[] = $reservedFund;
+
+        return $this;
+    }
+
+    /**
+     * Remove reservedFund
+     *
+     * @param \AppBundle\Entity\ReservedFund $reservedFund
+     */
+    public function removeReservedFund(\AppBundle\Entity\ReservedFund $reservedFund)
+    {
+        $this->reservedFund->removeElement($reservedFund);
+    }
+
+    /**
+     * Add chukoloFund
+     *
+     * @param \AppBundle\Entity\ChukoloFund $chukoloFund
+     *
+     * @return Bid
+     */
+    public function addChukoloFund(\AppBundle\Entity\ChukoloFund $chukoloFund)
+    {
+        $this->chukoloFund[] = $chukoloFund;
+
+        return $this;
+    }
+
+    /**
+     * Remove chukoloFund
+     *
+     * @param \AppBundle\Entity\ChukoloFund $chukoloFund
+     */
+    public function removeChukoloFund(\AppBundle\Entity\ChukoloFund $chukoloFund)
+    {
+        $this->chukoloFund->removeElement($chukoloFund);
+    }
+
+    /**
+     * Get chukoloFund
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getChukoloFund()
+    {
+        return $this->chukoloFund;
+    }
+
+    /**
+     * Set saved
+     *
+     * @param integer $saved
+     *
+     * @return Bid
+     */
+    public function setSaved($saved)
+    {
+        $this->saved = $saved;
+
+        return $this;
+    }
+
+    /**
+     * Get saved
+     *
+     * @return integer
+     */
+    public function getSaved()
+    {
+        return $this->saved;
+    }
+
+    /**
+     * Set reviewed
+     *
+     * @param integer $reviewed
+     *
+     * @return Bid
+     */
+    public function setReviewed($reviewed)
+    {
+        $this->reviewed = $reviewed;
+
+        return $this;
+    }
+
+    /**
+     * Get reviewed
+     *
+     * @return integer
+     */
+    public function getReviewed()
+    {
+        return $this->reviewed;
+    }
+
+    /**
+     * Set awardExpireDate
+     *
+     * @param \DateTime $awardExpireDate
+     *
+     * @return Bid
+     */
+    public function setAwardExpireDate($awardExpireDate)
+    {
+        $this->awardExpireDate = $awardExpireDate;
+
+        return $this;
+    }
+
+    /**
+     * Get awardExpireDate
+     *
+     * @return \DateTime
+     */
+    public function getAwardExpireDate()
+    {
+        return $this->awardExpireDate;
+    }
+
+    /**
+     * Set accepted
+     *
+     * @param integer $accepted
+     *
+     * @return Bid
+     */
+    public function setAccepted($accepted)
+    {
+        $this->accepted = $accepted;
+
+        return $this;
+    }
+
+    /**
+     * Get accepted
+     *
+     * @return integer
+     */
+    public function getAccepted()
+    {
+        return $this->accepted;
+    }
+
+    /**
+     * Set started
+     *
+     * @param integer $started
+     *
+     * @return Bid
+     */
+    public function setStarted($started)
+    {
+        $this->started = $started;
+
+        return $this;
+    }
+
+    /**
+     * Get started
+     *
+     * @return integer
+     */
+    public function getStarted()
+    {
+        return $this->started;
+    }
+
+    /**
+     * Set acceptOffer
+     *
+     * @param integer $acceptOffer
+     *
+     * @return Bid
+     */
+    public function setAcceptOffer($acceptOffer)
+    {
+        $this->acceptOffer = $acceptOffer;
+
+        return $this;
+    }
+
+    /**
+     * Get acceptOffer
+     *
+     * @return integer
+     */
+    public function getAcceptOffer()
+    {
+        return $this->acceptOffer;
     }
 }

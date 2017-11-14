@@ -52,18 +52,10 @@ class MemberController extends Controller
             return new Response(json_encode(array('status'=>'success')));
         }
 
-
-
-
         return  $this->render('member/user/settings.html.twig',array(
             'profileForm'=> $profileForm->createView(),
         ));
     }
-
-
-
-
-
 
 
 }

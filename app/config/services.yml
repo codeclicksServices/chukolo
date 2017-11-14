@@ -26,7 +26,7 @@ services:
 
     app.user.registration_success:
         class: AppBundle\EventListener\RegistrationListener
-        arguments: ["@router"]
+        arguments: ["@router","@doctrine.orm.entity_manager"]
         tags:
               - { name: kernel.event_subscriber }
 

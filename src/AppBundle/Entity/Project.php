@@ -63,6 +63,7 @@ class Project
      * @ORM\Column(type="string", length=100,options={"comment":"is it a fixed project or time based "})
      */
     protected $type;
+
     /**
      * @ORM\Column(type="date",nullable=true, options={"comment":"when the project is meant to be delivered"})
      */
@@ -174,7 +175,11 @@ class Project
      */
     protected $category;
 
-
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="ReservedFund", mappedBy="project")
+     */
+    private $reservedFund;
 
 
     public function __construct() {
@@ -985,5 +990,53 @@ class Project
     public function getTerminated()
     {
         return $this->terminated;
+    }
+
+    /**
+     * Set reservedFund
+     *
+     * @param \AppBundle\Entity\ReservedFund $reservedFund
+     *
+     * @return Project
+     */
+    public function setReservedFund(\AppBundle\Entity\ReservedFund $reservedFund = null)
+    {
+        $this->reservedFund = $reservedFund;
+
+        return $this;
+    }
+
+    /**
+     * Get reservedFund
+     *
+     * @return \AppBundle\Entity\ReservedFund
+     */
+    public function getReservedFund()
+    {
+        return $this->reservedFund;
+    }
+
+    /**
+     * Add reservedFund
+     *
+     * @param \AppBundle\Entity\ReservedFund $reservedFund
+     *
+     * @return Project
+     */
+    public function addReservedFund(\AppBundle\Entity\ReservedFund $reservedFund)
+    {
+        $this->reservedFund[] = $reservedFund;
+
+        return $this;
+    }
+
+    /**
+     * Remove reservedFund
+     *
+     * @param \AppBundle\Entity\ReservedFund $reservedFund
+     */
+    public function removeReservedFund(\AppBundle\Entity\ReservedFund $reservedFund)
+    {
+        $this->reservedFund->removeElement($reservedFund);
     }
 }

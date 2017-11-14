@@ -46,7 +46,8 @@ class  Invoice
     protected $payer;
 
     /**
-     * @ORM\Column(type="text", nullable=false, options={"comment":"I.e what is this invoice generated for eg deposit milestone payment suscription "})
+     * @ORM\Column(type="text", nullable=false,
+     *      options={"comment":"I.e what is this invoice generated for eg deposit milestone payment subscription "})
      */
     protected $source;
     /**
@@ -78,20 +79,25 @@ class  Invoice
 
     /*
      * this has a relatioship with the deposit
+     * instances for getting an invoice are when you pay for a mile stone
+     * buy a feature
+     *
      */
     /*
      * one source of fund
      * @ORM\OneToOne(targetEntity="Deposit", inversedBy="invoice")
-     * @ORM\JoinColumn(name="deposit_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="deposit_id", referencedColumnName="id")
      */
     private $deposit;
 
-       /*
-        * one source of fund
-        * @ORM\OneToOne(targetEntity="Milestone", inversedBy="invoice")
-        * @ORM\JoinColumn(name="milestone_id", referencedColumnName="id", nullable=true)
-        */
-        private $milestone;
+   /*
+    * one source of fund
+    * @ORM\OneToOne(targetEntity="Milestone", inversedBy="invoice")
+    * @ORM\JoinColumn(name="milestone_id", referencedColumnName="id", nullable=true)
+    */
+    private $milestone;
+
+
 
 
     /**
@@ -295,4 +301,5 @@ class  Invoice
     {
         return $this->popName;
     }
+
 }

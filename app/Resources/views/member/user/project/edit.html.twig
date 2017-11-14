@@ -1,9 +1,7 @@
 {% extends 'member/base.html.twig' %}
 
 
- {% block breadCrumb %}
-
- {% endblock %}
+ {% block breadCrumb %}{% endblock %}
 {% block page %}
 
 
@@ -19,23 +17,18 @@
             {{ form_row(form.project,{ 'id':'project_sugestion'}) }}
        <li> <h2>What is your project about ?</h2>
 
-
        {{ form_row(form.name,{ 'id':'project_name'}) }}
 
        </li>
-
 
         <li><h2>Tell us more about your project</h2>
             {{ form_row(form.skill,{'id': 'project_skill'}) }}
         <br />
         {{ form_row(form.description,{ 'id':'description'}) }}
 
-
             <h3>Upload a file </h3>
             {{ form_row(form.documentFile) }}
         </li>
-
-
 
         <li>
             <h2>Type of Project</h2>

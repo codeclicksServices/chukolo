@@ -73,18 +73,24 @@ class Milestone
     protected $contract;
 
     /**
-     * @ORM\OneToOne(targetEntity="Fund", mappedBy="milestone")
+     * @ORM\ManyToOne(targetEntity="Fund", inversedBy="milestone")
+     * @ORM\JoinColumn(name="fund_id", referencedColumnName="id")
      */
     private $fund;
 
 
     /**
      * receipt for the payer
+     *
      * @ORM\OneToOne(targetEntity="Invoice", mappedBy="milestone")
      */
     private $invoice;
 
-
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="ReservedFund", mappedBy="milestone")
+     */
+    private $reservedFund;
     /**
      * Get id
      *
@@ -358,5 +364,60 @@ class Milestone
     public function getInvoice()
     {
         return $this->invoice;
+    }
+
+    /**
+     * Set reservedFund
+     *
+     * @param \AppBundle\Entity\ReservedFund $reservedFund
+     *
+     * @return Milestone
+     */
+    public function setReservedFund(\AppBundle\Entity\ReservedFund $reservedFund = null)
+    {
+        $this->reservedFund = $reservedFund;
+
+        return $this;
+    }
+
+    /**
+     * Get reservedFund
+     *
+     * @return \AppBundle\Entity\ReservedFund
+     */
+    public function getReservedFund()
+    {
+        return $this->reservedFund;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->reservedFund = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add reservedFund
+     *
+     * @param \AppBundle\Entity\ReservedFund $reservedFund
+     *
+     * @return Milestone
+     */
+    public function addReservedFund(\AppBundle\Entity\ReservedFund $reservedFund)
+    {
+        $this->reservedFund[] = $reservedFund;
+
+        return $this;
+    }
+
+    /**
+     * Remove reservedFund
+     *
+     * @param \AppBundle\Entity\ReservedFund $reservedFund
+     */
+    public function removeReservedFund(\AppBundle\Entity\ReservedFund $reservedFund)
+    {
+        $this->reservedFund->removeElement($reservedFund);
     }
 }

@@ -1,0 +1,463 @@
+{% extends 'member/base.html.twig' %}
+
+
+{% block titleText %}
+    <h1>Set Up Milestone Payments </h1>
+{% endblock %}
+
+{% block breadCrumb  %}
+
+{% endblock %}
+
+{% block page %}
+<div class="container">
+
+
+           <div class="row">
+               <div class="col-md-4">
+                   <div class="feature-content text-center">
+                       <div class="feature-icon-box">
+                           <div class="feature-icon center-block active">
+                               <i class="fa fa-pencil"></i>
+                           </div>
+                       </div> <!--  end of /.feature-icon-box  -->
+                       <div class="feature-info">
+                           <h3 class="feature-heading">CREATE &amp; DEPOSIT MILESTONE PAYMENT </h3>
+                           <p class="feature-description">
+                               Create a milestone payment so that {{ bid.member.firstName |title }} {{ bid.member.lastName |title }}
+                               can start working on this project right away.
+                           </p>  <!--   end of /.feature-description  -->
+                       </div> <!--   end of /.feature-info  -->
+                   </div> <!--  end of /.feature-content  -->
+               </div>
+               <div class="col-md-4">
+                   <div class="feature-content text-center">
+                       <div class="feature-icon-box">
+                           <div class="feature-icon center-block">
+                               <i class="fa fa-bank"></i>
+                           </div>
+                       </div> <!--  end of /.feature-icon-box  -->
+                       <div class="feature-info">
+                           <h3 class="feature-heading">SAVE </h3>
+                           <p class="feature-description">
+                               We securely hold your payment pending when the job will be delivered.
+                           </p>  <!--   end of /.feature-description  -->
+                       </div> <!--   end of /.feature-info  -->
+                   </div> <!--  end of /.feature-content  -->
+               </div>
+               <div class="col-md-4">
+                   <div class="feature-content text-center">
+                       <div class="feature-icon-box">
+                           <div class="feature-icon center-block">
+                               <i class="fa fa-thumbs-o-up"></i>
+                           </div>
+                       </div> <!--  end of /.feature-icon-box  -->
+                       <div class="feature-info">
+                           <h3 class="feature-heading">RELEASE PAYMENT</h3>
+                           <p class="feature-description">
+                               Only Release Payment to {{ bid.member.firstName |title }} {{ bid.member.lastName |title }}
+                               when you are 100% satisfied.
+                           </p>  <!--   end of /.feature-description  -->
+                       </div> <!--   end of /.feature-info  -->
+                   </div> <!--  end of /.feature-content  -->
+               </div>
+           </div>
+
+
+         <div class="row">
+             <div class="clearix"></div>
+              {% if bid.hasMilestoneProposal %}
+                  <div class="row">
+                      <div class="col-sm-10 col-sm-push-1 bs-component">
+                          <div class="alert alert-dismissible panel-default ">
+                              <button class="close" type="button" data-dismiss="alert">×</button>
+                              <h5>A milestone Proposal</h5>
+                              <p style="color:#1f1f1f">The freelancer {{ bid.member.firstName |title }}  {{ bid.member.lastName |title }} has proposed that you
+                                  pay milestone as stated below. If you are not okay with this proposal kindly create your own milestone<a class="alert-link" href="#">learrn more</a>.</p>
+                          </div>
+                      </div>
+                  </div>
+                <div class="row">
+
+                    <div class="col-sm-10 col-sm-push-1">
+
+                        <table class="table table-hover">
+                            <thead style="background-color: #222d29;color: white; font-weight: bolder;">
+                            <tr>
+                                <th>Milestone(s)</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                            </tr>
+                            </thead>
+                            <tbody class="card">
+
+                            {% for milestoneProposal in bid.getMilestoneProposal() %}
+                                {% if milestoneProposal.status !="declined" %}
+                                <tr>
+                                    <td>
+                                        {{ milestoneProposal.milestoneCode | capitalize }}
+                                    </td>
+
+                                    <td> {{ milestoneProposal.description |raw }}</td>
+                                    <td>
+                                        {{ milestoneProposal.amount | price }}
+                                    </td>
+                                </tr>
+                            {% endif %}
+                            {% endfor %}
+                            <tr>
+                                <td>
+                                    <button id="declineBidProposal" class="btn btn-danger icon-btn" type="button">
+                                        <i class="fa fa-fw fa-lg fa-check-circle"></i>Refuse this Proposal & Create My Milestone
+                                    </button>
+                                </td>
+                                <td>
+                                    <button id="acceptBidProposal" class="btn btn-default icon-btn" type="button">
+                                        <i class="fa fa-fw fa-lg fa-check-circle"></i>Accept & Use Freelancer Milestone
+                                    </button>
+                                </td>
+
+                            </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
+                  {% elseif bid.hasMilestoneOffer %}
+                      <div class="row">
+                          <div class="col-sm-10 col-sm-push-1 bs-component">
+                              <div class="alert alert-dismissible panel-default ">
+                                  <button class="close" type="button" data-dismiss="alert">×</button>
+                                  <h5>A milestone Offer</h5>
+                                  <p style="color:#1f1f1f"> You have agreed to pay {{ bid.price |price }} when this project is done and it will be paid as stated below.
+                                    <a class="alert-link" href="#">learrn more</a>.</p>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="row">
+
+                          <div class="col-sm-10 col-sm-push-1">
+
+                              <table class="table table-hover">
+                                  <thead style="background-color: #222d29;color: white; font-weight: bolder;">
+                                  <tr>
+                                      <th>Milestone</th>
+                                      <th>Description</th>
+                                      <th>Amount</th>
+                                  </tr>
+                                  </thead>
+                                  <tbody class="card">
+
+                                  {% for milestoneProposal in bid.getMilestoneProposal() %}
+                                      {% if milestoneProposal.type =="offer" %}
+                                          <tr>
+                                              <td>
+                                                  {{ milestoneProposal.milestoneCode | capitalize }}
+                                              </td>
+                                              <td>
+                                                  {{ milestoneProposal.amount | price }}
+                                              </td>
+                                              <td> {{ milestoneProposal.description |raw }}</td>
+                                          </tr>
+                                      {% endif %}
+                                  {% endfor %}
+                                  <tr>
+                                      {# it means that this user have enough money in his chukolo account to award this project #}
+                                      {% if bid.project.member.fund.usableAmount >= bid.price %}
+                                          <td>
+                                              <button id="awardBidProposal" class="btn btn-success icon-btn" type="button">
+                                                  <i class="fa fa-fw fa-lg fa-check-circle"></i>Award
+                                              </button>
+                                          </td>
+
+                                      {% else %}
+
+                                          <td>
+                                              <button id="declineBidProposal" class="btn btn-danger icon-btn" type="button">
+                                                  <i class="fa fa-fw fa-lg fa-check-circle"></i>Fund Your account & Award Project
+                                              </button>
+                                          </td>
+                                      {% endif %}
+                                      <td>
+                                          <button id="saveBid" class="btn btn-default icon-btn" type="button">
+                                              <i class="fa fa-fw fa-lg fa-save"></i>Save for Later
+                                          </button>
+                                      </td>
+
+                                  </tr>
+
+                                  </tbody>
+                              </table>
+
+                          </div>
+
+                      </div>
+
+
+                   {% else %}
+                       <div style="padding: 2em" class="row">
+                           <div class="col-sm-8">
+                               <div id ="milestoneChoice" >
+                                   <a href="" id="createMilestone">Create Milestone</a>
+
+                                   <button id="refuseMilestoneCreation" class="btn btn-sm btn-primary">let the employer choose a convenient  milestone</button>
+                               </div>
+                               <form id="chooseNumberofMilestoneForm" class="form-horizontal">
+
+                                   <label for="select">Number Of Milestone(choose if you want to split payment or be paid at once here.
+                                       <a class="alert-link" href="#">learrn more</a> )</label>
+                                   <select class="form-control" id="selectNumberOfMilestone">
+                                       <option value="0">Make a choice</option>
+                                       <option value="1">1 Milestone</option>
+                                       <option value="2">2 Milestones</option>
+                                   </select>
+
+
+                               </form>
+                               <div id="createMilestoneAndNext" style="padding:1em">
+                                   <form id="createMilestoneAndNextForm" class="form-horizontal">
+                                       <input type="submit" value="Create Milestone & Next" class="btn btn-primary"   />
+                                   </form>
+                               </div>
+                               <div id="milestoneOptions">
+                                   <hr />
+                                   <h3>This is your first milestone
+                                       <span>(Your first payment)</span></h3>
+
+                                   <div class="bs-component">
+                                       <div class="alert alert-dismissible panel-default">
+                                           <button class="close" type="button" data-dismiss="alert">×</button>
+
+                                           <h5>hint</h5>
+                                           <p style="color:#1f1f1f">Because you chose to split your payment into two chunk, here you are required to state
+                                               how much you want to receive first and state what you intent to use it for.</p>
+                                       </div>
+                                   </div>
+
+                                   {{ form_start(milestoneForm, {'attr': {'class': 'form-inline','id': 'numberfMilestoneForm'}}) }}
+
+                                   <div class="input-group"><span class="input-group-addon">₦</span>
+                                       {{ form_widget(milestoneForm.amount,{ 'id':'initialProposedAmount'}) }}
+
+                                   </div>
+                                   <div class="form-group">
+                                       <label class="control-label">Description</label>
+                                       {{ form_widget(milestoneForm.description) }}
+                                   </div>
+
+                                   <hr />
+
+                                   <input type="submit" value="Save & Next" class="btn btn-primary"   />
+
+                                   {{ form_end(milestoneForm) }}
+
+                               </div>
+                           </div>
+                           <div class="col-sm-4">
+                               <div class="bs-component">
+                                   <div class="alert alert-dismissible panel-default">
+                                       <button class="close" type="button" data-dismiss="alert">×</button>
+                                       <h4 class="text-center">General Tips Goes Here?</h4>
+                                       <h5>tip header</h5>
+                                       <p style="color:#1f1f1f">some helpful tips   <a class="alert-link" href="#">learrn more</a>.</p>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+
+              {% endif %}
+
+
+         </div>
+</div>
+
+
+{% endblock %}
+
+
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+
+
+
+            /*
+             * initialize milestone creation
+             */
+            $('#createMilestone').click(function(e) {
+                e.preventDefault();
+                $('#chooseNumberofMilestoneForm').show();
+                $('#milestoneChoice').hide();
+            });
+
+
+            /*
+             * create one milestone and go to next
+             */
+            $('#createMilestoneAndNextForm').submit(function(e) {
+                //  e.preventDefault();
+                var val =1;
+
+
+
+                $('#milestone_proposal_section').hide();
+                $('#loading_card').show();
+                $.ajax({
+                    type: "POST",
+                    url: "{{ url('initialize-project-award', { 'bidId': bid.id}) }}?createOneMilestone=" + val,
+                    success: function(data) {
+                        $('#loading_card').hide();
+                        location.reload();
+
+                    }
+                });
+            });
+
+
+
+            /*create milestone This action gets fired anytime the number of milestone is created */
+            $('#selectNumberOfMilestone').change(function(){
+                /*
+                 * todo: here
+                 */
+                var val = $(this).val();
+                if(val ==0){
+
+                    $('#milestoneOptions').hide();
+                    $('#refuseMilestoneCreation').show();
+                    $('#milestoneChoice').show();
+                    $('#createMilestoneAndNext').hide();
+                    $('#chooseNumberofMilestoneForm').hide();
+                }
+                if(val ==1){
+                    $('#milestoneOptions').hide();
+                    $('#createMilestoneAndNext').show();
+                    $('#refuseMilestoneCreation').hide();
+                    $('#milestoneChoice').hide();
+                }
+                if(val ==2){
+                    // here since the selected milesto2e is greater the
+                    $('#milestoneOptions').show();
+                    $('#refuseMilestoneCreation').hide();
+                    $('#createMilestoneAndNext').hide();
+                    $('#milestoneChoice').hide();
+                }
+                return false;
+            });
+
+
+            /*
+             * todo:here create your validation ie amount is not ever equal to bid value
+             */
+            $('#initialProposedAmount').change(function(){
+                var amount = $('#initialProposedAmount').val();
+                alert(amount);
+            });
+
+            /*
+             * create proposal for this bid
+             */
+            $('#numberOfMilestoneForm').submit(function(e) {
+
+                alert("numer of milstone clicked");
+                //e.preventDefault();
+                var url = "{{ path('initialize-project-award', {'bidId': bid.id}) }}";
+
+                $('#loading_card').show();
+                $('#milestone_proposal_section').hide();
+                var formSerialize = $(this).serialize();
+                $.post(url, formSerialize, function(response) {
+                    location.reload();
+                    $('#loading_card').hide();
+                    $('#feature_section').show();
+                }, 'JSON');
+
+            });
+
+
+            /*
+             * refuse to create milestone proposal
+             */
+            $('#declineBidProposal').click(function(e) {
+                var val = 1;
+
+                $('#loading_card').show();
+                $.ajax({
+
+                    type: "POST",
+                    url: "{{ path('initialize-project-award', {'bidId': bid.id}) }}?declineMilestoneProposal="+val,
+                    success: function(data) {
+                        location.reload();
+                        $('#loading_card').hide();
+                    }
+                });
+            });
+
+            /*
+             * accept the freelancer milestone proposal
+             */
+            $('#acceptBidProposal').click(function(e) {
+                var val = 1;
+
+                $('#loading_card').show();
+                $.ajax({
+
+                    type: "POST",
+                    url: "{{ path('initialize-project-award', {'bidId': bid.id}) }}?acceptMilestoneProposal="+val,
+                    success: function(data) {
+                        location.reload();
+                        alert("done deal ");
+                        $('#loading_card').hide();
+                    }
+                });
+            });
+
+            /*
+             * Save for later action
+             */
+            $('#saveBid').click(function(e) {
+                var val = 1;
+
+                $('#loading_card').show();
+                $.ajax({
+
+                    type: "POST",
+                    url: "{{ path('initialize-project-award', {'bidId': bid.id}) }}?saveBid="+val,
+                    success: function(urlFromController) {
+                        window.location.href = urlFromController;
+
+                    }
+                });
+            });
+
+
+            /*
+             * Save for later action
+             */
+            $('#awardBidProposal').click(function(e) {
+                var val = 2;
+
+                $('#loading_card').show();
+                $.ajax({
+
+                    type: "POST",
+                    url: "{{ path('initialize-project-award', {'bidId': bid.id}) }}?awardBid="+val,
+                    success: function(urlFromController) {
+                       // window.location.href = urlFromController;
+                          alert("awarded");
+                    }
+                });
+            });
+
+
+        });
+    </script>
+
+{% endblock %}

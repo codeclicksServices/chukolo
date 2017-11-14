@@ -61,7 +61,7 @@ class  ChukoloInvoice
 
 
     /*
-     * For anytime chukolo pay out money an invoce is generated for chukolo
+     * For anytime chukolo pay out money an invoice is generated for chukolo
      */
     /**
      * one source of fund

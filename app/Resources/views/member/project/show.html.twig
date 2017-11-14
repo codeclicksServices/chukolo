@@ -32,7 +32,7 @@
                                 <div class="widget-small info coloured-icon"><i class="icon fa fa-crosshairs fa-3x"></i>
                                     <div class="info">
                                         <h4>Average Bids</h4>
-                                        <p><b>25</b></p>
+                                        <p><b>{{ project.averageBid }}</b></p>
                                     </div>
                                 </div>
                             </div>
@@ -54,9 +54,24 @@
                             </div>
 
                         </div>
+                 {% if project.biddable %}
+                        {% if hasUserBid %}
+                            {% if hasUserBid.step == 5 %}
+                                {#finished the bid creation process#}
+                                <a href="{{ path('bid_project', { 'projectId': project.id }) }}" class="btn btn-black">Bid Details
+                                    {% else %}
 
+                                <a href="{{ path('bid_project', { 'projectId': project.id }) }}" class="btn btn-black">Bid for this project</a>
+                            {% endif %}
+
+                        {% else %}
                         <a href="{{ path('bid_project', { 'projectId': project.id }) }}" class="btn btn-black">Bid for this project</a>
-                             <hr />
+
+                    {% endif %}
+                            {% else %}
+                                <a href="{{ path('project_create') }}"><i class="fa fa-circle-o"></i>Create Similar Project</a>
+                        {% endif %}
+                        <hr />
 
                     </div>
 

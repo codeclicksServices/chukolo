@@ -116,7 +116,8 @@ class Deposit
     private $receiver;
 
     /**
-     * @ORM\OneToOne(targetEntity="Fund", mappedBy="deposit")
+     * @ORM\ManyToOne(targetEntity="Fund", inversedBy="deposit")
+     * @ORM\JoinColumn(name="fund_id", referencedColumnName="id")
      */
     private $fund;
 

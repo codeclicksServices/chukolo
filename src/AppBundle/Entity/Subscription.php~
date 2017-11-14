@@ -39,33 +39,36 @@ class Subscription
      * @ORM\Column(type="text",nullable=true)
      */
     protected $description;
-
+    /**
+     * @ORM\Column(type="smallint", length=1)
+     */
+    protected $enabled;
     /**
      * @ORM\Column(type="text",nullable=true)
      */
     protected $note;
-    /**
+
 
     /**
      * @ORM\Column(type="integer",nullable=true,options={"comment":"value: this is the cost of purchasing this features "})
      *
      */
-    private $value;
+    protected $value;
 
     /**
      *
-     * @Vich\UploadableField(mapping="suscription_file", fileNameProperty="bannerName")
+     * @Vich\UploadableField(mapping="icon_file", fileNameProperty="iconName")
      *
      * @var File
      */
-    private $bannerFile;
+    private $iconFile;
 
     /**
-     * @ORM\Column(type="string", nullable=true,length=255)
+     * @ORM\Column(type="string", nullable=true,length=105)
      *
      * @var string
      */
-    private $bannerName;
+    private $iconName;
 
 
 
@@ -79,6 +82,22 @@ class Subscription
      * @ORM\ManyToMany(targetEntity="Bid", mappedBy="subscription")
      */
     private $bid;
+
+
+
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="ReservedFund", mappedBy="subscription")
+     */
+    private $reservedFund;
+
+    /**
+     * @ORM\OneToMany(targetEntity="ChukoloFund", mappedBy="subscription")
+     */
+    private $chukoloFund;
+
+
+
 
     /**
      * Get id
@@ -142,15 +161,15 @@ class Subscription
 
     /**
      *
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $banner
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $icon
      *
      * @return Project
      */
-    public function setBannerFile(File $banner = null)
+    public function setIconFile(File $icon = null)
     {
-        $this->bannerFile = $banner;
+        $this->iconFile = $icon;
 
-        if ($banner) {
+        if ($icon) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
             $this->updatedAt = new \DateTime('now');
@@ -162,19 +181,19 @@ class Subscription
     /**
      * @return File
      */
-    public function getBannerFile()
+    public function getIconFile()
     {
-        return $this->bannerFile;
+        return $this->iconFile;
     }
 
     /**
-     * @param string $bannerName
+     * @param string $iconName
      *
      * @return Project
      */
-    public function setBannerName($bannerName)
+    public function setIconName($iconName)
     {
-        $this->bannerName = $bannerName;
+        $this->iconName = $iconName;
 
         return $this;
     }
@@ -208,13 +227,13 @@ class Subscription
     }
 
     /**
-     * Get bannerName
+     * Get iconName
      *
      * @return string
      */
-    public function getBannerName()
+    public function getIconName()
     {
-        return $this->bannerName;
+        return $this->iconName;
     }
     /**
      * Constructor
@@ -358,5 +377,137 @@ class Subscription
     public function getNote()
     {
         return $this->note;
+    }
+
+    /**
+     * Set enabled
+     *
+     * @param integer $enabled
+     *
+     * @return Subscription
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * Get enabled
+     *
+     * @return integer
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
+
+
+    /**
+     * Set reservedFund
+     *
+     * @param \AppBundle\Entity\ReservedFund $reservedFund
+     *
+     * @return Subscription
+     */
+    public function setReservedFund(\AppBundle\Entity\ReservedFund $reservedFund = null)
+    {
+        $this->reservedFund = $reservedFund;
+
+        return $this;
+    }
+
+    /**
+     * Get reservedFund
+     *
+     * @return \AppBundle\Entity\ReservedFund
+     */
+    public function getReservedFund()
+    {
+        return $this->reservedFund;
+    }
+
+    /**
+     * Add reservedFund
+     *
+     * @param \AppBundle\Entity\ReservedFund $reservedFund
+     *
+     * @return Subscription
+     */
+    public function addReservedFund(\AppBundle\Entity\ReservedFund $reservedFund)
+    {
+        $this->reservedFund[] = $reservedFund;
+
+        return $this;
+    }
+
+    /**
+     * Remove reservedFund
+     *
+     * @param \AppBundle\Entity\ReservedFund $reservedFund
+     */
+    public function removeReservedFund(\AppBundle\Entity\ReservedFund $reservedFund)
+    {
+        $this->reservedFund->removeElement($reservedFund);
+    }
+
+    /**
+     * Set noote
+     *
+     * @param string $noote
+     *
+     * @return Subscription
+     */
+    public function setNoote($noote)
+    {
+        $this->noote = $noote;
+
+        return $this;
+    }
+
+    /**
+     * Get noote
+     *
+     * @return string
+     */
+    public function getNoote()
+    {
+        return $this->noote;
+    }
+
+    /**
+     * Add chukoloFund
+     *
+     * @param \AppBundle\Entity\ChukoloFund $chukoloFund
+     *
+     * @return Subscription
+     */
+    public function addChukoloFund(\AppBundle\Entity\ChukoloFund $chukoloFund)
+    {
+        $this->chukoloFund[] = $chukoloFund;
+
+        return $this;
+    }
+
+    /**
+     * Remove chukoloFund
+     *
+     * @param \AppBundle\Entity\ChukoloFund $chukoloFund
+     */
+    public function removeChukoloFund(\AppBundle\Entity\ChukoloFund $chukoloFund)
+    {
+        $this->chukoloFund->removeElement($chukoloFund);
+    }
+
+    /**
+     * Get chukoloFund
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getChukoloFund()
+    {
+        return $this->chukoloFund;
     }
 }

@@ -19,6 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *  @Vich\Uploadable
  *
  * confirmed money in your chukolo account its source is either milestone received for a job don or your deposit
+ * money you can use
  */
 class  Fund
 {
@@ -30,12 +31,14 @@ class  Fund
     protected $id;
 
     /**
-     * @ORM\Column(type="string", nullable=false, options={"comment":"fund value i.e this amount is equal to the $reserved + usableAmount + paidOutAmount"})
+     * @ORM\Column(type="string", nullable=false,
+     *   options={"comment":"fund value i.e this amount is equal to the $reserved + usableAmount + paidOutAmount"})
      */
     protected $amount;
 
     /**
-     * @ORM\Column(type="string", nullable=false, options={"comment":"this is the amount reserved that you cannot withdraw or use its either saved up for milestone suscription or about to be withdrawn"})
+     * @ORM\Column(type="string", nullable=false,
+     *   options={"comment":"this is the amount reserved that you cannot withdraw or use its either saved up for milestone suscription or about to be withdrawn"})
      */
     protected $reserved;
 
@@ -44,9 +47,13 @@ class  Fund
      */
     protected $usableAmount;
     /**
-     * @ORM\Column(type="string", nullable=true, options={"comment":"this is the reservation amount you paid "})
+     * @ORM\Column(type="string", nullable=true, options={"comment":"this is the total withdrawn made from chukolo"})
      */
-    protected $paidOutAmount;
+    protected $withdrawn;
+    /**
+     * @ORM\Column(type="integer", nullable=true, options={"comment":"this is the value for you bid upgrades "})
+     */
+    protected $bidUpgrade;
     /**
      * @ORM\Column(type="string", nullable=true, options={"comment":"this is the reservation amount + usable amount "})
      */
@@ -55,10 +62,7 @@ class  Fund
      * @ORM\Column(type="string", nullable=true, options={"comment":"the currency is  ngn for now"})
      */
     protected $currency;
-    /**
-     * @ORM\Column(type="string", nullable=false, options={"comment":"where the fund came from is it deposit or job payment "})
-     */
-    protected $source;
+
     /**
      * @ORM\Column(type="string", nullable=false, options={"comment":"received value i.e the amount deposited or received from doing a project "})
      * is going to be paid from the source that ph
@@ -72,14 +76,10 @@ class  Fund
      */
     protected $status;
     /**
-     * @ORM\Column(type="smallint",nullable=true, options={"unsigned":false,"comment":"this would be closed wen the money is either fully reserved or used up" ,"default":0})
-    http://127.0.0.1:8000/_profiler/ce378d?panel=config     */
+     * @ORM\Column(type="smallint",nullable=true, options={"unsigned":false,"comment":"this would be closed when the money is either fully reserved or used up" ,"default":0})
+     */
     protected $closeUsage;
 
-    /**
-     * @ORM\Column(type="smallint", nullable=true, options={"unsigned":false, "default":0})
-     */
-    protected $complete;
 
     /**
      * @ORM\Column(type="smallint",nullable=true, options={"unsigned":false,"comment":"this is used for either enabling or disabling the withdrawal of this fund " , "default":0})
@@ -91,11 +91,6 @@ class  Fund
      */
     protected $created;
 
-    /**
-     * @ORM\Column(type="datetime",nullable=true)
-     * when the ph was completed
-     */
-    protected $completedAt;
 
 
 
@@ -110,28 +105,35 @@ class  Fund
      */
 
     /**
-     * one source of fund
-     * @ORM\OneToOne(targetEntity="Deposit", inversedBy="fund")
-     * @ORM\JoinColumn(name="deposit_id", referencedColumnName="id", nullable=true)
+     *member that owns the fund
+     * @ORM\OneToOne(targetEntity="Member", inversedBy="fund",cascade={"persist"})
+     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", nullable=false)
      */
-    private $deposit;
+    private $owner;
 
     /**
-     * second source of fund
-     * @ORM\OneToOne(targetEntity="Milestone", inversedBy="fund")
-     * @ORM\JoinColumn(name="milestone_id", referencedColumnName="id", nullable=true)
+     *  @ORM\OneToMany(targetEntity="Milestone", mappedBy="fund")
      */
     private $milestone;
 
     /**
+     *  @ORM\OneToMany(targetEntity="Deposit", mappedBy="fund")
+     */
+    protected $deposit;
+    /**
      *  @ORM\OneToMany(targetEntity="Withdrawal", mappedBy="fund")
      */
     protected $withdrawal;
+
+
+
     /**
      * Constructor
      */
     public function __construct()
     {
+        $this->milestone = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->deposit = new \Doctrine\Common\Collections\ArrayCollection();
         $this->withdrawal = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -143,6 +145,30 @@ class  Fund
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set amount
+     *
+     * @param string $amount
+     *
+     * @return Fund
+     */
+    public function setAmount($amount)
+    {
+        $this->amount = $amount;
+
+        return $this;
+    }
+
+    /**
+     * Get amount
+     *
+     * @return string
+     */
+    public function getAmount()
+    {
+        return $this->amount;
     }
 
     /**
@@ -266,30 +292,6 @@ class  Fund
     }
 
     /**
-     * Set source
-     *
-     * @param string $source
-     *
-     * @return Fund
-     */
-    public function setSource($source)
-    {
-        $this->source = $source;
-
-        return $this;
-    }
-
-    /**
-     * Get source
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return $this->source;
-    }
-
-    /**
      * Set received
      *
      * @param string $received
@@ -362,30 +364,6 @@ class  Fund
     }
 
     /**
-     * Set complete
-     *
-     * @param integer $complete
-     *
-     * @return Fund
-     */
-    public function setComplete($complete)
-    {
-        $this->complete = $complete;
-
-        return $this;
-    }
-
-    /**
-     * Get complete
-     *
-     * @return integer
-     */
-    public function getComplete()
-    {
-        return $this->complete;
-    }
-
-    /**
      * Set payout
      *
      * @param integer $payout
@@ -434,75 +412,95 @@ class  Fund
     }
 
     /**
-     * Set completedAt
+     * Set owner
      *
-     * @param \DateTime $completedAt
+     * @param \AppBundle\Entity\Member $owner
      *
      * @return Fund
      */
-    public function setCompletedAt($completedAt)
+    public function setOwner(\AppBundle\Entity\Member $owner = null)
     {
-        $this->completedAt = $completedAt;
+        $this->owner = $owner;
 
         return $this;
     }
 
     /**
-     * Get completedAt
+     * Get owner
      *
-     * @return \DateTime
+     * @return \AppBundle\Entity\Member
      */
-    public function getCompletedAt()
+    public function getOwner()
     {
-        return $this->completedAt;
+        return $this->owner;
     }
 
     /**
-     * Set deposit
-     *
-     * @param \AppBundle\Entity\Deposit $deposit
-     *
-     * @return Fund
-     */
-    public function setDeposit(\AppBundle\Entity\Deposit $deposit = null)
-    {
-        $this->deposit = $deposit;
-
-        return $this;
-    }
-
-    /**
-     * Get deposit
-     *
-     * @return \AppBundle\Entity\Deposit
-     */
-    public function getDeposit()
-    {
-        return $this->deposit;
-    }
-
-    /**
-     * Set milestone
+     * Add milestone
      *
      * @param \AppBundle\Entity\Milestone $milestone
      *
      * @return Fund
      */
-    public function setMilestone(\AppBundle\Entity\Milestone $milestone = null)
+    public function addMilestone(\AppBundle\Entity\Milestone $milestone)
     {
-        $this->milestone = $milestone;
+        $this->milestone[] = $milestone;
 
         return $this;
     }
 
     /**
+     * Remove milestone
+     *
+     * @param \AppBundle\Entity\Milestone $milestone
+     */
+    public function removeMilestone(\AppBundle\Entity\Milestone $milestone)
+    {
+        $this->milestone->removeElement($milestone);
+    }
+
+    /**
      * Get milestone
      *
-     * @return \AppBundle\Entity\Milestone
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getMilestone()
     {
         return $this->milestone;
+    }
+
+    /**
+     * Add deposit
+     *
+     * @param \AppBundle\Entity\Deposit $deposit
+     *
+     * @return Fund
+     */
+    public function addDeposit(\AppBundle\Entity\Deposit $deposit)
+    {
+        $this->deposit[] = $deposit;
+
+        return $this;
+    }
+
+    /**
+     * Remove deposit
+     *
+     * @param \AppBundle\Entity\Deposit $deposit
+     */
+    public function removeDeposit(\AppBundle\Entity\Deposit $deposit)
+    {
+        $this->deposit->removeElement($deposit);
+    }
+
+    /**
+     * Get deposit
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDeposit()
+    {
+        return $this->deposit;
     }
 
     /**
@@ -540,26 +538,50 @@ class  Fund
     }
 
     /**
-     * Set amount
+     * Set withdrawn
      *
-     * @param string $amount
+     * @param string $withdrawn
      *
      * @return Fund
      */
-    public function setAmount($amount)
+    public function setWithdrawn($withdrawn)
     {
-        $this->amount = $amount;
+        $this->withdrawn = $withdrawn;
 
         return $this;
     }
 
     /**
-     * Get amount
+     * Get withdrawn
      *
      * @return string
      */
-    public function getAmount()
+    public function getWithdrawn()
     {
-        return $this->amount;
+        return $this->withdrawn;
+    }
+
+    /**
+     * Set bidUpgrade
+     *
+     * @param string $bidUpgrade
+     *
+     * @return Fund
+     */
+    public function setBidUpgrade($bidUpgrade)
+    {
+        $this->bidUpgrade = $bidUpgrade;
+
+        return $this;
+    }
+
+    /**
+     * Get bidUpgrade
+     *
+     * @return string
+     */
+    public function getBidUpgrade()
+    {
+        return $this->bidUpgrade;
     }
 }

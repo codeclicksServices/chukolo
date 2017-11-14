@@ -981,9 +981,12 @@
                  });
                 } else {
                     // checkbox is not checked
-                       alert('ffffffffffffffffff');
+                       alert('removed this skill');
                 }
-            });
+            })
+
+
+
             $('#project_category').change(function(){
                 var val = $(this).val();
 
@@ -996,9 +999,7 @@
                  });
                 return false;
             });
-
-             <!-- togle category and skills on click -->
-
+            <!-- togle category and skills on click -->
             $(".faq-q").click( function () {
               var container = $(this).parents(".faq-c");
               var answer = container.find(".faq-a");

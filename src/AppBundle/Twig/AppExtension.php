@@ -24,7 +24,7 @@ class AppExtension extends \Twig_Extension
     public function priceFilter($number, $decimals = 0, $decPoint = '.', $thousandsSep = ',')
     {
         $price = number_format($number, $decimals, $decPoint, $thousandsSep);
-        $price = '₦ '.$price;
+        $price = '₦ '.$price.'.00';
 
         return $price;
     }

@@ -24,20 +24,31 @@ class MilestoneProposal
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
     /**
      * @ORM\Column(type="integer", length=80)
      */
     private $amount;
+
     /**
-     * @ORM\Column(type="string", length=80)
+     * @ORM\Column(type="string", nullable=false,length=80)
      */
     private $description;
     /**
-     * @ORM\Column(type="text",options={"default":0,"comment":"value: is 0 and 1(proposal or offer)  the freelancer propose and the employer offers"})
+     * @ORM\Column(type="string",options={"default":0,"comment":"value: proposal or offer  the freelancer propose and the employer offers"})
      */
     private $type;
-
+    /**
+     * @ORM\Column(type="string",options={"default":"pending","comment":"value: is either pending, accept or decline "})
+     */
+    private $status;
+    /**
+     * @ORM\Column(type="string",options={"default":0,"comment":"value: this is used to know if this is the first milestone second or third then all currently cus we can only create 2 max we have 1st and final"})
+     */
+    private $stage;
+    /**
+     * @ORM\Column(type="string",options={"comment":"value: the value starts from m1, m2, m3 etc"})
+     */
+    private $milestoneCode;
       /*
        * relationship
        * milestone for a who through what contract which is the fund
@@ -160,5 +171,77 @@ class MilestoneProposal
     public function getBid()
     {
         return $this->bid;
+    }
+
+    /**
+     * Set stage
+     *
+     * @param string $stage
+     *
+     * @return MilestoneProposal
+     */
+    public function setStage($stage)
+    {
+        $this->stage = $stage;
+
+        return $this;
+    }
+
+    /**
+     * Get stage
+     *
+     * @return string
+     */
+    public function getStage()
+    {
+        return $this->stage;
+    }
+
+    /**
+     * Set status
+     *
+     * @param string $status
+     *
+     * @return MilestoneProposal
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set milestoneCode
+     *
+     * @param string $milestoneCode
+     *
+     * @return MilestoneProposal
+     */
+    public function setMilestoneCode($milestoneCode)
+    {
+        $this->milestoneCode = $milestoneCode;
+
+        return $this;
+    }
+
+    /**
+     * Get milestoneCode
+     *
+     * @return string
+     */
+    public function getMilestoneCode()
+    {
+        return $this->milestoneCode;
     }
 }

@@ -2,235 +2,377 @@
 
 {% block page %}
 
+{% if project is defined %}
+
+<div style="margin-top: 3em" class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading text-center">
+            <h2 class="panel-title">{{ project.name }}</h2>
+        </div>
+        <div class="panel-body">
 
 
+            <div class="row">
 
 
-    {% if project is defined %}
-
-
-
-        <div style="margin-top: 3em" class="container">
-
-                <div class="panel panel-default">
-                    <div class="panel-heading text-center">
-                        <h2 class="panel-title">{{ project.name }}</h2>
-                    </div>
-                    <div class="panel-body">
-
-
-                        <div class="row">
-
-
-                            <div class="col-md-3">
-                                <div class="widget-small info coloured-icon"><i class="icon fa fa-users fa-3x"></i>
-                                    <div class="info">
-                                        <h4>Bids</h4>
-                                        <p><b>{{ bid_count }}</b></p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
-                                <div class="widget-small info coloured-icon"><i class="icon fa fa-crosshairs fa-3x"></i>
-                                    <div class="info">
-                                        <h4>Average Bids</h4>
-                                        <p><b>25</b></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="widget-small danger coloured-icon"><i class="icon fa fa-money fa-3x"></i>
-                                    <div class="info">
-                                        <h4>Budget</h4>
-                                        <p><b>{{ project.budget.minPrice |price }}  -  {{ project.budget.maxPrice |price }}</b></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="widget-small primary coloured-icon "><i class="icon fa fa-hourglass-start fa-3x"></i>
-                                    <div class="info">
-                                        <h4>{{ project.state |title }}</h4>
-                                        <p><b>{{ project.created |date }}</b></p>
-                                    </div>
-                                </div>
-                            </div>
-
+                <div class="col-md-3">
+                    <div class="widget-small info coloured-icon"><i class="icon fa fa-users fa-3x"></i>
+                        <div class="info">
+                            <h4>Bids</h4>
+                            <p><b>{{ bid_count }}</b></p>
                         </div>
-                             <hr />
-                         <div class="row">
-                             <div class="col-sm-12">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="widget-small info coloured-icon"><i class="icon fa fa-crosshairs fa-3x"></i>
+                        <div class="info">
+                            <h4>Average Bids</h4>
+                            <p><b>25</b></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="widget-small danger coloured-icon"><i class="icon fa fa-money fa-3x"></i>
+                        <div class="info">
+                            <h4>Budget</h4>
+                            <p><b>{{ project.budget.minPrice |price }}  -  {{ project.budget.maxPrice |price }}</b></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="widget-small primary coloured-icon "><i class="icon fa fa-hourglass-start fa-3x"></i>
+                        <div class="info">
+                            <h4>{{ project.state |title }}</h4>
+                            <p><b>{{ project.created |date }}</b></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+                 <hr />
 
 
-                             <div class="card-body3">
 
-                                 <div id="bid_Project_section">
-                                     {{ form_start(form, { 'attr': {'class': 'form-inline','id': 'bidForm'} }) }}
-                                     <h3 class="card-title text-center">Bid For This Project</h3>
-                                     <hr />
-                                     <div class="form-group">
-                                         <label class="control-label">Paid to You</label>
-                                         <div class="input-group"> {{ form_row(form.price) }}</div>
+             <div class="row">
+                 <div class="col-sm-12">
 
-                                     </div>
+                     <div class="card-body3">
+                         {% if workingBid  %}
 
-                                     <div class="form-group">
-                                         <label class="control-label">Days to Deliver</label>
-                                         <div class="input-group"><span class="input-group-addon">Days</span>
-                                             {{ form_row(form.deliveryDays) }}
-                                         </div>
-                                     </div>
-                                     <div class="col-sm-3">
-                                         <div class="alert alert-info">
-                                             <strong>Project Fee 10% </strong>
-                                         </div>
-
-                                         <div class="alert alert-warning">
-                                             <strong>Your bid : <label id="yourBid" >500</label></strong>
-                                         </div>
-                                         <div class="alert alert-warning">
-                                             <strong>Bid Usage: <label id="yourBid" >2 of 10</label></strong>
-                                         </div>
-                                     </div>
-                                     <br />
-
-                                     <div style="margin-top: 1em" class="form-group">
-
-                                         <div class="input-group">
-                                             {{ form_row(form.proposal) }}
-                                         </div>
-                                     </div>
-                                     <hr />
-                                     <div style="margin-top: 3em" class="btn-group">
-                                         <input type="submit" value="Next" class="btn btn-primary" id="publicationCommit"  />
-                                     </div>
-                                     {{ form_end(form) }}
-                                 </div>
-
-                                 <div id="milestone_proposal_section">
+                             {% if workingBid.step == 1  %}
+                             <div id="milestone_proposal_section">
+                                <div class="row">
                                      <h3 class="card-title text-center">Create Milestone Proposal</h3>
-
-
-                                     <div class="bs-component">
-                                         <div class="alert alert-dismissible alert-warning">
-                                             <button class="close" type="button" data-dismiss="alert">×</button>
-                                             <h4 class="text-center">What is a Milestone Proposal ?</h4>
-                                             <h5>A milestone Proposal</h5>
-                                             <p style="color:#1f1f1f">This is how you wish to receive your payment. Here you can decide if you want your employee
-                                                 to pay you a bit depending on your task.   <a class="alert-link" href="#">learrn more</a>.</p>
-                                         </div>
+                                 <div class="bs-component">
+                                     <div class="alert alert-dismissible alert-warning">
+                                         <button class="close" type="button" data-dismiss="alert">×</button>
+                                         <h4 class="text-center">What is a Milestone Proposal ?</h4>
+                                         <h5>A milestone Proposal</h5>
+                                         <p style="color:#1f1f1f">This is how you wish to receive your payment. Here you can decide if you want your employee
+                                             to pay you a bit depending on your task.   <a class="alert-link" href="#">learrn more</a>.</p>
                                      </div>
-
-                                     <form class="form-horizontal">
-
-                                         <label for="select">Number Of Milestone(choose if you want to split payment or be paid at once here.
-                                             <a class="alert-link" href="#">learrn more</a> )</label>
-                                         <select class="form-control" id="selectNumberOfMilestone">
-                                             <option value="0">Make a choice</option>
-                                             <option value="1">1 Milestone</option>
-                                             <option value="2">2 Milestones</option>
-                                         </select>
-                                         <a href="" id="refuseMilestoneCreation">No am good let the employer choose a convenient  milestone for this project</a>
-
-                                     </form>
-
-                                       <div id="milestoneOptions">
-                                           <hr />
-                                           <h3>This is your first milestone
-                                               <span>(Your first payment)</span></h3>
-
-                                           <div class="bs-component">
-                                               <div class="alert alert-dismissible panel-default">
-                                                   <button class="close" type="button" data-dismiss="alert">×</button>
-
-                                                   <h5>hint</h5>
-                                                   <p style="color:#1f1f1f">Because you chose to split your payment into two chunk, here you are required to state
-                                                       how much you want to receive first and state what you intent to use it for.</p>
-                                               </div>
-                                           </div>
-
-                                           {{ form_start(milestoneForm, {'attr': {'class': 'form-inline','id': 'numberOfMilestoneForm'}}) }}
-
-                                           <div class="input-group"><span class="input-group-addon">₦</span>
-                                               {{ form_widget(milestoneForm.amount,{ 'id':'initialProposedAmount'}) }}
-
-                                           </div>
-                                           <div class="form-group">
-                                               <label class="control-label">Description</label>
-                                               {{ form_widget(milestoneForm.description) }}
-                                           </div>
-                                           <div class="form-group">
-                                               <input type="submit" value="Create Milestone" class="btn btn-primary"   />
-                                           </div>
-                                           {{ form_end(milestoneForm) }}
-
-                                       </div>
-
-                                     <hr />
-                                     <button id="gotoBoost" class="btn btn-primary">Next</button>
                                  </div>
+                                </div>
+                                 <div style="padding: 2em" class="row">
+                                     <div class="col-sm-8">
+                                         <div id ="milestoneChoice" >
+                                             <a href="" id="createMilestone">Create Milestone</a>
 
-                                 <div id="feature_section">
-                                     <h3 class="card-title text-center">Boost Bid </h3>
-
-
-                                     <div class="bs-component">
-                                         <div class="alert alert-dismissible panel-default">
-                                             <button class="close" type="button" data-dismiss="alert">×</button>
-
-                                             <h5>hint</h5>
-                                             <p style="color:#1f1f1f">
-                                                 Boosting your bid puts you directly in front of the employer. If you can, we strongly advice you boost this bid .
-                                                a boosted bid plus  good reviews on chukolo gives you 90% chance of being awarded the project.
-
-
-                                             </p>
+                                             <button id="refuseMilestoneCreation" class="btn btn-sm btn-primary">let the employer choose a convenient  milestone</button>
                                          </div>
-                                     </div>
+                                         <form id="chooseNumberofMilestoneForm" class="form-horizontal">
 
-                                     {% for subscription in subscriptions %}
-                                           {% if currentBid.hasSubscription(subscription) %}
+                                             <label for="select">Number Of Milestone(choose if you want to split payment or be paid at once here.
+                                                 <a class="alert-link" href="#">learrn more</a> )</label>
+                                             <select class="form-control" id="selectNumberOfMilestone">
+                                                 <option value="0">Make a choice</option>
+                                                 <option value="1">1 Milestone</option>
+                                                 <option value="2">2 Milestones</option>
+                                             </select>
 
-                                             {% else %}
 
+                                         </form>
+                                        <div id="createMilestoneAndNext" style="padding:1em">
+                                            <form id="createMilestoneAndNextForm" class="form-horizontal">
+                                                <input type="submit" value="Create Milestone & Next" class="btn btn-primary"   />
+                                            </form>
+                                        </div>
+                                         <div id="milestoneOptions">
+                                             <hr />
+                                             <h3>This is your first milestone
+                                                 <span>(Your first payment)</span></h3>
 
-                                                 <div class="faq-a tag-widget">
-                                                     <div style="margin-right: 0.5em" class="tags animated-checkbox">
+                                             <div class="bs-component">
+                                                 <div class="alert alert-dismissible panel-default">
+                                                     <button class="close" type="button" data-dismiss="alert">×</button>
 
-                                                         <label>
-                                                             <input class="checkIt" type="checkbox" value={{ subscription.id }}><span class="label-text">{{ subscription.name |title }}</span>
-                                                         </label>
-                                                     </div>
+                                                     <h5>hint</h5>
+                                                     <p style="color:#1f1f1f">Because you chose to split your payment into two chunk, here you are required to state
+                                                         how much you want to receive first and state what you intent to use it for.</p>
                                                  </div>
-                                           {% endif %}
-                                     {% endfor %}
-                                 </div>
+                                             </div>
 
-                                 <div id="review_section">
+                                             {{ form_start(milestoneForm, {'attr': {'class': 'form-inline','id': 'numberfMilestoneForm'}}) }}
+
+                                             <div class="input-group"><span class="input-group-addon">₦</span>
+                                                 {{ form_widget(milestoneForm.amount,{ 'id':'initialProposedAmount'}) }}
+
+                                             </div>
+                                             <div class="form-group">
+                                                 <label class="control-label">Description</label>
+                                                 {{ form_widget(milestoneForm.description) }}
+                                             </div>
+
+                                             <hr />
+
+                                             <input type="submit" value="Save & Next" class="btn btn-primary"   />
+
+                                             {{ form_end(milestoneForm) }}
+
+                                         </div>
+                                     </div>
+                                     <div class="col-sm-4">
+                                         <div class="bs-component">
+                                             <div class="alert alert-dismissible panel-default">
+                                                 <button class="close" type="button" data-dismiss="alert">×</button>
+                                                 <h4 class="text-center">General Tips Goes Here?</h4>
+                                                 <h5>tip header</h5>
+                                                 <p style="color:#1f1f1f">some helpful tips   <a class="alert-link" href="#">learrn more</a>.</p>
+                                             </div>
+                                         </div>
+                                     </div>
                                  </div>
 
                              </div>
+                             {% elseif workingBid.step ==2  %}
+                             <div id="feature_section">
+                                 <h3 class="card-title text-center">Boost Bid </h3>
+
+
+                                 <div class="bs-component">
+                                     <div class="alert alert-dismissible panel-default">
+                                         <button class="close" type="button" data-dismiss="alert">×</button>
+
+                                         <h5>hint</h5>
+                                         <p style="color:#1f1f1f">
+                                             Boosting your bid puts you directly in front of the employer. If you can, we strongly advice you boost this bid .
+                                             a boosted bid plus  good reviews on chukolo gives you a very high chance of being awarded the project.
+
+                                         </p>
+                                     </div>
+                                 </div>
+                                 {% if subscriptions %}
+                                     <ul>
+
+                                         {% for subscription in subscriptions %}
+
+                                                 {% if workingBid %}
+                                                     {% if workingBid.hasSubscription(subscription) %}
+                                                         <li class="card">
+                                                             <div style="margin-right: 0.5em" class="col-sm-3">
+                                                                 <label>
+                                                                     <input class="checkIt" checked type="checkbox" value={{ subscription.id }}>
+                                                                 </label>
+
+                                                             </div>
+                                                             <div style="margin-right: 0.5em" class="col-sm-2 tags animated-checkbox">
+                                                                 <label>
+                                                                     <span class="label-text">{{ subscription.value |price }}</span>
+                                                                 </label>
+                                                             </div>
+                                                             <div style="margin-right: 0.5em" class="col-sm-5 tags animated-checkbox">
+                                                                 <label>
+                                                                     <span class="label-text">{{ subscription.description |title }}</span>
+                                                                 </label>
+                                                             </div>
+
+                                                         </li>
+                                                     {% else %}
+                                                         <li class="card">
+                                                         <div style="margin-right: 0.5em" class="col-sm-3">
+                                                             <label>
+                                                                 <input class="checkIt" type="checkbox" value={{ subscription.id }}>
+                                                             </label>
+
+                                                         </div>
+                                                         <div style="margin-right: 0.5em" class="col-sm-2 tags animated-checkbox">
+                                                             <label>
+                                                                 <span class="label-text">{{ subscription.value |price }}</span>
+                                                             </label>
+                                                         </div>
+                                                         <div style="margin-right: 0.5em" class="col-sm-5 tags animated-checkbox">
+                                                         <label>
+                                                             <span class="label-text">{{ subscription.description |title }}</span>
+                                                         </label>
+                                                         </div>
+
+                                                         </li>
+                                                     {% endif %}
+                                                 {% endif %}
+
+                                         {% endfor %}
+                                     </ul>
+                                 {% endif %}
+
+
+                                 <button id="gotoSummary" class="btn btn-primary">Bid Summary</button>
+                             </div>
+                             {% elseif workingBid.step == 3  %}
+                             <div id="review_section">
+
+                                  <div class="card">
+                                      <div style="background-color: #8c8c8c;color: white; font-weight: bolder;padding: .3em; margin: .2em"
+                                           class="card-title" >
+                                          <h3>Proposal Summary</h3>
+                                      </div>
+                                      <ul style="padding: 0">
+                                          <li>
+
+                                              <div class="alert panel-default">
+                                                  <h4> Bid details</h4>
+                                                  <p style="color:#1f1f1f">
+                                                     <p>Your bid amount is <strong> {{ workingBid.price |price}}</strong></p>
+                                                     <p>Project commission is {{ workingBid.commission |price }}</p>
+                                                      <p>What you would receive is {{ workingBid.value |price }}</p>
+                                                     <p>You are to deliver this project in <strong> {{ workingBid.deliveryDays}}</strong> </p>
+                                                     <p>{{ workingBid.proposal }}</p>
+                                                  </p>
+                                              </div>
+
+                                          </li>
+                                          {%  if workingBid.milestoneProposal|length>0 %}
+                                              <li class="card">
+                                                  <h4> Milestone Proposal(s)</h4>
+                                                  {% for milestone in workingBid.milestoneProposal %}
+                                                      <div class="row">
+
+                                                          <div  class="col-sm-2">
+                                                              <label>
+                                                                  <span class="label-text">{{ milestone.amount |price }}</span>
+                                                              </label>
+                                                          </div>
+                                                          <div  class="col-sm-7">
+                                                              <label>
+                                                                  <p class="label-text">{{ milestone.description |raw }}</p>
+                                                              </label>
+                                                          </div>
+
+                                                      </div>
+                                                  {% endfor %}
+                                              </li>
+                                          {%  endif %}
+                                          {%  if workingBid.getSubscription|length >0 %}
+
+                                               <li class="card">
+
+                                                       <h4> Subscription({{ workingBid.subscriptionsValue  | price }})</h4>
+
+                                                       {% for subscription in workingBid.subscription %}
+                                                             <div class="row">
+
+                                                                 <div  class="col-sm-7">
+                                                                     <label>
+                                                                         <span class="label-text">{{ subscription.description |title }}</span>
+                                                                     </label>
+                                                                 </div>
+                                                                 <div  class="col-sm-2">
+                                                                     <label>
+                                                                         <span class="label-text">{{ subscription.value |price }}</span>
+                                                                     </label>
+                                                                 </div>
+                                                                 <div  class="col-sm-1">
+                                                                     <label>
+                                                                         <input class="checkIt" checked type="checkbox" value={{ subscription.id }}>
+                                                                     </label>
+                                                                 </div>
+                                                             </div>
+                                                       {% endfor %}
+
+
+
+
+                                               </li>
+
+
+                                          {%  endif %}
+                                      </ul>
+                                      <div class="card-footer">
+                                          <button id="confirmBid" class="btn btn-success">Place </button>
+                                          <button id="deleteToRebid" class="btn btn-danger">Delete & Re-Bid </button>
+                                          <button id="deleteBid" class="btn btn-primary">Cancel</button>
+                                      </div>
+                                  </div>
+
+
+                             </div>
+
+                             {% endif  %}
+                         {% else %}
+
+                         {# because there is no working bid present a clean page for creating a working bid #}
+                             <div id="bid_Project_section">
+                                 {{ form_start(form, { 'attr': {'class': 'form-inline','id': 'bidForm'} }) }}
+                                 <h3 class="card-title text-center">Bid For This Project</h3>
+                                 <hr />
+                                 <div class="form-group">
+                                     <label class="control-label">Paid to You</label>
+                                     <div class="input-group"> {{ form_row(form.price) }}</div>
+
+                                 </div>
+
+                                 <div class="form-group">
+                                     <label class="control-label">Days to Deliver</label>
+                                     <div class="input-group"><span class="input-group-addon">Days</span>
+                                         {{ form_row(form.deliveryDays) }}
+                                     </div>
+                                 </div>
+                                 <div class="col-sm-3">
+                                     <div class="alert alert-info">
+                                         <strong>Project Fee 10% </strong>
+                                     </div>
+
+                                     <div class="alert alert-warning">
+                                         <strong>Your bid : <label id="yourBid" >500</label></strong>
+                                     </div>
+                                     <div class="alert alert-warning">
+                                         <strong>Bid Usage: <label id="yourBid" >2 of 10</label></strong>
+                                     </div>
+                                 </div>
+                                 <br />
+
+                                 <div style="margin-top: 1em" class="form-group">
+
+                                     <div class="input-group">
+                                         {{ form_row(form.proposal) }}
+                                     </div>
+                                 </div>
+                                 <hr />
+                                 <div style="margin-top: 3em" class="btn-group">
+                                     <input type="submit" value="Next" class="btn btn-primary" id="publicationCommit"  />
+                                 </div>
+                                 {{ form_end(form) }}
+                             </div>
+                         {% endif %}
                      </div>
-                         </div>
 
-                        <div class="row">
-                            <div class="col-sm-4 col-sm-push-5" id="loading_card">
-                                <div style="z-index: 55" class="overlay">
-                                    <div class="m-loader mr-20">
-                                        <svg class="m-circular" viewBox="25 25 50 50">
-                                            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="1"/>
-                                        </svg>
-                                    </div>
-                                    <h3 class="l-text">Running Errands ...</h3>
-                                </div>
-                            </div>
+                  </div>
+             </div>
+
+            <div class="row">
+                <div class="col-sm-4 col-sm-push-5" id="loading_card">
+                    <div style="z-index: 55" class="overlay">
+                        <div class="m-loader mr-20">
+                            <svg class="m-circular" viewBox="25 25 50 50">
+                                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="1"/>
+                            </svg>
                         </div>
+                        <h3 class="l-text">Running Errands ...</h3>
                     </div>
-
                 </div>
-
-
+            </div>
         </div>
+    </div>
+ </div>
 {#
 
 
@@ -244,81 +386,237 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#bid_Project_section').show();
-            $('#milestone_proposal_section').hide();
-            $('#feature_section').hide();
-            $('#review_section').hide();
+
             $('#loading_card').hide();
             $('#milestoneOptions').hide();
-
-
-
+            $('#createMilestoneAndNext').hide();
+            $('#chooseNumberofMilestoneForm').hide();
 
 
             /*
              * create bid with ajax
              */
             $('#bidForm').submit(function(e) {
-                e.preventDefault();
-               var url = "{{ path('bid_project', { 'projectId': project.id}) }}";
+                //e.preventDefault();
+                var url = "{{ path('bid_project', { 'projectId': project.id}) }}";
 
                 $('#loading_card').show();
                 $('#bid_Project_section').hide();
-               var formSerialize = $(this).serialize();
+                var formSerialize = $(this).serialize();
                 $.post(url, formSerialize, function(response) {
                     $('#loading_card').hide();
                     $('#milestone_proposal_section').show();
-
+                    //  location.reload();
                 }, 'JSON');
 
-           });
-
-
-
-            /*This action gets fired anytime the number of milestone is created */
-            $('#selectNumberOfMilestone').change(function(){
-                //
-                /*
-                 * todo: here
-                 */
-                var val = $(this).val();
-
-                if(val ==0){
-                    $('#milestoneOptions').hide();
-                }
-
-                if(val ==1){
-                    $('#milestoneOptions').hide();
-                }
-                if(val ==2){
-                    // here since the selected milesto2e is greater the
-                    $('#milestoneOptions').show();
-                    $('#refuseMilestoneCreation').hide();
-
-                       //here create your validation ie amount is not ever equal to bid value
-                    $('#initialProposedAmount').change(function(){
-                        var amount = $('#initialProposedAmount').val();
-                    });
-                    /*
-                     * create proposal for this bid
-                     */
-                    $('#numberOfMilestoneForm').submit(function(e) {
-                        e.preventDefault();
-                        var url = "{{ path('bid_project', { 'projectId': project.id}) }}";
-
-                        $('#loading_card').show();
-                       $('#milestone_proposal_section').hide();
-                        var formSerialize = $(this).serialize();
-                        $.post(url, formSerialize, function(response) {
-                            $('#loading_card').hide();
-                            $('#feature_section').show();
-                        }, 'JSON');
-
-                    });
-                }
-
-                return false;
             });
+
+            /*
+             * initialize milestone creation
+             */
+            $('#createMilestone').click(function(e) {
+                e.preventDefault();
+                $('#chooseNumberofMilestoneForm').show();
+                $('#milestoneChoice').hide();
+            });
+
+
+            /*
+             * create one milestone and go to next
+             */
+            $('#createMilestoneAndNextForm').submit(function(e) {
+              //  e.preventDefault();
+                var val =1;
+
+
+
+                $('#milestone_proposal_section').hide();
+                $('#loading_card').show();
+                $.ajax({
+                    type: "POST",
+                    url: "{{ url('bid_project', { 'projectId': project.id}) }}?createOneMilestone=" + val,
+                    success: function(data) {
+                        $('#loading_card').hide();
+                        location.reload();
+
+                    }
+                });
+            });
+
+
+
+            /*create milestone This action gets fired anytime the number of milestone is created */
+        $('#selectNumberOfMilestone').change(function(){
+            /*
+             * todo: here
+             */
+            var val = $(this).val();
+            if(val ==0){
+
+                $('#milestoneOptions').hide();
+                $('#refuseMilestoneCreation').show();
+                $('#milestoneChoice').show();
+                $('#createMilestoneAndNext').hide();
+                $('#chooseNumberofMilestoneForm').hide();
+            }
+            if(val ==1){
+                $('#milestoneOptions').hide();
+                $('#createMilestoneAndNext').show();
+                $('#refuseMilestoneCreation').hide();
+                $('#milestoneChoice').hide();
+            }
+            if(val ==2){
+                // here since the selected milesto2e is greater the
+                $('#milestoneOptions').show();
+                $('#refuseMilestoneCreation').hide();
+                $('#createMilestoneAndNext').hide();
+                $('#milestoneChoice').hide();
+            }
+            return false;
+        });
+
+
+           /*
+            * todo:here create your validation ie amount is not ever equal to bid value
+            */
+            $('#initialProposedAmount').change(function(){
+            var amount = $('#initialProposedAmount').val();
+            alert(amount);
+        });
+
+            /*
+             * create proposal for this bid
+             */
+            $('#numberOfMilestoneForm').submit(function(e) {
+
+                alert("numer of milstone clicked");
+                //e.preventDefault();
+                var url = "{{ path('bid_project', {'projectId': project.id}) }}";
+
+                $('#loading_card').show();
+                $('#milestone_proposal_section').hide();
+                var formSerialize = $(this).serialize();
+                $.post(url, formSerialize, function(response) {
+                    location.reload();
+                    $('#loading_card').hide();
+                    $('#feature_section').show();
+                }, 'JSON');
+
+            });
+
+
+
+           //for adding  features  or removing features
+
+
+            $('.checkIt').bind('click', function() {
+
+                var val = $(this).val();
+                if($(this).is(":checked")) {
+                    $('#loading_card').show();
+                    $('#feature_section').hide();
+
+                    $.ajax({
+                        type: "POST",
+
+                        url: "{{ path('bid_project',{'projectId': project.id}) }}?add_feature_id=" + val,
+                        success: function(data) {
+                            window.location.href = data;
+                                 $('#feature_section').show();
+                                 $('#loading_card').hide();
+                            location.reload();
+                        },
+                        error: function(urlFromController){
+                           alert( urlFromController.statusText);
+                           // window.location.href = urlFromController;
+                            console.log("Error in Processing--" + data.status);
+                        }
+
+                    });
+
+                } else {
+                    $('#loading_card').show();
+                    $('#feature_section').hide();
+
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ url('bid_project', { 'projectId': project.id}) }}?remove_feature_id=" + val,
+                        success: function(data) {
+                            $('#feature_section').show();
+                            $('#loading_card').hide();
+                            location.reload();
+                        }
+                    });
+                }
+            });
+
+                       /*
+             * create bid with ajax
+             */
+            $('#gotoSummary').click(function(e) {
+                var val =1;
+
+
+                $('#feature_section').hide();
+                $('#loading_card').show();
+                $.ajax({
+
+                    type: "POST",
+                    url: "{{ path('bid_project', { 'projectId': project.id}) }}?goTo_summary="+val,
+                    success: function(data) {
+                        location.reload();
+
+                        $('#loading_card').hide();
+                    }
+                });
+            });
+
+
+
+            /*
+             * refuse to create milestone proposal
+             */
+            $('#refuseMilestoneCreation').click(function(e) {
+                var val = 1;
+                $('#feature_section').hide();
+                $('#loading_card').show();
+                $.ajax({
+
+                    type: "POST",
+                    url: "{{ path('bid_project', { 'projectId': project.id}) }}?ignoreMilestone="+val,
+                    success: function(data) {
+                        location.reload();
+
+                        $('#loading_card').hide();
+                    }
+                });
+            });
+
+            /*
+             * create bid with ajax
+             */
+            $('#confirmBid').click(function(e) {
+                var val=2;
+
+
+                $('#review_section').hide();
+                $('#loading_card').show();
+                $.ajax({
+
+                    type: "POST",
+                    url: "{{ path('bid_project', { 'projectId': project.id}) }}?confirmBid="+val,
+                    success: function(data) {
+                        alert(data.errorCode  +" /"+data.statusText);
+                        //window.location.href = data;
+                       // $('#loading_card').hide();
+                    },error: function(message){
+
+                        $('#review_section').hide();
+                    }
+                });
+            });
+
+
 
         });
     </script>

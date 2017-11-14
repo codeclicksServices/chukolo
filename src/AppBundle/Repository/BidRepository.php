@@ -19,8 +19,11 @@ class BidRepository extends EntityRepository
             ->select('p')
             ->from('AppBundle:Bid','p')
             ->where('p.member = :member')
+            ->andWhere('p.reviewed = :true')
+            ->andWhere('p.visible = :true')
+            ->andWhere('p.accepted = :true')
+            ->setParameter('true', true)
             ->setParameter('member', $user);
-
         if(!$stage == null){
             //convert to lowercase because all the state is stored in the lowercase in the database
             $transformedStage=strtolower($stage);
@@ -28,7 +31,6 @@ class BidRepository extends EntityRepository
                 ->setParameter('stage', $transformedStage);
 
         }
-
 
         if(!$searchParam == null){
 
@@ -41,8 +43,6 @@ class BidRepository extends EntityRepository
 
         }
 
-
-
         if(!$limit == null){
             $query = $query->setMaxResults($limit);
         }
@@ -53,10 +53,57 @@ class BidRepository extends EntityRepository
         return $query;
     }
 
+    public function findMyUnreviewedBid($user)
+    {
+
+        $query = $this ->createQueryBuilder('l')
+            ->select('p')
+            ->from('AppBundle:Bid','p')
+            ->where('p.member = :member')
+            ->andWhere('p.reviewed = :false')
+            ->setParameter('false', 0)
+            ->setParameter('member', $user);
 
 
-/*todo: you can never have more than one active bid for one project. enforce this
-*/
+        $query->orderBy('p.created', 'DESC');
+        $query = $query ->getQuery()->getResult();
+
+        return $query;
+    }
+
+/* this is for awarded bid that are not complete*/
+    public function findMyAwardedBid($user)
+    {
+
+        $query = $this ->createQueryBuilder('l')
+            ->select('p')
+            ->from('AppBundle:Bid','p')
+            ->where('p.member = :member')
+            ->andWhere('p.reviewed = :true')
+            ->andWhere('p.visible = :true')
+            ->andWhere('p.accepted = :true')
+            ->andWhere('p.awarded = :true')
+            ->andWhere('p.stage != :complete')
+            ->andWhere('p.stage != :declined')
+            ->andWhere('p.stage != :terminated')
+            ->setParameter('complete','complete')
+            ->setParameter('declined','declined')
+            ->setParameter('terminated','terminated')
+
+            ->setParameter('true', true)
+            ->setParameter('member', $user)
+            ->getQuery()
+            ->getResult();
+
+        return $query;
+    }
+
+
+
+    /*
+     * todo: you can never have more than one active bid for one project.
+     * todo enforce this for the sake of testing make it possible to have more than one
+     */
     public function getMyProjectBid($member,$project) {
         return $this
             ->createQueryBuilder('e')
@@ -66,9 +113,9 @@ class BidRepository extends EntityRepository
             ->setParameter('member',$member)
             ->setParameter('project', $project)
             ->orderBy('e.id', 'DESC')
-         //   ->setMaxResults(1)
+            ->setMaxResults(1)
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getResult();
     }
 
 }

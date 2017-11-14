@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 /**
+ *
+ * used for setting the current commision
  * @ORM\Entity
  * @ORM\Table(name="commission")
  * @ORM\HasLifecycleCallbacks

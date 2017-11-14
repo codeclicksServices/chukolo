@@ -792,4 +792,558 @@ class  Membersetting extends Member
     {
         return $this->bank;
     }
+
+    /**
+     * Add fundLog
+     *
+     * @param \AppBundle\Entity\FundLog $fundLog
+     *
+     * @return Membersetting
+     */
+    public function addFundLog(\AppBundle\Entity\FundLog $fundLog)
+    {
+        $this->fundLog[] = $fundLog;
+
+        return $this;
+    }
+
+    /**
+     * Remove fundLog
+     *
+     * @param \AppBundle\Entity\FundLog $fundLog
+     */
+    public function removeFundLog(\AppBundle\Entity\FundLog $fundLog)
+    {
+        $this->fundLog->removeElement($fundLog);
+    }
+
+    /**
+     * Get fundLog
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFundLog()
+    {
+        return $this->fundLog;
+    }
+
+    /**
+     * Set accountType
+     *
+     * @param string $accountType
+     *
+     * @return Membersetting
+     */
+    public function setAccountType($accountType)
+    {
+        $this->accountType = $accountType;
+
+        return $this;
+    }
+
+    /**
+     * Get accountType
+     *
+     * @return string
+     */
+    public function getAccountType()
+    {
+        return $this->accountType;
+    }
+
+    /**
+     * Set currency
+     *
+     * @param string $currency
+     *
+     * @return Membersetting
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
+
+        return $this;
+    }
+
+    /**
+     * Get currency
+     *
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * Set location
+     *
+     * @param string $location
+     *
+     * @return Membersetting
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get location
+     *
+     * @return string
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set firstName
+     *
+     * @param string $firstName
+     *
+     * @return Membersetting
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    /**
+     * Get firstName
+     *
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * Set lastName
+     *
+     * @param string $lastName
+     *
+     * @return Membersetting
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * Get lastName
+     *
+     * @return string
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * Set gender
+     *
+     * @param string $gender
+     *
+     * @return Membersetting
+     */
+    public function setGender($gender)
+    {
+        $this->gender = $gender;
+
+        return $this;
+    }
+
+    /**
+     * Get gender
+     *
+     * @return string
+     */
+    public function getGender()
+    {
+        return $this->gender;
+    }
+
+    /**
+     * Set city
+     *
+     * @param string $city
+     *
+     * @return Membersetting
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    /**
+     * Get city
+     *
+     * @return string
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * Set province
+     *
+     * @param string $province
+     *
+     * @return Membersetting
+     */
+    public function setProvince($province)
+    {
+        $this->province = $province;
+
+        return $this;
+    }
+
+    /**
+     * Get province
+     *
+     * @return string
+     */
+    public function getProvince()
+    {
+        return $this->province;
+    }
+
+    /**
+     * Set country
+     *
+     * @param string $country
+     *
+     * @return Membersetting
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get country
+     *
+     * @return string
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * Set phone
+     *
+     * @param integer $phone
+     *
+     * @return Membersetting
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get phone
+     *
+     * @return integer
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * Set trustScore
+     *
+     * @param integer $trustScore
+     *
+     * @return Membersetting
+     */
+    public function setTrustScore($trustScore)
+    {
+        $this->trustScore = $trustScore;
+
+        return $this;
+    }
+
+    /**
+     * Get trustScore
+     *
+     * @return integer
+     */
+    public function getTrustScore()
+    {
+        return $this->trustScore;
+    }
+
+    /**
+     * Set profession
+     *
+     * @param string $profession
+     *
+     * @return Membersetting
+     */
+    public function setProfession($profession)
+    {
+        $this->profession = $profession;
+
+        return $this;
+    }
+
+    /**
+     * Get profession
+     *
+     * @return string
+     */
+    public function getProfession()
+    {
+        return $this->profession;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Membersetting
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set loginCount
+     *
+     * @param integer $loginCount
+     *
+     * @return Membersetting
+     */
+    public function setLoginCount($loginCount)
+    {
+        $this->login_count = $loginCount;
+
+        return $this;
+    }
+
+    /**
+     * Get loginCount
+     *
+     * @return integer
+     */
+    public function getLoginCount()
+    {
+        return $this->login_count;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param integer $updated
+     *
+     * @return Membersetting
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return integer
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * Set consent
+     *
+     * @param integer $consent
+     *
+     * @return Membersetting
+     */
+    public function setConsent($consent)
+    {
+        $this->consent = $consent;
+
+        return $this;
+    }
+
+    /**
+     * Get consent
+     *
+     * @return integer
+     */
+    public function getConsent()
+    {
+        return $this->consent;
+    }
+
+    /**
+     * Add project
+     *
+     * @param \AppBundle\Entity\Project $project
+     *
+     * @return Membersetting
+     */
+    public function addProject(\AppBundle\Entity\Project $project)
+    {
+        $this->project[] = $project;
+
+        return $this;
+    }
+
+    /**
+     * Remove project
+     *
+     * @param \AppBundle\Entity\Project $project
+     */
+    public function removeProject(\AppBundle\Entity\Project $project)
+    {
+        $this->project->removeElement($project);
+    }
+
+    /**
+     * Get project
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
+     * Add bid
+     *
+     * @param \AppBundle\Entity\Project $bid
+     *
+     * @return Membersetting
+     */
+    public function addBid(\AppBundle\Entity\Project $bid)
+    {
+        $this->bid[] = $bid;
+
+        return $this;
+    }
+
+    /**
+     * Remove bid
+     *
+     * @param \AppBundle\Entity\Project $bid
+     */
+    public function removeBid(\AppBundle\Entity\Project $bid)
+    {
+        $this->bid->removeElement($bid);
+    }
+
+    /**
+     * Get bid
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBid()
+    {
+        return $this->bid;
+    }
+
+    /**
+     * Add category
+     *
+     * @param \AppBundle\Entity\Category $category
+     *
+     * @return Membersetting
+     */
+    public function addCategory(\AppBundle\Entity\Category $category)
+    {
+        $this->category[] = $category;
+
+        return $this;
+    }
+
+    /**
+     * Remove category
+     *
+     * @param \AppBundle\Entity\Category $category
+     */
+    public function removeCategory(\AppBundle\Entity\Category $category)
+    {
+        $this->category->removeElement($category);
+    }
+
+    /**
+     * Get category
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * Add reservedFund
+     *
+     * @param \AppBundle\Entity\ReservedFund $reservedFund
+     *
+     * @return Membersetting
+     */
+    public function addReservedFund(\AppBundle\Entity\ReservedFund $reservedFund)
+    {
+        $this->reservedFund[] = $reservedFund;
+
+        return $this;
+    }
+
+    /**
+     * Remove reservedFund
+     *
+     * @param \AppBundle\Entity\ReservedFund $reservedFund
+     */
+    public function removeReservedFund(\AppBundle\Entity\ReservedFund $reservedFund)
+    {
+        $this->reservedFund->removeElement($reservedFund);
+    }
+
+    /**
+     * Get reservedFund
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getReservedFund()
+    {
+        return $this->reservedFund;
+    }
 }

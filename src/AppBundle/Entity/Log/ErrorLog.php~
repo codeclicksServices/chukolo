@@ -1,0 +1,166 @@
+<?php
+
+namespace AppBundle\Entity\Log;
+
+
+use AppBundle\Model\TimeStampInterface;
+use AppBundle\Model\TimeStampTrait;
+use AppBundle\Repository\ProjectRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="error_log")
+ * @ORM\HasLifecycleCallbacks
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ErrorLogRepository")
+ */
+class ErrorLog
+{
+
+
+
+
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+    * @ORM\Column(type="string")
+    */
+    protected $action;
+    /**
+     * @ORM\Column(type="text",options={"comment":"value:eg bidding, project creation,fund deposit, fund withrawal etc"})
+     */
+    protected $location;
+    /**
+     * @ORM\Column(type="text",options={"comment":"value:detail of the log"})
+     */
+    protected $description;
+
+    /**
+     * @ORM\Column(type="datetime",nullable=false,options={"comment":"date created "})
+     */
+    protected $created;
+
+
+
+
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+
+  
+
+    /**
+     * Set location
+     *
+     * @param string $location
+     *
+     * @return ErrorLog
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get location
+     *
+     * @return string
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return ErrorLog
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set created
+     *
+     * @param \DateTime $created
+     *
+     * @return ErrorLog
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    /**
+     * Get created
+     *
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Set action
+     *
+     * @param string $action
+     *
+     * @return ErrorLog
+     */
+    public function setAction($action)
+    {
+        $this->action = $action;
+
+        return $this;
+    }
+
+    /**
+     * Get action
+     *
+     * @return string
+     */
+    public function getAction()
+    {
+        return $this->action;
+    }
+}

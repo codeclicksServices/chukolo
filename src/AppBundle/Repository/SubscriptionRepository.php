@@ -18,7 +18,7 @@ class SubscriptionRepository extends \Doctrine\ORM\EntityRepository
             ->where('e.type = :bid')
             ->andWhere('e.enabled = :true')
             ->setParameter('bid',2)
-            ->setParameter('enabled', 1)
+            ->setParameter('true', 1)
             ->getQuery()
             ->getResult();
     }
