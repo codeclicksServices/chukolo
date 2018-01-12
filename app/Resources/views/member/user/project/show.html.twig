@@ -5,200 +5,522 @@
      <h1><strong >{{ project.budget.minPrice |price}} - {{ project.budget.maxPrice |price}}</strong></h1>
   {% endblock %}
 {% block breadCrumb %}
-
     <ul class="nav nav-tabs" style="color: red">
-        <li id="projectProposals" class="active"><a class="card-title" href="#proposals" data-toggle="tab"><strong>Proposals</strong></a></li>
-        <li><a href="#management" data-toggle="tab"><strong>Management</strong></a></li>
-        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span>
+
+     {% if project.moderatorResponse != "accepted" %}
+         <li  class="active"><a href="#projectDetails" data-toggle="tab">Project Details</a></li>
+         <li><a href="#upgrade" data-toggle="tab"><strong>Upgrade Project</strong></a></li>
+         <li><a href={{ path('project_edit', { 'id': project.id }) }} ><strong>Edit</strong></a></li>
+
+         <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span>
+          <i class="fa fa-1x fa-ellipsis-h" aria-hidden="true"></i>
+          </span></a>
+             <ul class="dropdown-menu">
+                 <li><a  id="delete" href="#">Delete</a></li>
+                 <li><a  id="close" href="#">Close</a></li>
+             </ul>
+         </li>
+        {% else %}
+
+        <li  ><a class="card-title" href="#proposals" data-toggle="tab"><strong>Proposals</strong></a></li>
+       {% if project.awarded == true %}
+           <li class="active"><a href="#management" data-toggle="tab"><strong>Management</strong></a></li>
+       {% endif %}
+            <li><a href="#projectDetails" data-toggle="tab"><strong>Project Details</strong></a></li>
+           <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span>
           <i class="fa fa-1x fa-ellipsis-h" aria-hidden="true"></i>
           </span></a>
             <ul class="dropdown-menu">
-                <li><a href="#projectDetails" data-toggle="tab">Project Details</a></li>
+
                 <li><a href="#upgrade" data-toggle="tab">Upgrade Project</a></li>
                 <li><a href={{ path('project_edit', { 'id': project.id }) }} >Edit</a></li>
                 <li><a  id="delete" href="#">Delete</a></li>
                 <li><a  id="close" href="#">Close</a></li>
             </ul>
         </li>
+     {% endif %}
 
     </ul>
 {% endblock %}
 
 {% block page %}
 
-    {#
+        {#
           The tab content begings here
         #}
     <div style="margin-top: 3em" class="tab-content" id="myTabContent">
-        {#
-          The proposals
-        #}
-        <div class="tab-pane fade active in" id="proposals">
+       {% if project.moderated %}
+           {% if project.moderatorResponse == "accepted" %}
+               {#
+                 The proposals
+                #}
+               <div id="proposals"  class='tab-pane fade'{% if project.onGoing == 0 %}" active in"{% endif %}>
+               <div class="col-md-9">
+                   <div class="card">
+
+                       <div class="bs-component">
+
+                           <ul class="nav nav-tabs">
+                               <li class="active"><a href="#allProposals" data-toggle="tab">All Proposals</a></li>
+                               {% if bookMarkedProposals |length > 0 %}
+
+                                   <li><a href="#bookMarked" data-toggle="tab">Bookmarked</a></li>
+
+                               {% endif %}
+                               {% if awardedProposal |length > 0 %}
+                                   <li><a href="#awardedProposal" data-toggle="tab">Awarded</a></li>
+                               {% endif %}
+                           </ul>
+                           <div style="margin-top: 1em" class="tab-content" id="allProposalContent">
+                               <div class="tab-pane fade active in" id="allProposals">
+
+                                   {% if project.bid |length %}
+                                       {% for bid in project.bid %}
+                                           {% if bid.visible == true  %}
+                                               {# check if this is the awarded bid#}
+                                               {% if bid.awarded %}
+                                               <div  style="border-bottom: solid thick #004a43;padding-top: 0" class="row">
+                                                   <div class="col-md-2">
+                                                       <img src="{{ asset('assets/img/profile/m.jpeg') }}"
+                                                            style="max-height: 8em" class="img-responsive img-circle center-block">
+                                                   </div>
+                                                   <div class="col-sm-6">
+                                                       <h4>{{ bid.member.username  }}</h4>
+                                                       <p style="line-height: 1em">{{ bid.proposal |capitalize }}</p>
+                                                       <p> This would be completed in  {{ bid.duration }} Days</p>
+
+                                                       <ul  class="profile-badge-icon">
+                                                           <li><i class="fa fa-credit-card fa-2x" aria-hidden="true"></i></li>
+                                                           <li><i class="fa fa-envelope-o fa-2x" aria-hidden="true"></i></li>
+                                                           <li><i class="fa fa-user fa-2x" aria-hidden="true"></i></li>
+                                                           <li><i class="fa fa-phone fa-2x" aria-hidden="true"></i></li>
+                                                           <li><i class="fa fa-money fa-2x" aria-hidden="true"></i></li>
+                                                       </ul>
+                                                   </div>
+                                                   <div class="col-sm-2">
+                                                       <h4>{{ bid.price |price }}</h4>
+                                                       <div style="padding-left: 0" class="reputation">
+                                                           <span>4.8</span>
+                                                           <i class="fa fa-star" aria-hidden="true"></i>
+                                                           <i class="fa fa-star" aria-hidden="true"></i>
+                                                           <i class="fa fa-star" aria-hidden="true"></i>
+                                                           <i class="fa fa-star-o" aria-hidden="true"></i>
+                                                           <i class="fa fa-star-o" aria-hidden="true"></i>
+                                                           <span>33 Reviews</span>
+                                                       </div>
+                                                   </div>
+                                                   <div class="col-sm-2">
+                                                       <div style="margin-top: 1em" class="btn-group">
+                                                           <a style="" class="btn btn-default" href="#"><i class="fa fa-lg fa-bookmark-o"></i></a>
+                                                           <a class="btn btn-info" href="#"><i class="fa fa-lg fa-comment-o"></i></a>
+
+                                                       </div>
+                                                       <div style="margin-top: 1em" >
+                                                           {% if bid.acceptOffer %}
+                                                               {% if bid.started %}
+                                                                   <a class="btn btn-success" href="">Completion Rate</a>
+                                                               {% else %}
+                                                                   <a class="btn btn-success" href="">Instruct Start Work</a>
+                                                               {% endif %}
+                                                           {% else %}
+                                                               <a class="btn btn-danger" href="">Revoke contract</a>
+                                                           {% endif %}
+
+                                                       </div>
+                                                   </div>
+                                               </div>
+                                           {% else %}
+                                               <div  style="border-bottom: solid thin #a5a5a5;padding-top: 0" class="row">
+                                                   <div class="col-md-2">
+                                                       <img src="{{ asset('assets/img/profile/m.jpeg') }}"
+                                                            style="max-height: 8em" class="img-responsive img-circle center-block">
+                                                   </div>
+                                                   <div class="col-sm-6">
+                                                       <h4>{{ bid.member.username  }}</h4>
+                                                       <p style="line-height: 1em">{{ bid.proposal |capitalize }}</p>
+                                                       <p> This would be completed in  {{ bid.duration }} Days</p>
+
+                                                       <ul  class="profile-badge-icon">
+                                                           <li><i class="fa fa-credit-card fa-2x" aria-hidden="true"></i></li>
+                                                           <li><i class="fa fa-envelope-o fa-2x" aria-hidden="true"></i></li>
+                                                           <li><i class="fa fa-user fa-2x" aria-hidden="true"></i></li>
+                                                           <li><i class="fa fa-phone fa-2x" aria-hidden="true"></i></li>
+                                                           <li><i class="fa fa-money fa-2x" aria-hidden="true"></i></li>
+                                                       </ul>
+                                                   </div>
+                                                   <div class="col-sm-2">
+                                                       <h4>{{ bid.price |price }}</h4>
+                                                       <div style="padding-left: 0" class="reputation">
+                                                           <span>4.8</span>
+                                                           <i class="fa fa-star" aria-hidden="true"></i>
+                                                           <i class="fa fa-star" aria-hidden="true"></i>
+                                                           <i class="fa fa-star" aria-hidden="true"></i>
+                                                           <i class="fa fa-star-o" aria-hidden="true"></i>
+                                                           <i class="fa fa-star-o" aria-hidden="true"></i>
+                                                           <span>33 Reviews</span>
+                                                       </div>
+                                                   </div>
+                                                   <div class="col-sm-2">
+                                                       <div style="margin-top: 1em" class="btn-group">
+                                                           <a style="" class="btn btn-default" href="#"><i class="fa fa-lg fa-bookmark-o"></i></a>
+                                                           <a class="btn btn-info" href="#"><i class="fa fa-lg fa-comment-o"></i></a>
+
+                                                       </div>
+                                                       <div style="margin-top: 1em" >
+
+                                                           <a class="btn btn-success" href="{{ path('initialize-project-award', {'bidId': bid.id }) }}">Award</a>
+                                                       </div>
+                                                   </div>
+                                               </div>
+                                           {% endif %}
+                                       {% else %}
+                                           <div  style="border-bottom: solid thin #a5a5a5;padding-top: 0" class="row">
+                                               <div style="z-index: 55" >
+                                                   <div class="m-loader mr-20">
+                                                       <svg class="m-circular" viewBox="25 25 50 50"> <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="1"/> </svg> </div>
+                                                   <h3 class="l-text">Something is coming from {{ bid.member.username }} ...</h3>
+                                               </div>
+                                           </div>
+                                           {% endif %}
+
+                                       {% endfor %}
+
+
+                                   {% else %}
+                                       <div style="z-index: 55" class="overlay">
+                                           <div class="m-loader mr-20"><svg class="m-circular" viewBox="25 25 50 50"> <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="1"/></svg></div>
+                                           <h3 class="l-text">Spreading the news of your project ...</h3>
+                                       </div>
+                                   {% endif %}
+
+                               </div>
+
+                               <div class="tab-pane fade" id="bookMarked">
+                                   {#bookmarked bids#}
+                               </div>
+                               <div class="tab-pane fade" id="awardedProposal">
+
+                                   {% if awardedProposal %}
+                                           {% for bid in awardedProposal %}
+                                               <div  style="border-bottom: solid thick #004a43;padding-top: 0" class="row">
+                                                   <div class="col-md-2">
+                                                       <img src="{{ asset('assets/img/profile/m.jpeg') }}"
+                                                            style="max-height: 8em" class="img-responsive img-circle center-block">
+                                                   </div>
+                                                   <div class="col-sm-6">
+                                                       <h4>{{ bid.member.username  }}</h4>
+                                                       <p style="line-height: 1em">{{ bid.proposal |capitalize }}</p>
+                                                       <p> This would be completed in  {{ bid.duration }} Days</p>
+
+                                                       <ul  class="profile-badge-icon">
+                                                           <li><i class="fa fa-credit-card fa-2x" aria-hidden="true"></i></li>
+                                                           <li><i class="fa fa-envelope-o fa-2x" aria-hidden="true"></i></li>
+                                                           <li><i class="fa fa-user fa-2x" aria-hidden="true"></i></li>
+                                                           <li><i class="fa fa-phone fa-2x" aria-hidden="true"></i></li>
+                                                           <li><i class="fa fa-money fa-2x" aria-hidden="true"></i></li>
+                                                       </ul>
+                                                   </div>
+                                                   <div class="col-sm-2">
+                                                       <h4>{{ bid.price |price }}</h4>
+                                                       <div style="padding-left: 0" class="reputation">
+                                                           <span>4.8</span>
+                                                           <i class="fa fa-star" aria-hidden="true"></i>
+                                                           <i class="fa fa-star" aria-hidden="true"></i>
+                                                           <i class="fa fa-star" aria-hidden="true"></i>
+                                                           <i class="fa fa-star-o" aria-hidden="true"></i>
+                                                           <i class="fa fa-star-o" aria-hidden="true"></i>
+                                                           <span>33 Reviews</span>
+                                                       </div>
+                                                   </div>
+                                                   <div class="col-sm-2">
+                                                       <div style="margin-top: 1em" class="btn-group">
+                                                           <a style="" class="btn btn-default" href="#"><i class="fa fa-lg fa-bookmark-o"></i></a>
+                                                           <a class="btn btn-info" href="#"><i class="fa fa-lg fa-comment-o"></i></a>
+
+                                                       </div>
+                                                       <div style="margin-top: 1em" >
+                                                           {% if bid.acceptOffer %}
+                                                               {% if bid.started %}
+                                                                   <a class="btn btn-success" href="">Completion Rate</a>
+                                                               {% else %}
+                                                                   <a class="btn btn-success" href="">Instruct Start Work</a>
+                                                               {% endif %}
+                                                           {% else %}
+                                                               <a class="btn btn-danger" href="">Revoke contract</a>
+                                                           {% endif %}
+
+                                                       </div>
+                                                   </div>
+                                               </div>
+                                           {% endfor %}
+                                   {% endif %}
+
+
+
+                               </div>
+                           </div>
+
+
+                       </div>
+
+
+
+                       <div class="col-md-3"></div>
+                   </div>
+               </div>
+               <div class="col-md-3">
+                   {#tips goes here#}
+               </div>
+               </div>
+                {# for monitoring the project#}
+               {% if project.awarded %}
+                   {#
+                     The management
+                   #}
+                   <div id="management" class={% if project.onGoing == 1 %}"tab-pane fade active in"{% else %}"tab-pane fade"{% endif %}>
+                   <div class="col-md-9">
+                       {# am writing this way cause in the future if there is update tjat accomodate more people bein awarded the same project#}
+                       {%  for contract in project.bid %}
+                           {% if contract.awarded == 1  %}
+                               <div class="card">
+                                   <div style="padding:  .5em .5em 0 0; max-height: 11em" class="row">
+                                       <div class="col-md-1">
+                                           <img src="{{ asset('assets/img/profile/m.jpeg') }}"
+                                                style="max-height: 6em" class="img-responsive img-thumbnail center-block">
+                                       </div>
+                                       <div class="col-sm-6">
+                                           <h4>{{ contract.member.username  }}</h4>
+                                       </div>
+                                       <div class="col-sm-2">
+                                           <h4>{{ contract.price |price }}</h4>
+                                           <p> in {{ contract.duration }} Days</p>
+                                       </div>
+                                       <div class="col-sm-2">
+
+                                       </div>
+                                       <hr />
+                                   </div>
+                               </div>
+                               {% if contract.acceptOffer %}
+
+                                   <div class="row">
+                                       <div class="card">
+                                           <div class="card-title-w-btn">
+                                               <h5  class="title panel panel-heading">
+                                                   {{ contract.project.name |upper}} for {{ contract.project.price
+                                                   |price }} in {{ contract.duration }} day(s)
+                                               </h5>
+                                               <p style="margin-top: -3.1em;margin-right: -1.4em"><a class="btn
+                        btn-primary icon-btn"
+                                                   ><i class="fa
+                      fa-project"></i>STATUS : {{ contract.project.state |upper }}</a></p>
+                                           </div>
+
+                                           <div class="panel-body">
+                                               {% if contract.started == false %}
+                                                   {# av not start working on the project #}
+                                                   <div class="alert  alert-danger">
+
+
+                                                       <h4>Yet to start</h4>
+                                                       <p style="color:#1f1f1f">{{ contract.member.title |title}} {{ contract.member.firstName |title }} {{ contract.member.lastName |title }} have accepted your offer but have not started working on your project yet. maybe he is eating <a
+                                                                   class="alert-link" href="#">learn more</a>
+                                                           .</p>
+                                                   </div>
+                                               {% endif %}
+                                               <p>Due Date : {{ contract.project.deadline | date}}</p>
+                                               <p>Start Date : {{ contract.startDate| date }}</p>
+                                               <p>Remaining Working Days : 4</p>
+                                               <p>Project source</p>
+                                           </div>
+                                           <div style="margin: 0 -1.5em -1.5em -1.5em" class="panel-footer">
+                                               {% if contract.started == true %}
+                                                   <span>{{contract.project.completionRate }}% (complete)</span>
+                                                   <div class="progress progress-striped active">
+                                                       <div class="progress-bar" style="width: {{ contract.project
+                                                       .completionRate }}%;"></div>
+                                                   </div>
+                                               {% endif %}
+                                           </div>
+                                       </div>
+                                   </div>
+                                   <div class="row">
+                                       {% if contract.milestone == true %}
+                                           {% for milestone in contract.milestone %}
+                                               <div class="card">
+
+                                                   <div class="card-title-w-btn">
+                                                       <h5  class="title panel panel-heading">
+                                                           {{ milestone.milestoneCode |upper }} | {{ milestone.name
+                                                           |upper}}
+                                                           ({{milestone.price  |price }})
+                                                       </h5>
+                                                       <p style="margin-top: -3em ;font-weight: bolder;
+                              "><a class="
+                              icon-btn" ><i class="fa fa-folder-open">
+
+                                                               </i>STATUS : {{ milestone.status |upper
+                                                               }}</a></p>
+                                                   </div>
+
+                                                   <div class="panel-body">
+
+                                                       <h5>Milestone Description</h5>
+                                                       <p>{{ milestone.description |raw }}</p>
+                                                       <hr />
+                                                       <h5>Milestone Deliverable</h5>
+
+                                                       <ol >
+                                                           {% if  milestone.deliverable != null %}
+                                                               {% for deliverable in milestone.deliverable   %}
+                                                                   <li style="margin-bottom: 0; padding-bottom: 0"
+                                                                       class="card-title-w-btn">
+                                                                       <strong>{{ deliverable.task |capitalize }}</strong>
+                                                                       <p style="margin-right: -1em"><a class="" ><i
+                                                                                       class="fa
+                                                  fa-folder-open"></i>Status :  {{ deliverable.status
+                                                                               |capitalize }}</a>
+                                                                       </p>
+                                                                   </li>
+
+                                                                   <li class="row">
+                                                                       <div class="col-sm-1">
+                                                                           {% if deliverable.done == true %}
+                                                                               <div class="animated-checkbox">
+                                                                                   <label>
+                                                                                       <input readonly="readonly" type="checkbox"><span
+                                                                                               class="label-text"></span>
+                                                                                   </label>
+                                                                               </div>
+                                                                           {% else %}
+                                                                           {% endif %}
+                                                                       </div>
+                                                                       <div class="col-sm-11"> {{ deliverable.note }}</div>
+                                                                   </li>
+                                                                   <hr />
+                                                               {% endfor %}
+                                                           {% endif %}
+                                                       </ol>
+
+                                                   </div>
+                                                   <div style="margin: 0 -1.5em -1.5em -1.5em" class="panel-footer">
+
+
+                                                       {% if milestone.status == "pending" %}
+
+
+                                                       {% elseif milestone.status == "progress" %}
+                                                           <span>{{ milestone
+                                                               .completionRate }}% (complete)</span>
+                                                           <div class="progress progress-striped active">
+                                                               <div class="progress-bar" style="width: {{ milestone.completionRate }}%;"></div>
+                                                           </div>
+
+                                                       {% elseif milestone.status == "complete" %}
+                                                           <span>{{ milestone
+                                                               .completionRate }}% (complete)</span>
+                                                           <div class="progress progress-bar-success ">
+                                                               <div class="progress-bar" style="width: {{ milestone
+                                                               .completionRate }}%;"></div>
+                                                           </div>
+                                                           <a href ="#" class="btn btn-success btn-sm  btn-success">Release Payment</a>
+                                                       {% endif %}
+                                                   </div>
+                                               </div>
+
+                                           {% endfor %}
+                                       {% else %}
+                                           <div class="card" data-notify="container">
+                                               <h2 class="title panel panel-heading">No milestone for this contract</h2>
+                                               <div class="panel-body">
+                                                   <p>No milestone for this contract please  create milestone for this project before the freelancer can start working</p>
+                                                   <a href ="#" class="btn btn-done btn-sm  btn-success">Chat employer</a>
+
+                                               </div>
+                                           </div>
+                                       {% endif %}
+                                   </div>
+
+                               {% else %}
+                                   {#av not accepted the offer#}
+                                   <div class="row">
+                                       <div class="col-md-9">
+
+
+                                           <div style="color: white;background-color: #004a43; background-image: url({{ asset('assets/img/bg') }}); background-attachment: fixed;" class="alert alert-info" data-notify="container">
+                                               <h3 style="padding-left: 30%">Offer pending acceptance . . .</h3>
+                                               <p style="font-weight: bolder; color: white">
+                                                   The freelancer is reviewing your offer... That might not be true, we can guess tho,
+                                                   {% if contract.member.gender == "male" %}  he{% elseif contract.member.gender == "female" %}
+                                                       she{% else %} he/she {% endif %}
+                                                   might be running around the whole nigeria, or doing amebo with somebody or reading your offer email or ... or you can contact   {% if contract.member.gender == "male" %}him {% elseif contract.member.gender == "female" %} her  {% else %}    him/her  {% endif %} on {{ contract.member.phone }} or  <a href="#" >Chat</a> or just wait ...
+
+                                               </p>
+                                               <hr />
+
+
+                                           </div>
+
+                                       </div>
+                                       <div class="col-md-3">
+
+                                       </div>
+                                   </div>
+                               {% endif %}
+                           {% endif %}
+                       {% endfor %}
+
+                   </div>
+                   <div class="col-md-3">
+
+                   </div>
+                   </div>
+               {% endif %}
+
+
+           {% else %}
+               <div class="col-md-9">
+                   <div style="color: white;background-color: #ee2d4d;
+                           background-image: url({{ asset('assets/img/bg') }});
+                           background-attachment: fixed;" class="alert alert-danger" data-notify="container">
+                       <h3 style="padding-left: 30%">Something's wrong somewhere </h3>
+                       <p style="font-weight: bolder;color: white">Your project did not meet
+                           chukolo project standard. Please edit your
+                           project. Try being more elaborate and clear in
+                           your project description so that the
+                           freelancers can understand your need.
+                           <a class="alert-link" href="#">learn more</a>
+                       </p>
+                       <a  href="" class="btn btn-sm  btn-danger" >CancelProject</a>
+                   </div>
+               </div>
+           {% endif %}
+
+        {% else %}
             <div class="col-md-9">
-                <div class="card">
-                    {#  <div style="z-index: 55" class="overlay">
-                         <div class="m-loader mr-20">
-                             <svg class="m-circular" viewBox="25 25 50 50">
-                                 <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="1"/>
-                             </svg>
-                         </div>
-                         <h3 class="l-text">Before you say Jack ...</h3>
-                     </div>#}
+            <div style="color: white;background-color: #004a43; background-image: url({{ asset('assets/img/bg') }}); background-attachment: fixed;" class="alert alert-info" data-notify="container">
+                <h3 style="padding-left: 30%">Review in Progress . . .</h3>
+                <p style="font-weight: bolder; color: white">Your
+                    project is
+                    being reviewed, before
+                    you say jack it will be up for bidding
+                </p>
+                <hr />
+              <a href="#" >Contact support</a>
 
-
-                    <div class="bs-component">
-                        <ul class="nav nav-tabs">
-                            <li class="active"><a href="#allProposals" data-toggle="tab">All Proposals</a></li>
-                        </ul>
-                        <div style="margin-top: 1em" class="tab-content" id="allProposalContent">
-                            <div class="tab-pane fade active in" id="allProposals">
-
-                                {% for bid in project.bid %}
-                                    <div  style="border-bottom: solid thin #a5a5a5;padding-top: 0" class="row">
-                                        <div class="col-md-2">
-                                            <img src="{{ asset('assets/img/profile/m.jpeg') }}"
-                                                 style="max-height: 8em" class="img-responsive img-circle center-block">
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <h4>{{ bid.member.username  }}</h4>
-                                            <p style="line-height: 1em">{{ bid.proposal |capitalize }}</p>
-
-
-                                            <p> This would be completed in  {{ bid.deliveryDays }} Days</p>
-
-                                            <ul  class="profile-badge-icon">
-                                                <li><i class="fa fa-credit-card fa-2x" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-envelope-o fa-2x" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-user fa-2x" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-phone fa-2x" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-money fa-2x" aria-hidden="true"></i></li>
-                                            </ul>
-
-
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <h4>{{ bid.price |price }}</h4>
-                                            <div style="padding-left: 0" class="reputation">
-                                                <span>4.8</span>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star-o" aria-hidden="true"></i>
-                                                <i class="fa fa-star-o" aria-hidden="true"></i>
-                                                <span>33 Reviews</span>
-
-
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <div style="margin-top: 1em" class="btn-group">
-                                                <a style="" class="btn btn-default" href="#"><i class="fa fa-lg fa-bookmark-o"></i></a>
-                                                <a class="btn btn-info" href="#"><i class="fa fa-lg fa-comment-o"></i></a>
-
-                                            </div>
-                                            <div style="margin-top: 1em" >
-
-                                                <a class="btn btn-success" href="{{ path('initialize-project-award', {'bidId': bid.id }) }}">Award</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-
-                            </div>
-                        </div>
-
-
-                    </div>
-
-
-
-                    <div class="col-md-3"></div>
-                </div>
             </div>
 
-        </div>
+            </div>
+       {% endif %}
 
 
-        {#
-          The management
-        #}
-        <div class="tab-pane fade" id="management">
-            <div class="col-md-9">
-                <div class="bs-component">
-                    <div class="alert alert-dismissible alert-info">
-                        <button class="close" type="button" data-dismiss="alert">×</button>
-                        <h4>Next Step ?</h4>
-                        <h5>Create a milestone</h5>
-                        <p style="color:#1f1f1f">Why are Milestones Important ? They show that you are keen to hire your freelancer
-                            and build a trustworthy relationship for the future. <a class="alert-link" href="#">learrn more</a>.</p>
-                    </div>
-                </div>
-                {%  for bid in project.bid %}
-                {% if bid.awarded == 1  %}
-                <div class="card">
-
-                            <div style="padding:  .5em .5em 0 0; max-height: 11em" class="row">
-                                <div class="col-md-1">
-                                    <img src="{{ asset('assets/img/profile/m.jpeg') }}"
-                                         style="max-height: 6em" class="img-responsive img-thumbnail center-block">
-                                </div>
-                                <div class="col-sm-6">
-                                    <h4>{{ bid.member.username  }}</h4>
-
-
-                                </div>
-                                <div class="col-sm-2">
-                                    <h4>{{ bid.value |price }}</h4>
-                                    <p> in {{ bid.deliveryDays }} Days</p>
-                                </div>
-                                <div class="col-sm-2">
-
-                                </div>
-                            </div>
-
-                </div>
-
-
-
-                <div class="card">
-                    <div class="bs-component">
-                        <div class="alert alert-dismissible alert-warning">
-                            <button class="close" type="button" data-dismiss="alert">×</button>
-                            <h4>Note</h4>
-                            <h5>You can break your payments into smaller chunk depending on how large your project is </h5>
-                            <h5>This project can have maximum of 1 milestone </h5>
-                            <h5>You have to create a milestone before a freelancer can start working on your project</h5>
-                            <p style="color:#1f1f1f">
-                                <a class="alert-link" href="#">learrn more</a>.</p>
-                        </div>
-                    </div>
-                    {{ form_start(milestoneForm, {'attr': {'class': 'form-inline'}}) }}
-
-                        <div class="input-group"><span class="input-group-addon">₦</span>
-                            {{ form_widget(milestoneForm.amount) }}
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Description</label>
-                            {{ form_widget(milestoneForm.description) }}
-                        </div>
-                        <div class="form-group">
-                           <input type="submit" value="Create Milestone" class="btn btn-primary" id="xpCommit"  />
-                           <input type="hidden" name="contract" value="{{ bid.id }}">
-                        </div>
-                    {{ form_end(milestoneForm) }}
-
-                </div>
-                {% endif %}
-                {% endfor %}
-                    <div class="col-md-3"></div>
-                </div>
-        </div>
+        {#here is for details and upgrades nothing really happens regardles of the state of the project#}
 
 
         {#
          The projectDetails
        #}
-        <div class="tab-pane fade" id="projectDetails">
+        <div class={% if project.moderatorResponse !="accepted" %}"tab-pane fade active in"{% else %}"tab-pane fade"{% endif %}    id="projectDetails">
             <div class="col-md-9">
                 <div class="card">
                     <h4 class="card-title">Project Description</h4>
@@ -217,7 +539,6 @@
             </div>
 
             <div class="col-md-3"></div>
-        </div>
 
         {#
           The upgrade
@@ -244,14 +565,14 @@
         </div>
 
 
-    </div>
+        {# end of here is for details and upgrades nothing really happens regardles of the state of the project#}
 
-
-
-
+   </div>
 
 
 {% endblock %}
+
+
 {% block javascripts %}
 
     <script src="{{ asset('assets/js/dashboard/jquery-2.1.4.min.js') }}"></script>
@@ -352,30 +673,6 @@
         });
 
         $(document).ready(function () {
-            $('#projectProposals').click(function(){
-
-
-
-
-          //  alert('check');
-               /* // when category is selected provide the category skills
-                $.ajax({
-                    type: "POST",
-                //
-                    success: function(data) {
-                        // Remove current options
-                        $('#project_skill').html('');
-
-                        $.each(data, function(k, v) {
-
-                            $('#project_skill').append('<option value="' + v + '">' + k + '</option>');
-                        });
-                    }
-                });*/
-
-
-                return true;
-            });
 
 
 

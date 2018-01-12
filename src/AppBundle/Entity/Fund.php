@@ -116,10 +116,7 @@ class  Fund
      */
     private $milestone;
 
-    /**
-     *  @ORM\OneToMany(targetEntity="Deposit", mappedBy="fund")
-     */
-    protected $deposit;
+
     /**
      *  @ORM\OneToMany(targetEntity="Withdrawal", mappedBy="fund")
      */
@@ -132,8 +129,6 @@ class  Fund
      */
     public function __construct()
     {
-        $this->milestone = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->deposit = new \Doctrine\Common\Collections\ArrayCollection();
         $this->withdrawal = new \Doctrine\Common\Collections\ArrayCollection();
     }
 

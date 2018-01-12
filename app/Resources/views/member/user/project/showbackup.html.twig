@@ -1,0 +1,543 @@
+{% extends 'member/base.html.twig' %}
+
+ {% block titleText %}
+  <h1><strong >{{ project.name |capitalize}}</strong></h1>
+     <h1><strong >{{ project.budget.minPrice |price}} - {{ project.budget.maxPrice |price}}</strong></h1>
+  {% endblock %}
+{% block breadCrumb %}
+    <ul class="nav nav-tabs" style="color: red">
+
+     {% if project.moderatorResponse != "accepted" %}
+         <li  class="active"><a href="#projectDetails" data-toggle="tab">Project Details</a></li>
+         <li><a href="#upgrade" data-toggle="tab"><strong>Upgrade Project</strong></a></li>
+         <li><a href={{ path('project_edit', { 'id': project.id }) }} ><strong>Edit</strong></a></li>
+
+         <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span>
+          <i class="fa fa-1x fa-ellipsis-h" aria-hidden="true"></i>
+          </span></a>
+             <ul class="dropdown-menu">
+                 <li><a  id="delete" href="#">Delete</a></li>
+                 <li><a  id="close" href="#">Close</a></li>
+             </ul>
+         </li>
+        {% else %}
+
+        <li  class="active"><a class="card-title" href="#proposals" data-toggle="tab"><strong>Proposals</strong></a></li>
+       {% if project.awarded == true %}
+           <li><a href="#management" data-toggle="tab"><strong>Management</strong></a></li>
+       {% endif %}
+            <li><a href="#projectDetails" data-toggle="tab"><strong>Project Details</strong></a></li>
+           <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span>
+          <i class="fa fa-1x fa-ellipsis-h" aria-hidden="true"></i>
+          </span></a>
+            <ul class="dropdown-menu">
+
+                <li><a href="#upgrade" data-toggle="tab">Upgrade Project</a></li>
+                <li><a href={{ path('project_edit', { 'id': project.id }) }} >Edit</a></li>
+                <li><a  id="delete" href="#">Delete</a></li>
+                <li><a  id="close" href="#">Close</a></li>
+            </ul>
+        </li>
+     {% endif %}
+
+    </ul>
+{% endblock %}
+
+{% block page %}
+
+        {#
+          The tab content begings here
+        #}
+    <div style="margin-top: 3em" class="tab-content" id="myTabContent">
+       {% if project.moderated %}
+        {% if project.moderatorResponse == "accepted" %}
+            {#
+          The proposals
+        #}
+            <div  class={% if project.onGoing == 0 %}"tab-pane fade active in"{% else %}"tab-pane fade"{% endif %} id="proposals">
+            <div class="col-md-9">
+                <div class="card">
+
+                    <div class="bs-component">
+
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#allProposals" data-toggle="tab">All Proposals</a></li>
+                            {% if bookMarkedProposals |length > 0 %}
+
+                              <li><a href="#bookMarked" data-toggle="tab">Bookmarked</a></li>
+
+                            {% endif %}
+                            {% if awardedProposal |length > 0 %}
+                                <li><a href="#awardedProposal" data-toggle="tab">Awarded</a></li>
+                            {% endif %}
+                        </ul>
+                        <div style="margin-top: 1em" class="tab-content" id="allProposalContent">
+                            <div class="tab-pane fade active in" id="allProposals">
+                                {% if project.state == "open" %}
+                                   {% if project.bid |length %}
+                                       {% for bid in project.bid %}
+                                           {% if bid.visible == true  %}
+                                               <div  style="border-bottom: solid thin #a5a5a5;padding-top: 0" class="row">
+                                                   <div class="col-md-2">
+                                                       <img src="{{ asset('assets/img/profile/m.jpeg') }}"
+                                                            style="max-height: 8em" class="img-responsive img-circle center-block">
+                                                   </div>
+                                                   <div class="col-sm-6">
+                                                       <h4>{{ bid.member.username  }}</h4>
+                                                       <p style="line-height: 1em">{{ bid.proposal |capitalize }}</p>
+
+
+                                                       <p> This would be completed in  {{ bid.duration }} Days</p>
+
+                                                       <ul  class="profile-badge-icon">
+                                                           <li><i class="fa fa-credit-card fa-2x" aria-hidden="true"></i></li>
+                                                           <li><i class="fa fa-envelope-o fa-2x" aria-hidden="true"></i></li>
+                                                           <li><i class="fa fa-user fa-2x" aria-hidden="true"></i></li>
+                                                           <li><i class="fa fa-phone fa-2x" aria-hidden="true"></i></li>
+                                                           <li><i class="fa fa-money fa-2x" aria-hidden="true"></i></li>
+                                                       </ul>
+
+
+                                                   </div>
+                                                   <div class="col-sm-2">
+                                                       <h4>{{ bid.price |price }}</h4>
+                                                       <div style="padding-left: 0" class="reputation">
+                                                           <span>4.8</span>
+                                                           <i class="fa fa-star" aria-hidden="true"></i>
+                                                           <i class="fa fa-star" aria-hidden="true"></i>
+                                                           <i class="fa fa-star" aria-hidden="true"></i>
+                                                           <i class="fa fa-star-o" aria-hidden="true"></i>
+                                                           <i class="fa fa-star-o" aria-hidden="true"></i>
+                                                           <span>33 Reviews</span>
+
+
+                                                       </div>
+                                                   </div>
+                                                   <div class="col-sm-2">
+                                                       <div style="margin-top: 1em" class="btn-group">
+                                                           <a style="" class="btn btn-default" href="#"><i class="fa fa-lg fa-bookmark-o"></i></a>
+                                                           <a class="btn btn-info" href="#"><i class="fa fa-lg fa-comment-o"></i></a>
+
+                                                       </div>
+                                                       <div style="margin-top: 1em" >
+
+                                                           <a class="btn btn-success" href="{{ path('initialize-project-award', {'bidId': bid.id }) }}">Award</a>
+                                                       </div>
+                                                   </div>
+                                               </div>
+                                               {% else %}
+                                        <div  style="border-bottom: solid thin #a5a5a5;padding-top: 0" class="row">
+                                                   <div style="z-index: 55" >
+                                                       <div class="m-loader mr-20">
+                                                           <svg class="m-circular" viewBox="25 25 50 50">
+                                                               <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="1"/>
+                                                           </svg>
+                                                       </div>
+                                                       <h3 class="l-text">Something is coming from {{ bid.member.username }} ...</h3>
+                                                   </div>
+                                        </div>
+                                           {% endif %}
+
+                                       {% endfor %}
+
+
+                                       {% else %}
+
+                                           <div style="z-index: 55" class="overlay">
+                                               <div class="m-loader mr-20">
+                                                   <svg class="m-circular" viewBox="25 25 50 50">
+                                                       <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="1"/>
+                                                   </svg>
+                                               </div>
+                                               <h3 class="l-text">Spreading the news of your project ...</h3>
+                                           </div>
+                                   {% endif %}
+                                 {% else %}
+
+                                {% endif %}
+                            </div>
+
+                            <div class="tab-pane fade" id="bookMarked">
+                            </div>
+
+
+
+
+                            <div class="tab-pane fade" id="awardedProposal">
+                                {% if project.state == "open" %}
+                                    {% if project.bid |length %}
+                                        {% for bid in project.bid %}
+                                            {% if bid.visible == true  %}
+                                                <div  style="border-bottom: solid thin #a5a5a5;padding-top: 0" class="row">
+                                                    <div class="col-md-2">
+                                                        <img src="{{ asset('assets/img/profile/m.jpeg') }}"
+                                                             style="max-height: 8em" class="img-responsive img-circle center-block">
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <h4>{{ bid.member.username  }}</h4>
+                                                        <p style="line-height: 1em">{{ bid.proposal |capitalize }}</p>
+
+
+                                                        <p> This would be completed in  {{ bid.duration }} Days</p>
+
+                                                        <ul  class="profile-badge-icon">
+                                                            <li><i class="fa fa-credit-card fa-2x" aria-hidden="true"></i></li>
+                                                            <li><i class="fa fa-envelope-o fa-2x" aria-hidden="true"></i></li>
+                                                            <li><i class="fa fa-user fa-2x" aria-hidden="true"></i></li>
+                                                            <li><i class="fa fa-phone fa-2x" aria-hidden="true"></i></li>
+                                                            <li><i class="fa fa-money fa-2x" aria-hidden="true"></i></li>
+                                                        </ul>
+
+
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <h4>{{ bid.price |price }}</h4>
+                                                        <div style="padding-left: 0" class="reputation">
+                                                            <span>4.8</span>
+                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                                                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                                                            <span>33 Reviews</span>
+
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <div style="margin-top: 1em" class="btn-group">
+                                                            <a style="" class="btn btn-default" href="#"><i class="fa fa-lg fa-bookmark-o"></i></a>
+                                                            <a class="btn btn-info" href="#"><i class="fa fa-lg fa-comment-o"></i></a>
+
+                                                        </div>
+                                                        <div style="margin-top: 1em" >
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% else %}
+                                                <div  style="border-bottom: solid thin #a5a5a5;padding-top: 0" class="row">
+                                                    <div style="z-index: 55" >
+                                                        <div class="m-loader mr-20">
+                                                            <svg class="m-circular" viewBox="25 25 50 50">
+                                                                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="1"/>
+                                                            </svg>
+                                                        </div>
+                                                        <h3 class="l-text">Something is coming from {{ bid.member.username }} ...</h3>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+
+                                        {% endfor %}
+
+
+                                    {% else %}
+                                        <div style="z-index: 55" class="overlay">
+                                            <div class="m-loader mr-20">
+                                                <svg class="m-circular" viewBox="25 25 50 50">
+                                                    <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="1"/>
+                                                </svg>
+                                            </div>
+                                            <h3 class="l-text">Spreading the news of your project ...</h3>
+                                        </div>
+                                    {% endif %}
+                                {% else %}
+
+                                {% endif %}
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="col-md-3"></div>
+                </div>
+            </div>
+
+            {#
+              The management
+            #}
+            <div
+            id="management">
+            <div class="col-md-9">
+                <div class="bs-component">
+                    <div class="alert alert-dismissible alert-info">
+                        <button class="close" type="button" data-dismiss="alert">×</button>
+                        <h4>Next Step ?</h4>
+                        <h5>Create a milestone</h5>
+                        <p style="color:#1f1f1f">Why are Milestones Important ? They show that you are keen to hire your freelancer
+                            and build a trustworthy relationship for the future. <a class="alert-link" href="#">learn more</a>.</p>
+                    </div>
+                </div>
+                {%  for bid in project.bid %}
+                    {% if bid.awarded == 1  %}
+                        <div class="card">
+
+                            <div style="padding:  .5em .5em 0 0; max-height: 11em" class="row">
+                                <div class="col-md-1">
+                                    <img src="{{ asset('assets/img/profile/m.jpeg') }}"
+                                         style="max-height: 6em" class="img-responsive img-thumbnail center-block">
+                                </div>
+                                <div class="col-sm-6">
+                                    <h4>{{ bid.member.username  }}</h4>
+
+
+                                </div>
+                                <div class="col-sm-2">
+                                    <h4>{{ bid.price |price }}</h4>
+                                    <p> in {{ bid.duration }} Days</p>
+                                </div>
+                                <div class="col-sm-2">
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="card">
+                            <div class="bs-component">
+                                <div class="alert alert-dismissible alert-warning">
+                                    <button class="close" type="button" data-dismiss="alert">×</button>
+                                    <h4>Note</h4>
+                                    <h5>You can break your payments into smaller chunk depending on how large your project is </h5>
+                                    <h5>This project can have maximum of 1 milestone </h5>
+                                    <h5>You have to create a milestone before a freelancer can start working on your project</h5>
+                                    <p style="color:#1f1f1f">
+                                        <a class="alert-link" href="#">learrn more</a>.</p>
+                                </div>
+                            </div>
+                            {{ form_start(milestoneForm, {'attr': {'class': 'form-inline'}}) }}
+
+                            <div class="input-group"><span class="input-group-addon">₦</span>
+                                {{ form_widget(milestoneForm.price) }}
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Description</label>
+                                {{ form_widget(milestoneForm.description) }}
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Create Milestone" class="btn btn-primary" id="xpCommit"  />
+                                <input type="hidden" name="contract" value="{{ bid.id }}">
+                            </div>
+                            {{ form_end(milestoneForm) }}
+
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <div class="col-md-3"></div>
+            </div>
+            </div>
+
+            {% else %}
+                <div class="col-md-9">
+                <div style="color: white;background-color: #ee2d4d;
+                        background-image: url({{ asset('assets/img/bg') }});
+                        background-attachment: fixed;" class="alert alert-danger" data-notify="container">
+                    <h3 style="padding-left: 30%">Something's wrong somewhere </h3>
+                    <p style="font-weight: bolder;color: white">Your project did not meet
+                        chukolo project standard. Please edit your
+                        project. Try being more elaborate and clear in
+                        your project description so that the
+                        freelancers can understand your need.
+                        <a class="alert-link" href="#">learn more</a>
+                    </p>
+                    <a  href="" class="btn btn-sm  btn-danger" >CancelProject</a>
+                </div>
+                </div>
+
+        {% endif %}
+
+        {% else %}
+            <div class="col-md-9">
+            <div style="color: white;background-color: #004a43;
+                    background-image: url({{ asset('assets/img/bg') }});
+                    background-attachment: fixed;" class="alert alert-info" data-notify="container">
+                <h3 style="padding-left: 30%">Review in Progress . . .</h3>
+                <p style="font-weight: bolder; color: white">Your
+                    project is
+                    being reviewed, before
+                    you say jack it will be up for bidding
+                </p>
+                <hr />
+
+              <a href="#" >Contact support</a>
+
+            </div>
+
+            </div>
+       {% endif %}
+
+        {#
+         The projectDetails
+       #}
+        <div class={% if project.moderatorResponse !="accepted" %}"tab-pane fade active in"{% else %}"tab-pane fade"{% endif %}    id="projectDetails">
+            <div class="col-md-9">
+                <div class="card">
+                    <h4 class="card-title">Project Description</h4>
+                    <hr />
+                    <div style="padding: 0 2em 3em" class="card-body">{{ project.description |title}}</div>
+                    <h4 class="card-title">Required Skills</h4>
+                    <div class="card-footer">
+
+                        {% for skill in project.skill %}
+                            <a  href="#">{{ skill.name}}</a>
+                        {% endfor %}
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3"></div>
+        </div>
+
+        {#
+          The upgrade
+        #}
+        <div class="tab-pane fade" id="upgrade">
+            <div class="col-md-9">
+                <div class="card">
+                    <h3 class="card-title">Project Upgrades</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+
+                            <div class="toggle lg">
+                                <label>
+                                    <input type="checkbox"><span class="button-indecator"></span>
+                                </label>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+
+    <script src="{{ asset('assets/js/dashboard/jquery-2.1.4.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/plugins/pace.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/main.js') }}"></script>
+    {# Add ajax thingie that will update the city select box #}
+
+
+    <script src="{{ asset('assets/js/dashboard/plugins/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/plugins/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript">$('body').removeClass("sidebar-mini").addClass("sidebar-collapse");</script>
+    <script src="{{ asset('assets/js/dashboard/plugins/bootstrap-notify.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/plugins/sweetalert.min.js') }}"></script>
+
+
+
+
+
+    <script type="text/javascript">
+
+        $('#close').click(function(){
+            swal({
+                title: "Are you sure you wish to close this project?",
+                text: "By closing your project you will not be able to receive bids. Your project will be " +
+                "archived and cannot be reopened.",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, close it!",
+                cancelButtonText: "No, cancel Please!",
+                confirmButtonColor: "#DD6B55",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function(isConfirm) {
+                if (isConfirm) {
+
+                    //  create the ajax call that will close your project here
+
+                    swal("Closed!", "Your project has been closed.", "success");
+                } else {
+                    swal("Cancelled", "Your project is safe :)", "error");
+                }
+            });
+        });
+
+        $('#delete').click(function(){
+
+            swal({
+                title: "Are you sure you wish to Delete this project ?",
+                text: " By deleting your project no one will be able to view the project information, the attached files nor any of the" +
+                "bids on the project. This action cannot be undone."+
+                        "Delete your project now for NGN 800.00 ",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel Please!",
+                confirmButtonColor: "danger",
+                closeOnConfirm: false,
+                showLoaderOnConfirm: false,
+                closeOnCancel: false
+            }, function(isConfirm) {
+                if (isConfirm) {
+
+                    //  create the ajax call that will delete your project here
+
+
+                    swal("Deleted!", "Your project has been deleted.", "success");
+                } else {
+                    swal("Cancelled", "Your project is safe :)", "error");
+                }
+            });
+        });
+
+        $('.milestone').click(function(){
+
+            swal({
+                title: "Create Milestone  Payment",
+                text: " Milestone is a way of paying freelancers on chukolo",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel Please!",
+                confirmButtonColor: "danger",
+                closeOnConfirm: false,
+                showLoaderOnConfirm: false,
+                closeOnCancel: false
+            }, function(isConfirm) {
+                if (isConfirm) {
+
+                    //  create the ajax call that will delete your project here
+
+
+                    swal("Deleted!", "Your project has been deleted.", "success");
+                } else {
+                    swal("Cancelled", "Your project is safe :)", "error");
+                }
+            });
+        });
+
+        $(document).ready(function () {
+
+
+
+        });
+    </script>
+
+
+
+
+{% endblock %}

@@ -92,7 +92,7 @@ class Withdrawal
     /**
      * @ORM\OneToOne(targetEntity="ChukoloInvoice", mappedBy="withdrawal")
      */
-    private $invoice;
+    protected $chukoloInvoice;
 
     /**
      * Get id
@@ -342,5 +342,29 @@ class Withdrawal
     public function getInvoice()
     {
         return $this->invoice;
+    }
+
+    /**
+     * Set chukoloInvoice
+     *
+     * @param \AppBundle\Entity\ChukoloInvoice $chukoloInvoice
+     *
+     * @return Withdrawal
+     */
+    public function setChukoloInvoice(\AppBundle\Entity\ChukoloInvoice $chukoloInvoice = null)
+    {
+        $this->chukoloInvoice = $chukoloInvoice;
+
+        return $this;
+    }
+
+    /**
+     * Get chukoloInvoice
+     *
+     * @return \AppBundle\Entity\ChukoloInvoice
+     */
+    public function getChukoloInvoice()
+    {
+        return $this->chukoloInvoice;
     }
 }

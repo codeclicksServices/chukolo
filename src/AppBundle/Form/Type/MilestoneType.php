@@ -33,10 +33,9 @@ class MilestoneType extends AbstractType
 
         $builder
 
-            ->add('amount',  TextType::class, array(
+            ->add('price',  TextType::class, array(
                 'attr' => array('class'=>'form-control',"placeholder"=>"amount"),
             ))
-
             ->add('description', TextareaType::class, array(
                 'attr' => array('class' => 'form-control',"placeholder"=>"Describe the task to be done for here"),
 

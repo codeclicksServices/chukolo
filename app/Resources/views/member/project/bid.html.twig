@@ -83,7 +83,7 @@
                                          <form id="chooseNumberofMilestoneForm" class="form-horizontal">
 
                                              <label for="select">Number Of Milestone(choose if you want to split payment or be paid at once here.
-                                                 <a class="alert-link" href="#">learrn more</a> )</label>
+                                                 <a class="alert-link" href="#">learn more</a> )</label>
                                              <select class="form-control" id="selectNumberOfMilestone">
                                                  <option value="0">Make a choice</option>
                                                  <option value="1">1 Milestone</option>
@@ -234,7 +234,7 @@
                                                      <p>Your bid amount is <strong> {{ workingBid.price |price}}</strong></p>
                                                      <p>Project commission is {{ workingBid.commission |price }}</p>
                                                       <p>What you would receive is {{ workingBid.value |price }}</p>
-                                                     <p>You are to deliver this project in <strong> {{ workingBid.deliveryDays}}</strong> </p>
+                                                     <p>You are to deliver this project in <strong> {{ workingBid.duration}}</strong> </p>
                                                      <p>{{ workingBid.proposal }}</p>
                                                   </p>
                                               </div>
@@ -323,7 +323,7 @@
                                  <div class="form-group">
                                      <label class="control-label">Days to Deliver</label>
                                      <div class="input-group"><span class="input-group-addon">Days</span>
-                                         {{ form_row(form.deliveryDays) }}
+                                         {{ form_row(form.duration) }}
                                      </div>
                                  </div>
                                  <div class="col-sm-3">
@@ -425,7 +425,7 @@
              * create one milestone and go to next
              */
             $('#createMilestoneAndNextForm').submit(function(e) {
-              //  e.preventDefault();
+              // e.preventDefault();
                 var val =1;
 
 
@@ -436,8 +436,16 @@
                     type: "POST",
                     url: "{{ url('bid_project', { 'projectId': project.id}) }}?createOneMilestone=" + val,
                     success: function(data) {
-                        $('#loading_card').hide();
-                        location.reload();
+                        var errorMessage=data.message;
+                        alert(errorMessage);
+                    //    alert("create milestone and next clicke");
+                     //   $('#loading_card').hide();
+                       // location.reload();
+
+                    },
+                    error: function(data) {
+                        var errorMessage=data.message;
+                        alert("failed");
 
                     }
                 });
@@ -550,7 +558,7 @@
                 }
             });
 
-                       /*
+            /*
              * create bid with ajax
              */
             $('#gotoSummary').click(function(e) {
@@ -570,9 +578,6 @@
                     }
                 });
             });
-
-
-
             /*
              * refuse to create milestone proposal
              */

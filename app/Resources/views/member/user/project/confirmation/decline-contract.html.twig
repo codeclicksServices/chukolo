@@ -1,0 +1,254 @@
+{% extends 'member/base.html.twig' %}
+
+
+{% block titleText %}
+    <h1>Contract Progress </h1>
+{% endblock %}
+
+{% block breadCrumb  %}
+
+{% endblock %}
+
+{% block page %}
+<div class="container">
+    {% if contract %}
+        {% if contract.acceptOffer	== 0 %}
+        <div class="row">
+            <div class="col-md-3">
+                <div class="feature-content text-center  text-primary">
+                    <div class="feature-icon-box">
+                        <div class="feature-icon center-block text-primary ">
+                            <i class="fa fa-binoculars"></i>
+                        </div>
+                    </div>
+                    <div class="feature-info">
+                        <h3 class="feature-heading">ACCEPT THE CONTRACT </h3>
+                        <p style="font-weight: bold" class="feature-description  text-danger">
+                            Carefully read the terms of this contract as stated in the contract agreement(Milestone(s) description), if you agree to the terms accept &
+                            start the project
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="feature-content text-center">
+                    <div class="feature-icon-box">
+                        <div class="feature-icon center-block active">
+                            <i class="fa fa-check"></i>
+                        </div>
+                    </div> <!--  end of /.feature-icon-box  -->
+                    <div class="feature-info">
+                        <h3 class="feature-heading">REVIEW PROGRESS </h3>
+                        <p class="feature-description">
+                            As you work, it is advised you share the progress of your work with the employer to confirm that you are
+                            on track with the terms of the contract.
+                        </p>  <!--   end of /.feature-description  -->
+                    </div> <!--   end of /.feature-info  -->
+                </div> <!--  end of /.feature-content  -->
+            </div>
+            <div class="col-md-3">
+                <div class="feature-content text-center">
+                    <div class="feature-icon-box">
+                        <div class="feature-icon center-block">
+                            <i class="fa fa-bank"></i>
+                        </div>
+                    </div> <!--  end of /.feature-icon-box  -->
+                    <div class="feature-info">
+                        <h3 class="feature-heading">MILESTONE FULFILMENT</h3>
+                        <p class="feature-description">
+                            Once a milestone is reached & you submit all the deliverable(s) to the employer on acceptance the amount
+                            stated for the milestone would be released to you.
+                        </p>  <!--   end of /.feature-description  -->
+                    </div> <!--   end of /.feature-info  -->
+                </div> <!--  end of /.feature-content  -->
+            </div>
+            <div class="col-md-3">
+                <div class="feature-content text-center">
+                    <div class="feature-icon-box">
+                        <div class="feature-icon center-block">
+                            <i class="fa fa-money"></i>
+                        </div>
+                    </div> <!--  end of /.feature-icon-box  -->
+                    <div class="feature-info">
+                        <h3 class="feature-heading">CONTRACT COMPLETION & ACCEPTANCE  </h3>
+                        <p class="feature-description">
+                            At this stage, it is believed that you have fulfil all the contract terms and delivered all the deliverable to the employer, Once the employer accept
+                            your job the balance would be release to you.
+                        </p>  <!--   end of /.feature-description  -->
+                    </div> <!--   end of /.feature-info  -->
+                </div> <!--  end of /.feature-content  -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-9">
+
+
+                <div class="card alert panel-default">
+                    <div class="card-title-w-btn">
+                        <h2 class="title">{{ contract.project.name |capitalize }}</h2>
+                        <p><strong>Contract Status :</strong> <a class="btn btn-warning icon-btn" href=""><i class="fa fa-clock-o"></i>Pending Acceptance</a></p>
+                    </div>
+                    <div class="card-body">
+                        <hr />
+                        <h4 class="title text-center">Job Summary</h4>
+                        <b>Contract Description </b><br>
+                          <p>
+                          {{ contract.project.description |raw }}<br />
+                          </p>
+                          <div class="row">
+                              <div class="col-sm-6">
+
+                                  <b>Skills Required </b><br>
+                                  {% for skill in contract.project.skill %}
+                                  <a class="btn btn-sm btn-default icon-btn"  href="#">{{ skill.name |capitalize}}</a>
+                                  {% endfor %}<br>
+
+
+                              </div>
+
+                              <div class="col-sm-3"></div>
+                              <div class="col-sm-3">
+                                  <b>Total Cost</b>
+                                  <h4>{{ contract.price |price }}</h4>
+                              </div>
+                          </div>
+
+                        <hr />
+                        <h4 class="title text-center">Employer Details</h4>
+
+                        <div style="padding: .5em .5em 0 0; max-height: 11em" class="row">
+                            <div class="col-md-2">
+                                <img src="{{ asset('assets/img/profile/pp.jpeg') }}" style="max-height: 8em" class="img-responsive img-circle center-block">
+                                <h4 >Akoh Victor</h4>
+                            </div>
+                            <div class="col-sm-6">
+                                <div style="padding-left: 3em" class="reputation">
+
+                                    <ul  class="profile-badge-icon">
+                                        <li><i class="fa fa-credit-card fa-2x" aria-hidden="true"></i></li>
+                                        <li><i class="fa fa-envelope-o fa-2x" aria-hidden="true"></i></li>
+                                        <li><i class="fa fa-user fa-2x" aria-hidden="true"></i></li>
+                                        <li><i class="fa fa-phone fa-2x" aria-hidden="true"></i></li>
+                                        <li><i class="fa fa-money fa-2x" aria-hidden="true"></i></li>
+                                    </ul>
+                                    <p>Member Since :{{ contract.project.member.registered |date }}</p>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <div style="padding-left: 3em" class="reputation">
+                                    <span>4.8</span>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star-o" aria-hidden="true"></i>
+                                    <i class="fa fa-star-o" aria-hidden="true"></i>
+                                    <span>33 Reviews</span>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <hr />
+                        <h4 class="title text-center">Milestone & Deliverable</h4>
+
+
+                          {% if contract.milestoneProposal %}
+                              {% for milestone in contract.milestoneProposal %}
+                               {% if milestone.status =="accept" and milestone.type == "offer" %}
+                                   <h5>{{ milestone.milestoneCode |capitalize }} ({{ milestone.amount |price }})</h5>
+
+                                   <ol >
+                                       {% if  milestone.deliverable != null %}
+                                       {% for deliverable in milestone.deliverable   %}
+                                         <li><strong>{{ deliverable.task |upper }}</strong>
+                                             <ol>
+                                                 <li>
+                                                     {{ deliverable.note }}
+                                                 </li>
+                                             </ol>
+                                         </li>
+
+                                       {% endfor %}
+                                       {% endif %}
+                                   </ol>
+
+                               {% endif %}
+                              {% endfor %}
+                          {% endif %}
+
+                        <hr />
+                        <h4 class="title text-center">Your Bid Details</h4>
+
+                        <b>Bid Proposal</b><br>
+                        <p>
+                            {{ contract.proposal |raw }}<br />
+                        </p>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <b>You have agreed to finish this Project in :</b>
+                                <h4>{{ contract.duration }} day(s)</h4>
+                            </div>
+                            <div class="col-sm-5">
+                                <b>Employer Pays : {{ contract.price |price }}</b><br />
+                                <b>Freelancer Receives : {{ contract.value |price }}</b>
+                                <hr />
+                                <p>
+                                    Project Administrative Cost : {{ contract.commission |price }} <br />
+                                    which is 15% of the project worth.
+                                </p>
+
+                            </div>
+                            <div class="col-sm-4">
+                            {% if contract.subscription != null %}
+                                <b>Bid Subscriptions </b><br>
+                                {% for subscription in contract.subscription %}
+                                {{ subscription.name |capitalize}} <span> {{ subscription.value |price}}</span><br />
+                                {% endfor %}
+                            {% endif %}
+                            </div>
+                        </div>
+
+
+                        <hr />
+
+                        <a href = "{{ path('manage_contract', { 'contractId': contract.id }) }}" class="btn btn-done btn-sm  btn-success">Accept Offer</a>
+                        <a  href="" class="btn btn-sm  btn-danger " >Decline</a>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+
+            </div>
+        </div>
+           {% else %}
+            {# now cheeck if the contract is started #}
+               {% if contract.started	== 0 %}
+                   {% else %}
+                   {# you have started this contract#}
+               {% endif %}
+        {% endif %}
+    {% else %}
+
+
+       {#this will never be true onless hacked #}
+        <div class="row">
+            <div class="col-md-8 push-sm-2">
+                <div class="card">
+                    <div class="card-title-w-btn">
+                        <h3 class="title">You have no active contract <a href="{{ path('user_dashboard') }}">Go home</a> </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+
+{% endblock %}
+
+
+

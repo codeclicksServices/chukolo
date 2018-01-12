@@ -20,6 +20,8 @@ security:
 
         ROLE_DEVELOPER: [ROLE_SUPER_ADMIN]
 
+    access_decision_manager:
+        strategy: unanimous
 
     providers:
         fos_userbundle:
@@ -31,6 +33,8 @@ security:
             form_login:
                 provider: fos_userbundle
                 csrf_token_generator: security.csrf.token_manager
+                success_handler: authentication.handler.login_success_handler
+
 
 
             logout:       true

@@ -6,6 +6,7 @@ use AppBundle\Entity\MilestoneProposal;
 use AppBundle\Entity\Bid;
 use AppBundle\Form\Type\BidType;
 use AppBundle\Form\Type\MilestoneProposalType;
+use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -28,7 +29,7 @@ class WorkController extends BaseController
          * view all the jobs/projects
          */
         $Project= $this->getDoctrine()->getRepository('AppBundle:Project');
-        $rescentCompletedJob=$Project->findAll();
+        $recentCompletedJob=$Project->findAll();
 
 
 
@@ -49,15 +50,11 @@ class WorkController extends BaseController
         /*
          * paginationgs (i.e what actually get to the front end)
          */
-        $alljobs = $paginator->paginate($openProjectsQuery,$request->query->getInt('page', 1),$pageLimit);
-
-
-
-
+        $allJobs = $paginator->paginate($openProjectsQuery,$request->query->getInt('page', 1),$pageLimit);
 
 
         return  $this->render('member/project/index.html.twig',array(
-            'allJobs'=>$alljobs,
+            'allJobs'=>$allJobs,
         ));
     }
 
@@ -107,11 +104,6 @@ class WorkController extends BaseController
             'rescentCompletedJob'=>$rescentCompletedJob,
         ));
     }
-
-
-
-
-
 
 
     /**
@@ -210,17 +202,15 @@ class WorkController extends BaseController
             $workingBid=$userBids[0];
 
 
-            /* for  creating a whole milestons proposal or  at once */
+            /* for  creating a whole milestones proposal or  at once */
             if ($request->query->get('createOneMilestone')== 1){
-                return  $this->CreateOneMilestone($workingBid,$request);
+
+               return  $this->CreateOneMilestone($workingBid);
             }
               /*todo come back and create the second milestone proposal automatically*/
             if ($milestoneForm->isSubmitted() && $milestoneForm->isValid()) {
-                if(!empty($userBids)) {
-                    $bid=$userBids[0];
 
-                    $this->CreateMilestone($bid,$milestone);
-                }
+                    $this->CreateMilestone($workingBid,$milestone);
             }
 
             if ($request->query->get('add_feature_id')!= 0){

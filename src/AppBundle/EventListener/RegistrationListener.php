@@ -68,7 +68,7 @@ $member = $event->getForm()->getData();
 
         /**
          *
-         *
+         * todo :set the default settings here
          * set the default settings
          *
          * get the intentions of the user

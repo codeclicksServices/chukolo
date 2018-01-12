@@ -36,3 +36,8 @@ services:
         arguments: ["@doctrine.orm.entity_manager"]
         tags:
             - { name: twig.extension }
+
+
+    authentication.handler.login_success_handler:
+        class:  AppBundle\EventListener\LoginSuccessHandler
+        arguments:  ['@router', '@security.authorization_checker']

@@ -70,8 +70,7 @@ class Portfolio
      * @ORM\ManyToOne(targetEntity="Skill", inversedBy="portfolio")
      * @ORM\JoinColumn(name="skill_id",referencedColumnName="id", nullable=false )
      */
-    protected $skills;
-
+    protected $skill;
 
 
 
@@ -224,27 +223,29 @@ class Portfolio
         return $this->owner;
     }
 
+    
+
     /**
-     * Set skills
+     * Set skill
      *
-     * @param \AppBundle\Entity\Skill $skills
+     * @param \AppBundle\Entity\Skill $skill
      *
      * @return Portfolio
      */
-    public function setSkills(\AppBundle\Entity\Skill $skills)
+    public function setSkill(\AppBundle\Entity\Skill $skill)
     {
-        $this->skills = $skills;
+        $this->skill = $skill;
 
         return $this;
     }
 
     /**
-     * Get skills
+     * Get skill
      *
      * @return \AppBundle\Entity\Skill
      */
-    public function getSkills()
+    public function getSkill()
     {
-        return $this->skills;
+        return $this->skill;
     }
 }

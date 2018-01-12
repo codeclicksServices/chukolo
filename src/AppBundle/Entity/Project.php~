@@ -40,7 +40,7 @@ class Project
      */
     protected $description;
     /**
-     * @ORM\Column(type="integer",nullable=true,options={"comment":"value: is the price plus subscriptions"})
+     * @ORM\Column(type="integer",nullable=true,options={"comment":"value: is the price plus subscriptions the employer is paying for the project"})
      */
     protected $value;
     /**
@@ -56,13 +56,18 @@ class Project
      */
     protected $averageBid;
     /**
-     * @ORM\Column(type="string", length=100,options={"comment":"current state of the project i.e Value: created, open,close,deleted,awarded,onGoing,pause,completed"})
+     * @ORM\Column(type="string", length=100,options={"comment":"current state of the project i.eValue: pending, open,close,deleted,awarded,onGoing,pause,completed,delivered"})
      */
     protected $state;
     /**
      * @ORM\Column(type="string", length=100,options={"comment":"is it a fixed project or time based "})
      */
     protected $type;
+
+    /**
+     * @ORM\Column(type="string",nullable=true, length=100,options={"comment":"the feedback after project is moderated. Value: accepted or decline"})
+     */
+    protected $moderatorResponse;
 
     /**
      * @ORM\Column(type="date",nullable=true, options={"comment":"when the project is meant to be delivered"})
@@ -80,6 +85,10 @@ class Project
      * @ORM\Column(type="smallint",options={"default":0,"comment":"project has been awarded to at least one person "})
      */
     protected $awarded;
+    /**
+     * @ORM\Column(type="smallint",options={"default":0,"comment":"used to initiate the start  process* "})
+     */
+    protected $started;
     /**
      * @ORM\Column(type="smallint",options={"default":0,"comment":"1 0 project can only be made visible if moderated is true"})
      */
@@ -122,8 +131,14 @@ class Project
      */
     protected $created;
 
-
-
+    /**
+     * @ORM\Column(type="datetime",nullable=true,options={"comment":"the day you started the project "})
+     */
+    protected $startDate;
+    /**
+     * @ORM\Column(type="integer",nullable=true, length=3,options={"comment":"this is in percentage from 1 to 100 % and the value is dependent on the completed milestone"})
+     */
+    private $completionRate;
     /**
      * @ORM\Column(type="smallint",options={"default":0,"comment":"discontinue a project"})
      */
@@ -1038,5 +1053,101 @@ class Project
     public function removeReservedFund(\AppBundle\Entity\ReservedFund $reservedFund)
     {
         $this->reservedFund->removeElement($reservedFund);
+    }
+
+    /**
+     * Set completionRate
+     *
+     * @param integer $completionRate
+     *
+     * @return Project
+     */
+    public function setCompletionRate($completionRate)
+    {
+        $this->completionRate = $completionRate;
+
+        return $this;
+    }
+
+    /**
+     * Get completionRate
+     *
+     * @return integer
+     */
+    public function getCompletionRate()
+    {
+        return $this->completionRate;
+    }
+
+    /**
+     * Set started
+     *
+     * @param integer $started
+     *
+     * @return Project
+     */
+    public function setStarted($started)
+    {
+        $this->started = $started;
+
+        return $this;
+    }
+
+    /**
+     * Get started
+     *
+     * @return integer
+     */
+    public function getStarted()
+    {
+        return $this->started;
+    }
+
+    /**
+     * Set startDate
+     *
+     * @param \DateTime $startDate
+     *
+     * @return Project
+     */
+    public function setStartDate($startDate)
+    {
+        $this->startDate = $startDate;
+
+        return $this;
+    }
+
+    /**
+     * Get startDate
+     *
+     * @return \DateTime
+     */
+    public function getStartDate()
+    {
+        return $this->startDate;
+    }
+
+    /**
+     * Set moderatorResponse
+     *
+     * @param string $moderatorResponse
+     *
+     * @return Project
+     */
+    public function setModeratorResponse($moderatorResponse)
+    {
+        $this->moderatorResponse = $moderatorResponse;
+
+        return $this;
+    }
+
+    /**
+     * Get moderatorResponse
+     *
+     * @return string
+     */
+    public function getModeratorResponse()
+    {
+        return $this->moderatorResponse;
     }
 }

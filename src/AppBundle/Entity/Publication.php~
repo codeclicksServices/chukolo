@@ -50,7 +50,7 @@ class Publication
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="Member", inversedBy="education")
+     * @ORM\ManyToOne(targetEntity="Member", inversedBy="publication")
      * @ORM\JoinColumn(name="owner_id",referencedColumnName="id", nullable=false )
      */
     protected $owner;

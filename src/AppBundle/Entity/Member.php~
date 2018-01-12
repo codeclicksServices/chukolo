@@ -30,13 +30,14 @@ class Member extends User
     {
         parent::__construct();
 
-        $this->roles = array('ROLE_ MEMBER');
+        $this->roles = array('ROLE_MEMBER');
         $this->skill = new ArrayCollection();
         $this->project = new ArrayCollection();
         $this->category = new ArrayCollection();
         $this->review = new ArrayCollection();
         $this->milestone = new ArrayCollection();
         $this->bid = new ArrayCollection();
+        $this->bank= new ArrayCollection();
 
     }
 
@@ -44,6 +45,10 @@ class Member extends User
      * @ORM\Column(type="string", length=100,nullable=true)
      */
     protected $firstName;
+    /**
+     * @ORM\Column(type="string", length=10,nullable=false, options={"comment":"this is a security and confirmation feature. the authentication code is a unique 8 digit code automatically generated for each user its use for acepting declining withdrawal and other form of process"})
+     */
+    protected $authCode;
     /**
      * @ORM\Column(type="string", length=100,nullable=true)
      */
@@ -55,7 +60,10 @@ class Member extends User
 
     /*address*/
 
-
+    /**
+     * @ORM\Column(type="string", length=7,nullable=true, options={"comment":"value:mr,mrs,master etc "})
+     */
+    protected $title;
     /**
      * @ORM\Column(type="string", length=20,nullable=true, options={"comment":" value: residential address "})
      */
@@ -110,6 +118,12 @@ class Member extends User
     protected $updated;
 
     /**
+     * @ORM\Column(type="datetime",nullable=false)
+     */
+    protected $registered;
+
+
+    /**
      * @ORM\Column(type="smallint",nullable=true, options={"default":1})
      *
      */
@@ -129,7 +143,7 @@ class Member extends User
      */
     protected $project;
     /**
-     *  @ORM\OneToMany(targetEntity="Project", mappedBy="member")
+     *  @ORM\OneToMany(targetEntity="Bid", mappedBy="member")
      */
     protected $bid;
 
@@ -150,11 +164,7 @@ class Member extends User
      */
     protected $review;
 
-    /**
-     * this is my source of fund
-     *  @ORM\OneToMany(targetEntity="Milestone", mappedBy="employer")
-     */
-    protected $milestone;
+
     /**
      * @ORM\OneToOne(targetEntity="Fund", mappedBy="owner")
      */
@@ -201,7 +211,7 @@ class Member extends User
     /**
      *  @ORM\OneToMany(targetEntity="MemberBank", mappedBy="member")
      */
-    protected $bank;
+    protected $memberBank;
 
     /**
      * this is my source of fund
@@ -210,7 +220,7 @@ class Member extends User
     protected $reservedFund;
 
     /**
-     * @ORM\OneToMany(targetEntity="ChukoloFund", mappedBy="member")
+     * @ORM\OneToMany(targetEntity="ChukoloFund", mappedBy="payer")
      */
     private $chukoloFund;
 
@@ -767,39 +777,7 @@ class Member extends User
         return $this->review;
     }
 
-    /**
-     * Add milestone
-     *
-     * @param \AppBundle\Entity\Milestone $milestone
-     *
-     * @return Member
-     */
-    public function addMilestone(\AppBundle\Entity\Milestone $milestone)
-    {
-        $this->milestone[] = $milestone;
 
-        return $this;
-    }
-
-    /**
-     * Remove milestone
-     *
-     * @param \AppBundle\Entity\Milestone $milestone
-     */
-    public function removeMilestone(\AppBundle\Entity\Milestone $milestone)
-    {
-        $this->milestone->removeElement($milestone);
-    }
-
-    /**
-     * Get milestone
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getMilestone()
-    {
-        return $this->milestone;
-    }
 
     /**
      * Set fund
@@ -1065,42 +1043,6 @@ class Member extends User
         return $this->deposit;
     }
 
-    /**
-     * Add bank
-     *
-     * @param \AppBundle\Entity\MemberBank $bank
-     *
-     * @return Member
-     */
-    public function addBank(\AppBundle\Entity\MemberBank $bank)
-    {
-        $this->bank[] = $bank;
-
-        return $this;
-    }
-
-    /**
-     * Remove bank
-     *
-     * @param \AppBundle\Entity\MemberBank $bank
-     */
-    public function removeBank(\AppBundle\Entity\MemberBank $bank)
-    {
-        $this->bank->removeElement($bank);
-    }
-
-    /**
-     * Get bank
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getBank()
-    {
-        return $this->bank;
-    }
-
-
-
 
     /**
      * Add fundLog
@@ -1202,5 +1144,87 @@ class Member extends User
     public function getChukoloFund()
     {
         return $this->chukoloFund;
+    }
+
+    /**
+     * Set registered
+     *
+     * @param \DateTime $registered
+     *
+     * @return Member
+     */
+    public function setRegistered($registered)
+    {
+        $this->registered = $registered;
+
+        return $this;
+    }
+
+    /**
+     * Get registered
+     *
+     * @return \DateTime
+     */
+    public function getRegistered()
+    {
+        return $this->registered;
+    }
+
+    /**
+     * Add memberBank
+     *
+     * @param \AppBundle\Entity\MemberBank $memberBank
+     *
+     * @return Member
+     */
+    public function addMemberBank(\AppBundle\Entity\MemberBank $memberBank)
+    {
+        $this->memberBank[] = $memberBank;
+
+        return $this;
+    }
+
+    /**
+     * Remove memberBank
+     *
+     * @param \AppBundle\Entity\MemberBank $memberBank
+     */
+    public function removeMemberBank(\AppBundle\Entity\MemberBank $memberBank)
+    {
+        $this->memberBank->removeElement($memberBank);
+    }
+
+    /**
+     * Get memberBank
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMemberBank()
+    {
+        return $this->memberBank;
+    }
+
+    /**
+     * Set authCode
+     *
+     * @param string $authCode
+     *
+     * @return Member
+     */
+    public function setAuthCode($authCode)
+    {
+        $this->authCode = $authCode;
+
+        return $this;
+    }
+
+    /**
+     * Get authCode
+     *
+     * @return string
+     */
+    public function getAuthCode()
+    {
+        return $this->authCode;
     }
 }

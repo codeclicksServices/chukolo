@@ -67,9 +67,15 @@ class  ChukoloBank
 
     /**
      * one chukolo bank has many withdrawal
-     *  @ORM\OneToMany(targetEntity="Withdrawal", mappedBy="chukoloBank")
+     *  @ORM\OneToMany(targetEntity="Withdrawal", mappedBy="initiatingBank")
      */
     protected $withdrawal;
+
+
+
+
+
+
     /**
      * Constructor
      */

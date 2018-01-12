@@ -19,11 +19,13 @@ class BidRepository extends EntityRepository
             ->select('p')
             ->from('AppBundle:Bid','p')
             ->where('p.member = :member')
-            ->andWhere('p.reviewed = :true')
+            ->andWhere('p.moderated = :true')
             ->andWhere('p.visible = :true')
-            ->andWhere('p.accepted = :true')
+            ->andWhere('p.moderatorResponse = :accepted')
             ->setParameter('true', true)
+            ->setParameter('accepted', 'accepted')
             ->setParameter('member', $user);
+
         if(!$stage == null){
             //convert to lowercase because all the state is stored in the lowercase in the database
             $transformedStage=strtolower($stage);
@@ -60,7 +62,7 @@ class BidRepository extends EntityRepository
             ->select('p')
             ->from('AppBundle:Bid','p')
             ->where('p.member = :member')
-            ->andWhere('p.reviewed = :false')
+            ->andWhere('p.moderated = :false')
             ->setParameter('false', 0)
             ->setParameter('member', $user);
 
@@ -79,9 +81,9 @@ class BidRepository extends EntityRepository
             ->select('p')
             ->from('AppBundle:Bid','p')
             ->where('p.member = :member')
-            ->andWhere('p.reviewed = :true')
+            ->andWhere('p.moderated = :true')
             ->andWhere('p.visible = :true')
-            ->andWhere('p.accepted = :true')
+            ->andWhere('p.moderatorResponse = :accepted')
             ->andWhere('p.awarded = :true')
             ->andWhere('p.stage != :complete')
             ->andWhere('p.stage != :declined')
@@ -89,7 +91,7 @@ class BidRepository extends EntityRepository
             ->setParameter('complete','complete')
             ->setParameter('declined','declined')
             ->setParameter('terminated','terminated')
-
+            ->setParameter('accepted', 'accepted')
             ->setParameter('true', true)
             ->setParameter('member', $user)
             ->getQuery()
@@ -98,12 +100,10 @@ class BidRepository extends EntityRepository
         return $query;
     }
 
-
-
     /*
-     * todo: you can never have more than one active bid for one project.
-     * todo enforce this for the sake of testing make it possible to have more than one
-     */
+         * todo: you can never have more than one active bid for one project.
+         * todo enforce this for the sake of testing make it possible to have more than one
+         */
     public function getMyProjectBid($member,$project) {
         return $this
             ->createQueryBuilder('e')
@@ -118,4 +118,29 @@ class BidRepository extends EntityRepository
             ->getResult();
     }
 
+
+    public function findBookMarkedProposal($project) {
+        return $this
+            ->createQueryBuilder('e')
+            ->select('e')
+            ->where('e.project = :project')
+            ->andWhere('e.bookmark = :true')
+            ->setParameter('true',true)
+            ->setParameter('project', $project)
+            ->orderBy('e.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+    public function findAwardedProposal($project) {
+        return $this
+            ->createQueryBuilder('e')
+            ->select('e')
+            ->where('e.project = :project')
+            ->andWhere('e.awarded = :true')
+            ->setParameter('true',true)
+            ->setParameter('project', $project)
+            ->orderBy('e.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -83,19 +83,19 @@ class  Invoice
      * buy a feature
      *
      */
-    /*
-     * one source of fund
-     * @ORM\OneToOne(targetEntity="Deposit", inversedBy="invoice")
-     * @ORM\JoinColumn(name="deposit_id", referencedColumnName="id")
-     */
-    private $deposit;
 
+    /**
+     * payer here is the member receiving bank
+     * @ORM\ManyToOne(targetEntity="Deposit", inversedBy="invoice")
+     * @ORM\JoinColumn(name="deposit_id",referencedColumnName="id" )
+     */
+    protected $deposit;
    /*
     * one source of fund
-    * @ORM\OneToOne(targetEntity="Milestone", inversedBy="invoice")
-    * @ORM\JoinColumn(name="milestone_id", referencedColumnName="id", nullable=true)
+    * @ORM\OneToMany(targetEntity="Milestone", mappedBy="invoice")
+    *
     */
-    private $milestone;
+    protected $milestone;
 
 
 
@@ -302,4 +302,28 @@ class  Invoice
         return $this->popName;
     }
 
+
+    /**
+     * Set deposit
+     *
+     * @param \AppBundle\Entity\Deposit $deposit
+     *
+     * @return Invoice
+     */
+    public function setDeposit(\AppBundle\Entity\Deposit $deposit = null)
+    {
+        $this->deposit = $deposit;
+
+        return $this;
+    }
+
+    /**
+     * Get deposit
+     *
+     * @return \AppBundle\Entity\Deposit
+     */
+    public function getDeposit()
+    {
+        return $this->deposit;
+    }
 }

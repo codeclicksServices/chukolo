@@ -35,9 +35,21 @@ class Bid implements TimeStampInterface
     */
     protected $price;
     /**
-     * @ORM\Column(type="integer",options={"comment":"value: numbers of days it will take to deliver "})
+     * @ORM\Column(type="integer",options={"comment":"value: this is the project duration i.e the number of days it will take to deliver this project "})
      */
-    protected $deliveryDays;
+    protected $duration;
+    /**
+     * @ORM\Column(type="integer",options={"comment":"value: duration in hours "})
+     */
+    protected $durationHour;
+    /**
+     * @ORM\Column(type="integer",options={"comment":"value: total hour used "})
+     */
+    protected $usedHour;
+    /**
+     * @ORM\Column(type="integer",options={"comment":"value: hours remaining to due "})
+     */
+    protected $remainingHour;
     /**
      * @ORM\Column(type="integer",nullable=true)
      */
@@ -58,6 +70,7 @@ class Bid implements TimeStampInterface
      * @ORM\Column(type="string", length=30,options={"comment":"bid states include proposal,contract"})
      */
     protected $state;
+
     /**
      * @ORM\Column(type="string", length=30,
      *     options={"comment":"bid stages include draft, created,declined,awarded,progress,paused,terminated,completed"})
@@ -74,7 +87,7 @@ class Bid implements TimeStampInterface
      */
     protected $created;
     /**
-     * @ORM\Column(type="date",nullable=true,options={"comment":"the day you started the project "})
+     * @ORM\Column(type="datetime",nullable=true,options={"comment":"the day you started the project "})
      */
     protected $startDate;
     /**
@@ -124,14 +137,21 @@ class Bid implements TimeStampInterface
      * @ORM\Column(type="smallint",options={ "default":0,"comment":"marking this bid as save makes it stands out so you can easily finish the award process"})
      */
     protected $saved;
+
     /**
-     * @ORM\Column(type="smallint",options={ "default":0,"comment":"when a bid is created it needs to be reviewed before the employer can see it "})
+     * @ORM\Column(type="smallint",options={ "default":0,"comment":"checks weather this bid has been reviewed or not"})
      */
-    protected $reviewed;
+    protected $moderated;
     /**
-     * @ORM\Column(type="smallint",options={ "default":0,"comment":"this is used to show weather this bid was accepted after is reviewed by chukolo admin"})
+     * @ORM\Column(type="string",nullable=true, length=100,options={"comment":"the feedback after bid is moderated. Value: accepted or decline"})
      */
-    protected $accepted;
+    protected $moderatorResponse;
+
+    /**
+     * @ORM\Column(type="string",nullable=true, length=100,options={"comment":"the feedback message is declined"})
+     */
+    protected $moderatorMessage;
+
     /**
      * @ORM\Column(type="smallint",options={ "default":0,"comment":"states weather the freelancer accepts the employer offer or not "})
      */
@@ -145,7 +165,7 @@ class Bid implements TimeStampInterface
      *relaships
      * project
      * who is biding
-     * suscriptions
+     * subscriptions
      */
 
 
@@ -156,6 +176,11 @@ class Bid implements TimeStampInterface
      * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
      */
     protected $project;
+
+    /**
+     *  @ORM\OneToMany(targetEntity="Attachment", mappedBy="contract")
+     */
+    protected $attachment;
 
     /**
      * member here is the bidder
@@ -227,29 +252,7 @@ class Bid implements TimeStampInterface
         return $this->price;
     }
 
-    /**
-     * Set deliveryDays
-     *
-     * @param integer $deliveryDays
-     *
-     * @return Bid
-     */
-    public function setDeliveryDays($deliveryDays)
-    {
-        $this->deliveryDays = $deliveryDays;
 
-        return $this;
-    }
-
-    /**
-     * Get deliveryDays
-     *
-     * @return integer
-     */
-    public function getDeliveryDays()
-    {
-        return $this->deliveryDays;
-    }
 
     /**
      * Set commission
@@ -1001,29 +1004,6 @@ class Bid implements TimeStampInterface
         return $this->saved;
     }
 
-    /**
-     * Set reviewed
-     *
-     * @param integer $reviewed
-     *
-     * @return Bid
-     */
-    public function setReviewed($reviewed)
-    {
-        $this->reviewed = $reviewed;
-
-        return $this;
-    }
-
-    /**
-     * Get reviewed
-     *
-     * @return integer
-     */
-    public function getReviewed()
-    {
-        return $this->reviewed;
-    }
 
     /**
      * Set awardExpireDate
@@ -1119,5 +1099,216 @@ class Bid implements TimeStampInterface
     public function getAcceptOffer()
     {
         return $this->acceptOffer;
+    }
+
+    /**
+     * @param mixed $milestoneProposal
+     * @return Bid
+     */
+    public function setMilestoneProposal($milestoneProposal)
+    {
+        $this->milestoneProposal = $milestoneProposal;
+        return $this;
+    }
+
+    /**
+     * Set duration
+     *
+     * @param integer $duration
+     *
+     * @return Bid
+     */
+    public function setDuration($duration)
+    {
+        $this->duration = $duration;
+
+        return $this;
+    }
+
+    /**
+     * Get duration
+     *
+     * @return integer
+     */
+    public function getDuration()
+    {
+        return $this->duration;
+    }
+
+    /**
+     * Add attachment
+     *
+     * @param \AppBundle\Entity\Attachment $attachment
+     *
+     * @return Bid
+     */
+    public function addAttachment(\AppBundle\Entity\Attachment $attachment)
+    {
+        $this->attachment[] = $attachment;
+        return $this;
+    }
+
+    /**
+     * Remove attachment
+     *
+     * @param \AppBundle\Entity\Attachment $attachment
+     */
+    public function removeAttachment(\AppBundle\Entity\Attachment $attachment)
+    {
+        $this->attachment->removeElement($attachment);
+    }
+
+    /**
+     * Get attachment
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAttachment()
+    {
+        return $this->attachment;
+    }
+
+    /**
+     * Set durationHour
+     *
+     * @param integer $durationHour
+     *
+     * @return Bid
+     */
+    public function setDurationHour($durationHour)
+    {
+        $this->durationHour = $durationHour;
+
+        return $this;
+    }
+
+    /**
+     * Get durationHour
+     *
+     * @return integer
+     */
+    public function getDurationHour()
+    {
+        return $this->durationHour;
+    }
+
+    /**
+     * Set usedHour
+     *
+     * @param integer $usedHour
+     *
+     * @return Bid
+     */
+    public function setUsedHour($usedHour)
+    {
+        $this->usedHour = $usedHour;
+
+        return $this;
+    }
+
+    /**
+     * Get usedHour
+     *
+     * @return integer
+     */
+    public function getUsedHour()
+    {
+        return $this->usedHour;
+    }
+
+    /**
+     * Set remainingHour
+     *
+     * @param integer $remainingHour
+     *
+     * @return Bid
+     */
+    public function setRemainingHour($remainingHour)
+    {
+        $this->remainingHour = $remainingHour;
+
+        return $this;
+    }
+
+    /**
+     * Get remainingHour
+     *
+     * @return integer
+     */
+    public function getRemainingHour()
+    {
+        return $this->remainingHour;
+    }
+
+    /**
+     * Set moderated
+     *
+     * @param integer $moderated
+     *
+     * @return Bid
+     */
+    public function setModerated($moderated)
+    {
+        $this->moderated = $moderated;
+
+        return $this;
+    }
+
+    /**
+     * Get moderated
+     *
+     * @return integer
+     */
+    public function getModerated()
+    {
+        return $this->moderated;
+    }
+
+    /**
+     * Set moderatorResponse
+     *
+     * @param string $moderatorResponse
+     *
+     * @return Bid
+     */
+    public function setModeratorResponse($moderatorResponse)
+    {
+        $this->moderatorResponse = $moderatorResponse;
+
+        return $this;
+    }
+
+    /**
+     * Get moderatorResponse
+     *
+     * @return string
+     */
+    public function getModeratorResponse()
+    {
+        return $this->moderatorResponse;
+    }
+
+    /**
+     * Set moderatorMessage
+     *
+     * @param string $moderatorMessage
+     *
+     * @return Bid
+     */
+    public function setModeratorMessage($moderatorMessage)
+    {
+        $this->moderatorMessage = $moderatorMessage;
+
+        return $this;
+    }
+
+    /**
+     * Get moderatorMessage
+     *
+     * @return string
+     */
+    public function getModeratorMessage()
+    {
+        return $this->moderatorMessage;
     }
 }

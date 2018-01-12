@@ -194,6 +194,13 @@ vich_uploader:
                  delete_on_update:   true
                  delete_on_remove:   true
                  namer:              vich_uploader.namer_uniqid
+              file:
+                 uri_prefix:         /uploads/project/source
+                 upload_destination: %kernel.root_dir%/../web/uploads/project/source
+                 inject_on_load:     false
+                 delete_on_update:   true
+                 delete_on_remove:   true
+                 namer:              vich_uploader.namer_uniqid
               category_icon:
                  uri_prefix:         /uploads/category/images
                  upload_destination: %kernel.root_dir%/../web/uploads/category/images

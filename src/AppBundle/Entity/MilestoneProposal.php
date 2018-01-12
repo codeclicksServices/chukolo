@@ -30,7 +30,7 @@ class MilestoneProposal
     private $amount;
 
     /**
-     * @ORM\Column(type="string", nullable=false,length=80)
+     * @ORM\Column(type="string", nullable=false,length=100)
      */
     private $description;
     /**
@@ -42,7 +42,7 @@ class MilestoneProposal
      */
     private $status;
     /**
-     * @ORM\Column(type="string",options={"default":0,"comment":"value: this is used to know if this is the first milestone second or third then all currently cus we can only create 2 max we have 1st and final"})
+     * @ORM\Column(type="string",options={"comment":"value: this is used to know if this is the first milestone second or third then all currently cus we can only create 2 max we have 1st and final"})
      */
     private $stage;
     /**
@@ -58,13 +58,16 @@ class MilestoneProposal
 
     /**
      * contract is the same thing as bid after is awarded
-     * @ORM\ManyToOne(targetEntity="Bid", inversedBy="milestone")
+     * @ORM\ManyToOne(targetEntity="Bid", inversedBy="milestoneProposal")
      * @ORM\JoinColumn(name="bid_id",referencedColumnName="id" ,nullable=false)
      */
     protected $bid;
 
 
-
+    /**
+     * @ORM\OneToMany(targetEntity="Deliverable", mappedBy="milestoneProposal")
+     */
+    protected $deliverable;
 
 
     /**
@@ -244,4 +247,62 @@ class MilestoneProposal
     {
         return $this->milestoneCode;
     }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->deliverable = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add deliverable
+     *
+     * @param \AppBundle\Entity\Deliverable $deliverable
+     *
+     * @return MilestoneProposal
+     */
+    public function addDeliverable(\AppBundle\Entity\Deliverable $deliverable)
+    {
+        $this->deliverable[] = $deliverable;
+
+        return $this;
+    }
+
+    /**
+     * Remove deliverable
+     *
+     * @param \AppBundle\Entity\Deliverable $deliverable
+     */
+    public function removeDeliverable(\AppBundle\Entity\Deliverable $deliverable)
+    {
+        $this->deliverable->removeElement($deliverable);
+    }
+
+    /**
+     * Get deliverable
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDeliverable()
+    {
+        return $this->deliverable;
+    }
+
+
+    /**
+     * @return boolean
+     */
+    public function hasDeliverable()
+    {
+        if($this->getDeliverable()){
+            return true;
+        }
+        return false;
+    }
+
+
+
+
 }

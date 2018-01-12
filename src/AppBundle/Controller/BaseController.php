@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\ChukoloFund;
 use AppBundle\Entity\Invoice;
+use AppBundle\Entity\MilestoneProposal;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -66,6 +67,8 @@ class BaseController extends Controller
 
     protected  function  CreateBid($bid,$project,$member){
         $price = $bid->getPrice();
+        $duration = $bid->getDuration();
+        $durationHour=$duration*24;
 
         // this value is hard coded it
         // should come from the setting
@@ -84,10 +87,15 @@ class BaseController extends Controller
         $bid->setState("proposal");
         $bid->setCreated(new \DateTime('now'));
         $bid->setWithdrawn(0);
+        $bid->setDurationHour($durationHour);
+        $bid->setUsedHour(0);
+        $bid->setRemainingHour($durationHour);
         $bid->setHasSubscriptions(0);
+        $bid->setAcceptOffer(false);
         $bid->setSaved(0);
-        $bid->setReviewed(0);
+        $bid->setModerated(0);
         $bid->setStep(1);
+        $bid->setStarted(false);
         $bid->setAwarded(0);
         $bid->setBookmark(0);
         $bid->setNumberOfMilestones(0);
@@ -99,9 +107,7 @@ class BaseController extends Controller
         $bid->setCreatedAt(new \DateTime());
         $bid->setMember($member);
 
-        $em =$this->getDoctrine()->getManager();
-        $em->persist($bid);
-        $em->flush();
+        $this->persistData($bid);
 
 
 
@@ -289,32 +295,30 @@ class BaseController extends Controller
 
     }
 
-    protected  function  CreateOneMilestone($bid,$request){
+    /**
+     * @return Response
+     */
+    protected  function  CreateOneMilestone($bid){
 
-        /*
-         * check that it is a valid request
-        */
-        $actionCheck = $request->query->get('createOneMilestone');
+
         // if($actionCheck==1){
         if (!empty($bid)){
-            $milestone= new MilestoneProposal();;
+
+           //now set the state of the bid creation
+            $milestone = new MilestoneProposal();
             $milestone->setBid($bid);
             $milestone->setType("proposal");
-            $milestone->setMilestoneCode("M1");
+            $milestone->setMilestoneCode("Milestone 1");
             $milestone->setStage("final");
             $milestone->setStatus("pending");
             $milestone->setAmount($bid->getPrice());
-            /*todo: make this text come from settings*/
-            $milestone->setDescription("i want to be paid all at once");
-            $em=$this->getDoctrine()->getManager();
-            $em->persist($milestone);
-            $em->flush();
-            //now set the state of the bid creation
+            /*todo: make this text come from settings it should use the project title */
+            $milestone->setDescription("this milestone is responsible from");
+
+            $this->persistData($milestone);
             $bid->setStep(2);
-            $bid->setHasMilestoneProposal(1);
-            $em =$this->getDoctrine()->getManager();
-            $em->persist($bid);
-            $em->flush();
+            $this->persistData($bid);
+
             return new Response(json_encode(array('status'=>"successful")));
 
         }else
@@ -322,9 +326,6 @@ class BaseController extends Controller
             return new Response(json_encode(array('status'=>"can't  find a valid bid for this project")));
         }
 
-        // }else{
-        //    return new Response(json_encode(array('status'=>"Invalid Response Bad request submited for single milestone creation")));
-        //}
     }
     protected  function  gotoSummary($bid,$request){
 
@@ -366,12 +367,80 @@ class BaseController extends Controller
             $em->flush();
             return new Response(json_encode(array('status'=>'success')));
         }else{
+            /*todo fix this its not suppoz to go to homepage */
             return new JsonResponse($this->generateUrl('homepage'));
         }
     }
+
+    /**
+     * used for starting milestone for a particular contract
+     * @param $contractId
+     * @param $request
+     * @return JsonResponse|Response
+     * @internal param $contract
+     */
+    protected  function  startMilestone($contractId,$request){
+
+        /*
+         * check that it is a valid request
+         */
+        $actionCheck = $request->query->get('startMilestone');
+        if($actionCheck==1) {
+            $milestoneId=$request->query->get('milestoneId');
+            $hourDuration=$request->query->get('durationHour');
+            $Milestone=$this->getDoctrine()->getRepository('AppBundle:Milestone');
+
+            $milestone =$Milestone->find($milestoneId);
+            $contract=$milestone->getContract();
+
+            if($milestone->getStart() == false ){
+                // if this the first milestone you are working on use it to start the contract
+               if($contract != null){
+
+                if($contract->getStarted() == 0){
+
+                    $contract->setStarted(1);
+                    $contract->setStartDate(new \DateTime('now'));
+                    $this->persistData($contract);
+                   }
+               }
+
+                $milestone->setStart(true);
+                $milestone->setStarted(new \DateTime('now'));
+                $milestone->setStatus('progress');
+                if($hourDuration != null){
+                    /* hours to days */
+                // $raw = $hourDuration  24;
+                // $explodeRaw = explode(".", $raw);
+
+                   // $day = $explodeRaw[0];
+                   // $hours= $explodeRaw[0];
+
+                 $initDate = strtotime("+".$hourDuration." hours");
+                    $deadline= date('M d, Y H:m:i', $initDate);
+
+
+                   $milestone->setDeadline(new \DateTime($deadline));
+                 //   $milestone->setDurationDay($day);
+                    $milestone->setDurationHour($hourDuration);
+                }
+
+                $this->persistData($milestone);
+
+                return new Response(json_encode(array('status'=>'success')));
+            }else{
+                //already started
+                return new Response(json_encode(array('error'=>'milestone already started')));
+            }
+        }else{
+            /*todo fix this its not suppoz to go to homepage */
+            return new Response(json_encode(array('error'=>'invalid request')));
+        }
+    }
+
+
     protected  function  redo($bid,$request){
         return new JsonResponse($this->generateUrl('homepage'));
-
     }
     protected  function  CreateErrorLog($action,$location,$description){
         $log= new ErrorLog();
@@ -511,9 +580,8 @@ class BaseController extends Controller
                  */
                 $bid->setStep(4);
                 $bid->setStage("created");
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($bid);
-                $em->flush();
+                $this->persistData($bid);
+
 
                 return new JsonResponse($this->generateUrl('homepage'));
                 //  return new Response(json_encode(array('status'=>'success')));
@@ -545,10 +613,8 @@ class BaseController extends Controller
             if (!empty($milestoneProposal)){
                 foreach ($milestoneProposal as $proposal){
                     $proposal->setStatus("declined");
+                  $this->persistData($proposal);
 
-                    $em =$this->getDoctrine()->getManager();
-                    $em->persist($proposal);
-                    $em->flush();
                 }
                 return new Response(json_encode(array('status'=>'success')));
             }else{
@@ -574,9 +640,7 @@ class BaseController extends Controller
             //check to see that it has proposal
 
             $bid->setSaved(1);
-            $em =$this->getDoctrine()->getManager();
-            $em->persist($bid);
-            $em->flush();
+          $this->persistData($bid);
             return new JsonResponse($this->generateUrl('manage_user_project',
                 array('id' => $bid->getProject()->getId())));
 
@@ -618,6 +682,10 @@ class BaseController extends Controller
     }
 
 
+    /**
+     * @param $bid
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     protected function awardProjectAction($bid)
     {
 
@@ -673,9 +741,7 @@ class BaseController extends Controller
                             $employerFund->setReserved($updatedReservedFund);
                             $employerFund->setBookBalance($updatedBookBalance);
 
-                            $em = $this->getDoctrine()->getManager();
-                            $em->persist($employerFund);
-                            $em->flush();
+                           $this->persistData($employerFund);
 
                             /*
                              * create a reservation of this amount
@@ -689,9 +755,7 @@ class BaseController extends Controller
                             $reserve->setCreated(new \DateTime("now"));
                             /*todo check that this is the correct member later */
                             $reserve->setMember($employer);
-                            $em = $this->getDoctrine()->getManager();
-                            $em->persist($reserve);
-                            $em->flush();
+                           $this->persistData($reserve);
 
                             /*
                              * create a log for this reservation
@@ -702,9 +766,7 @@ class BaseController extends Controller
                             $fundLog->setCreated(new \DateTime("now"));
                             $fundLog->setUsedReason("milestone reservation");
                             $fundLog->setMember($employer);
-                            $em = $this->getDoctrine()->getManager();
-                            $em->persist($fundLog);
-                            $em->flush();
+                            $this->persistData($fundLog);
 
                         }
 
@@ -717,9 +779,7 @@ class BaseController extends Controller
                   */
                         $bid->setStage('awarded');
                         $bid->setAwarded(1);
-                        $em = $this->getDoctrine()->getManager();
-                        $em->persist($bid);
-                        $em->flush();
+                        $this->persistData($bid);
 
                         /*
                          * send email to the bidder
@@ -734,9 +794,7 @@ class BaseController extends Controller
                         $project->setState('awarded');
                         $project->setAwarded(1);
 
-                        $em =$this->getDoctrine()->getManager();
-                        $em->persist($project);
-                        $em->flush();
+                        $this->persistData($project);
 
                         return $this->redirect($this->generateUrl('manage_user_project',
                             array('id' => $project->getId(),)));
@@ -771,5 +829,13 @@ class BaseController extends Controller
 
     }
 
+    /**
+     * @param $data
+     */
+    public function persistData($data){
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($data);
+        $em->flush();
+    }
 
 }

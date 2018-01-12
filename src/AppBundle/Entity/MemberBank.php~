@@ -65,7 +65,7 @@ class  MemberBank
     private $member;
 
     /**
-     *  @ORM\OneToMany(targetEntity="Withdrawal", mappedBy="memberBank")
+     *  @ORM\OneToMany(targetEntity="Withdrawal", mappedBy="receivingBank")
      */
     protected $withdrawal;
 

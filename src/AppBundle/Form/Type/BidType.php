@@ -38,7 +38,7 @@ class BidType extends AbstractType
                 'attr'=>array("class"=>"form-control","placeholder"=>"You would receive"),
                 'label' => false,
             ))
-            ->add('deliveryDays',  IntegerType::class, array(
+            ->add('duration',  IntegerType::class, array(
                 'attr'=>array("class"=>"form-control","placeholder"=>"Deliver in days"),
                 'label' => false,
             ))

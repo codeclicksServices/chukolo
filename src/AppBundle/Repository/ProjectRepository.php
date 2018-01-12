@@ -59,8 +59,6 @@ class ProjectRepository extends EntityRepository
 
         }
 
-
-
         if(!$limit == null){
             $query = $query->setMaxResults($limit);
         }

@@ -31,15 +31,27 @@
                               {% for contract in myAwardedBid %}
                                   {% if contract.acceptOffer == 1 %}
 
+                                      <div class="alert panel-default" data-notify="container">
+                                          <h2 class="title panel panel-heading">{{ contract
+                                              .project.state |title}} Contract to {{
+                                              contract.project.name |title }}</h2>
+                                          <div class="panel-body">
 
+
+                                              <a href = "{{ path('manage_contract', {
+                                                  'contractId': contract.id }) }}" class="btn
+                                                  btn-done btn-sm  btn-success">Manage contract</a>
+                                              <a  href="" class="btn btn-sm  btn-default" >Hide</a>
+                                          </div>
+                                      </div>
 
                                   {% else %}
-                                      <h2 class="title panel panel-heading">Awarded Contract</h2>
-                                      <div class="alert alert-info" data-notify="container">
+                                      <div class="alert panel-default" data-notify="container">
+                                          <h2 class="title panel panel-heading">Awarded Contract to {{ contract.project.name |title }}</h2>
                                           <div class="panel-body">
-                                              <p> Kindly pay </p>
+                                              <p>{{ contract.project.description |nl2br }}</p>
 
-                                              <a href="" class="btn btn-done btn-sm  btn-success">Accept Offer</a>
+                                              <a href = "{{ path('manage_contract', { 'contractId': contract.id }) }}" class="btn btn-done btn-sm  btn-success">Accept Offer</a>
                                               <a  href="" class="btn btn-sm  btn-danger " >Decline</a>
                                           </div>
                                       </div>
@@ -176,17 +188,20 @@
                                                       {{ contract.project.member.firstName |title }}  {{ contract.project.member.lastName |title }}
                                                   </td>
 
-                                                  <td>{{ project.deadline |date }}</td>
+                                                  <td>{{ contract.project.deadline |date }}</td>
                                                   <td>
                                                       {% for payment in contract.milestone %}
-                                                          <span>{{ payment.amount |price }}</span><br>
+                                                          <span>{{ payment.price |price
+                                                              }}</span><br>
                                                       {% endfor %}
                                                   </td>
                                                   <td  class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Select An Action</a>
                                                       <ul class="dropdown-menu">
-                                                          <li><a href={{ path('manage_user_project', { 'id': project.id }) }} >Project Details</a></li>
-                                                          <li><a  id="delete" href="#">Pause</a></li>
-                                                          <li><a  id="close" href="#">Close</a></li>
+                                                          <li><a href={{ path
+                                                              ('manage_contract', { 'contractId':
+                                                                  contract.id }) }}
+                                                              >Manage Contract</a></li>
+
                                                       </ul>
                                                   </td>
                                               </tr>
@@ -244,6 +259,98 @@
               <div class="tab-pane fade" id="employer">
                   {#  employer  tab #}
                   <div class="col-sm-12">
+                      {% if  workingProjects.getTotalItemCount %}
+                          <div class="row">
+                              <div class="col-lg-8 col-sm-offset-2">
+                                  {% for project in workingProjects %}
+                                      {% if project.started == true %}
+
+                                          <div class="alert panel-default" data-notify="container">
+                                              <h2 class="title panel panel-heading"> Monitor {{
+                                                 project.name |title }}</h2>
+                                              <div class="panel-body">
+
+
+                                                  <a href = "{{ path('manage_user_project', { 'id': project.id }) }}" class="btn
+                                                  btn-done btn-sm  btn-success">Manage contract</a>
+                                                  <a  href="" class="btn btn-sm  btn-default" >Hide</a>
+                                              </div>
+                                          </div>
+
+
+                                      {% endif %}
+                                  {% endfor %}
+                              </div>
+                          </div>
+                      {% endif %}
+                      {% if pendingProject %}
+                         <div class="row">
+                             <div class="col-lg-8 col-sm-offset-2">
+                                 {% for project in pendingProject %}
+
+                                     {% if project.moderated %}
+                                         {% if project.moderatorResponse == "decline" %}
+
+                                             <div style="color: white;background-color: #ee2d4d;
+                                                     background-image: url({{ asset('assets/img/bg') }});
+                                                     background-attachment: fixed;" class="alert alert-danger" data-notify="container">
+                                                 <h3 style="padding-left: 30%">Something's wrong somewhere </h3>
+                                                 <p style="font-weight: bolder;color: white">Your
+                                                     project did
+                                                     not meet
+                                                     chukolo project standard. Please edit your
+                                                     project. Try being more elaborate and clear in
+                                                     your project description so that the
+                                                     freelancers can understand your need.
+                                                     <a class="alert-link" href="#">learn more</a>
+                                                 </p>
+
+                                                 <a href = "{{ path('project_edit', { 'id': project.id }) }}" class="btn
+                                                  btn-done btn-sm  btn-success">Update Project</a>
+                                                 <a  href="" class="btn btn-sm  btn-danger" >Cancel
+                                                     Project</a>
+                                             </div>
+
+                                         {% else %}
+                                             <div style="color: white;background-color: #004a43;
+                                                     background-image: url({{ asset('assets/img/bg') }});
+                                                     background-attachment: fixed;" class="alert alert-success"
+                                                  data-notify="container">
+                                                 <h3 style="padding-left: 30%">All set we are ready to go  </h3>
+                                                 <p style="font-weight: bolder">Your project is open for bidding.Yoi
+                                                     would start receiving proposals from our
+                                                     talented freelancers in no time
+
+                                                 </p>
+                                                 <hr />
+                                                 <a href = "{{ path('manage_user_project', { 'id': project.id }) }}" class="btn
+                                                  btn-done btn-sm  btn-success">Manage Project</a>
+                                                 <a  href="" class="btn btn-sm  btn-default"  >Upgrade project</a>
+                                             </div>
+                                         {% endif %}
+                                     {% else %}
+
+                                         <div style="color: white;background-color: #004a43;
+                                                 background-image: url({{ asset('assets/img/bg') }});
+                                                 background-attachment: fixed;" class="alert alert-info" data-notify="container">
+                                             <h3 style="padding-left: 30%">Review in Progress . . .</h3>
+                                             <p style="font-weight: bolder; color: white">Your
+                                                 project is
+                                                 being reviewed, before
+                                                 you say jack it will be up for bidding
+                                             </p>
+                                             <hr />
+                                             <a href = "{{ path('manage_user_project', { 'id': project.id }) }}" class="btn
+                                                  btn-done btn-sm  btn-success">Manage Project</a>
+                                             <a  href="" class="btn btn-sm  btn-default"  >Upgrade project</a>
+                                         </div>
+
+                                     {% endif %}
+                                 {% endfor %}
+                             </div>
+                         </div>
+                      {% endif %}
+
 
                       {# project tab #}
                       <div class="bs-component">
@@ -316,8 +423,8 @@
                                                       {% for  bid in project.bid %}
 
                                                           {% if  bid.state =='contract' %}
-                                                              {{ project.bid.member.firstName |title }}
-                                                              {{ project.bid.member.lastName |title }}
+                                                              {{ bid.member.firstName |title }}
+                                                              {{ bid.member.lastName |title }}
                                                           {% endif %}
 
                                                       {% endfor %}
@@ -339,7 +446,8 @@
                                                           {% if  bid.state =='contract' %}
                                                               <h4>contact id # {{ bid.id }}</h4>
                                                               {% for milestone in bid.milestone %}
-                                                                  <span>{{ milestone.amount |price }}</span><br>
+                                                                  <span>{{ milestone.price |price
+                                                                      }}</span><br>
                                                               {% endfor %}
 
                                                           {% endif %}
@@ -349,7 +457,10 @@
                                                   </td>
                                                   <td  class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Select An Action</a>
                                                       <ul class="dropdown-menu">
-                                                          <li><a href={{ path('manage_user_project', { 'id': project.id }) }} >Project Details</a></li>
+                                                          <li><a href={{ path
+                                                              ('manage_user_project', { 'id':
+                                                                  project.id }) }} >Manage
+                                                                  Contract</a></li>
                                                           <li><a  id="delete" href="#">Pause</a></li>
                                                           <li><a  id="close" href="#">Close</a></li>
                                                       </ul>
@@ -439,6 +550,8 @@
 
                   </div>
               </div>
+
+
           </div>
       </div>
     </div>
@@ -446,20 +559,10 @@
 
 
 {% block javascripts %}
-
-    <script src="{{ asset('assets/js/dashboard/jquery-2.1.4.min.js') }}"></script>
-    <script src="{{ asset('assets/js/dashboard/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('assets/js/dashboard/plugins/pace.min.js') }}"></script>
-    <script src="{{ asset('assets/js/dashboard/main.js') }}"></script>
-    {# Add ajax thingie that will update the city select box #}
-
-
-    <script src="{{ asset('assets/js/dashboard/plugins/select2.min.js') }}"></script>
-    <script src="{{ asset('assets/js/dashboard/plugins/bootstrap-datepicker.min.js') }}"></script>
-    <script type="text/javascript">$('body').removeClass("sidebar-mini").addClass("sidebar-collapse");</script>
-    <script src="{{ asset('assets/js/dashboard/plugins/bootstrap-notify.min.js') }}"></script>
+    {{ parent() }}
+    {#<script src="{{ asset('assets/js/dashboard/plugins/bootstrap-notify.min.js') }}"></script>
     <script src="{{ asset('assets/js/dashboard/plugins/sweetalert.min.js') }}"></script>
-
+#}
     <script type="text/javascript">
 
         $('#close').click(function(){

@@ -107,25 +107,27 @@ class Deposit
      */
     private $member;
 
+
+
+
     /**
-     * many deposits belong to one chukolo account and receiver in
+     *  many deposits belong to one chukolo account and receiver in
      * this case is a chukolo account
      * @ORM\ManyToOne(targetEntity="ChukoloBank", inversedBy="deposit")
-     * @ORM\JoinColumn(name="receiver_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="chukoloBank_id", referencedColumnName="id")
      */
-    private $receiver;
+    protected $chukoloBank;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Fund", inversedBy="deposit")
-     * @ORM\JoinColumn(name="fund_id", referencedColumnName="id")
-     */
-    private $fund;
 
 
     /**
-     * @ORM\OneToOne(targetEntity="Invoice", mappedBy="deposit")
+     * @ORM\OneToMany(targetEntity="Invoice", mappedBy="deposit")
      */
-    private $invoice;
+    protected $invoice;
+
+
+
+
 
     /**
      * Get id
@@ -447,5 +449,60 @@ class Deposit
     public function getInvoice()
     {
         return $this->invoice;
+    }
+
+    /**
+     * Set chukoloBank
+     *
+     * @param \AppBundle\Entity\ChukoloBank $chukoloBank
+     *
+     * @return Deposit
+     */
+    public function setChukoloBank(\AppBundle\Entity\ChukoloBank $chukoloBank = null)
+    {
+        $this->chukoloBank = $chukoloBank;
+
+        return $this;
+    }
+
+    /**
+     * Get chukoloBank
+     *
+     * @return \AppBundle\Entity\ChukoloBank
+     */
+    public function getChukoloBank()
+    {
+        return $this->chukoloBank;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->invoice = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add invoice
+     *
+     * @param \AppBundle\Entity\Invoice $invoice
+     *
+     * @return Deposit
+     */
+    public function addInvoice(\AppBundle\Entity\Invoice $invoice)
+    {
+        $this->invoice[] = $invoice;
+
+        return $this;
+    }
+
+    /**
+     * Remove invoice
+     *
+     * @param \AppBundle\Entity\Invoice $invoice
+     */
+    public function removeInvoice(\AppBundle\Entity\Invoice $invoice)
+    {
+        $this->invoice->removeElement($invoice);
     }
 }

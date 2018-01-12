@@ -53,7 +53,8 @@ class HireController extends BaseController
             $project->setViewed(0);
             $project->setDeleted(0);
             $project->setVisible(1);
-            $project->setBiddable(1);
+            $project->setBiddable(0);
+            $project->setStarted(0);
             $project->setAwarded(0);
             $project->setModerated(0);
             $project->setOnGoing(0);
@@ -71,9 +72,7 @@ class HireController extends BaseController
             //dispatch event
             $dispatcher->dispatch(ProductCreatedEvent::PRODUCT_CREATED, $event);*/
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($project);
-            $em->flush();
+            $this->persistData($project);
 
             $dispatcher = $this->get('event_dispatcher');
             $event = new ProjectCreatedEvent($project,$request);
@@ -174,9 +173,6 @@ class HireController extends BaseController
             'bid' => $bid,
         ));
     }
-
-
-
 
     public function milestoneCreateAction($milestone,$proposalId)
     {

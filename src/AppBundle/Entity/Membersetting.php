@@ -1346,4 +1346,110 @@ class  Membersetting extends Member
     {
         return $this->reservedFund;
     }
+
+    /**
+     * Set registered
+     *
+     * @param \DateTime $registered
+     *
+     * @return Membersetting
+     */
+    public function setRegistered($registered)
+    {
+        $this->registered = $registered;
+
+        return $this;
+    }
+
+    /**
+     * Get registered
+     *
+     * @return \DateTime
+     */
+    public function getRegistered()
+    {
+        return $this->registered;
+    }
+
+    /**
+     * Add memberBank
+     *
+     * @param \AppBundle\Entity\MemberBank $memberBank
+     *
+     * @return Membersetting
+     */
+    public function addMemberBank(\AppBundle\Entity\MemberBank $memberBank)
+    {
+        $this->memberBank[] = $memberBank;
+
+        return $this;
+    }
+
+    /**
+     * Remove memberBank
+     *
+     * @param \AppBundle\Entity\MemberBank $memberBank
+     */
+    public function removeMemberBank(\AppBundle\Entity\MemberBank $memberBank)
+    {
+        $this->memberBank->removeElement($memberBank);
+    }
+
+    /**
+     * Get memberBank
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMemberBank()
+    {
+        return $this->memberBank;
+    }
+
+    /**
+     * Set authCode
+     *
+     * @param string $authCode
+     *
+     * @return Membersetting
+     */
+    public function setAuthCode($authCode)
+    {
+        $this->authCode = $authCode;
+
+        return $this;
+    }
+
+    /**
+     * Get authCode
+     *
+     * @return string
+     */
+    public function getAuthCode()
+    {
+        return $this->authCode;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     *
+     * @return Membersetting
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
 }

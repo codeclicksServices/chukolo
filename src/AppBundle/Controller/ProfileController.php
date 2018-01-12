@@ -18,6 +18,7 @@ use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\Model\UserInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -139,9 +140,6 @@ class ProfileController extends baseProfiler
         ));
     }
 
-
-
-
     /*
        * 1 user  home
        */
@@ -222,10 +220,6 @@ class ProfileController extends baseProfiler
         ));
     }
 
-
-
-
-
     /*
       * 2 user  project
       */
@@ -254,21 +248,18 @@ class ProfileController extends baseProfiler
           //default page limit
          $pageLimit= 2;
 
-
-
-
-
-
       /*
        * project pagination queries (i.e what actually get to the front end)
        * todo on creation the project is pending on moderated it becomes visible
        */
-        $pastProjectsQuery =$Project->findMyProject($user,'past');
-        $workingProjectsQuery =$Project->findMyProject($user,'awarded');
+        $pastProjectsQuery =$Project->findMyProject($user,'completed');
+        $workingProjectsQuery =$Project->findMyProject($user,'ongoing');
         $openProjectsQuery =$Project->findMyProject($user,'open');
+        $pendingProjects=$Project->findMyProject($user,'pending');
 
-        $reviewingBidQuery =$Bid-> findMyUnreviewedBid($user);
-        $myAwardedBid = $Bid->  findMyAwardedBid($user);
+
+        $reviewingBidQuery =$Bid->findMyUnreviewedBid($user);
+        $myAwardedBid = $Bid->findMyAwardedBid($user);
 
 
 
@@ -281,7 +272,7 @@ class ProfileController extends baseProfiler
 
 
         /*
-         * paginationgs (i.e what actually get to the front end)
+         * pagination (i.e what actually get to the front end)
          */
         $openProjects = $paginator->paginate($openProjectsQuery,$request->query->getInt('page', 1),$pageLimit);
         $workingProjects = $paginator->paginate($workingProjectsQuery,$request->query->getInt('page', 1),$pageLimit);
@@ -302,7 +293,8 @@ class ProfileController extends baseProfiler
             'currentWorks'=>$currentWorks,
             'doneJobs'=>$doneJobs,
             'reviewingBids'=>$reviewingBids,
-            'myAwardedBid'=>$myAwardedBid
+            'myAwardedBid'=>$myAwardedBid,
+            'pendingProject'=>$pendingProjects
         ));
     }
 
@@ -310,6 +302,9 @@ class ProfileController extends baseProfiler
     /**
      * this is for managing your own project as an employer
      * @Route("/dashboard/projects/{id}", name="manage_user_project")
+     * @param Request $request
+     * @param $id
+     * @return Response
      */
     public function manageProject(Request $request,$id)
     {
@@ -327,22 +322,143 @@ class ProfileController extends baseProfiler
 
         $milestoneForm = $this->createForm(MilestoneType::class,$milestone );
         $milestoneForm->handleRequest($request);
+        if ($milestoneForm->isSubmitted() && $milestoneForm->isValid()) {}
 
-        if ($milestoneForm->isSubmitted() && $milestoneForm->isValid()) {
-
-
-        }
         /**
          * view all project posted by user and display it
          */
         $Project= $this->getDoctrine()->getRepository('AppBundle:Project');
+        $Bid= $this->getDoctrine()->getRepository('AppBundle:Bid');
         $project=$Project->find($id);
+        $bookMarked=$Bid->findBookMarkedProposal($project);
+        $awardedProposal=$Bid->findAwardedProposal($project);
 
         return  $this->render('member/user/project/show.html.twig',array(
             'project'=>$project,
-            'milestoneForm' => $milestoneForm->createView(),
+            'bookMarkedProposals'=>$bookMarked,
+            'awardedProposal'=>$awardedProposal,
+            'milestoneForm'=>$milestoneForm->createView(),
         ));
     }
 
+    /**
+     * this is for managing your contract contract in this case is your bid
+     * @Route("/dashboard/contracts/my/{contractId}", name="manage_contract")
+     * @param Request $request
+     * @param $contractId
+     * @return Response
+     */
+    public function manageContract(Request $request,$contractId)
+    {
+          $Contract=$this->getDoctrine()->getRepository('AppBundle:Bid');
+        /*todo don't just find with the selected input check that this user actually have this awarded project */
+        $contract =$Contract->find($contractId);
+
+        if ($request->query->get('startMilestone')== 1){
+         return  $this->startMilestone($contractId,$request);
+        }
+
+        return  $this->render('member/user/project/contract.html.twig',array(
+         'contract'=>$contract,
+        ));
+    }
+
+
+
+    /**
+     * this is for accepting a contract
+     * @Route("/dashboard/contracts/accept/{contractId}", name="accept_contract")
+     */
+    public function acceptContract(Request $request,$contractId)
+    {
+        $Contract=$this->getDoctrine()->getRepository('AppBundle:Bid');
+        $ProjectClause=$this->getDoctrine()->getRepository('AppBundle:ProjectClause');
+        /* todo don't just find with the selected input check that this user actually have this awarded project */
+        $contract =$Contract->find($contractId);
+        $agreement=$ProjectClause->findFixedClause();
+
+        if ($request->query->get('accept') == 71){
+          $this->Accept($contract,$request);
+        }
+
+
+
+        return  $this->render('member/user/project/confirmation/accept-contract.html.twig',array(
+            'contract'=>$contract,
+            'agreement'=>$agreement
+        ));
+    }
+
+
+      /* for accepting contract */
+    protected  function  Accept($contract,$request){
+
+        /*
+       * check that it is a valid request
+      */
+        $actionCheck = $request->query->get('accept');
+        switch ($actionCheck) {
+            case 71:
+
+                $project = $contract->getProject();
+
+                //makes sure its not deleted
+                if ($project->getDeleted() == false) {
+
+                    if ($contract->getAcceptOffer() == true) {
+                        //project is deleted
+                        return new Response(json_encode(array('status' => 'Offer already accepted')));
+                    } else {
+                        $project->setState("ongoing");
+                        $project->setBiddable(false);
+                        $project->setOnGoing(true);
+                        $project->setPrice($contract->getPrice());
+                        $this->persistData($project);
+
+
+                        $contract->setState("contract");
+                        $contract->setStage("progress");
+                        $contract->setAcceptOffer(true);
+                        $this->persistData($contract);
+                        /* now convert the milestone proposal to milestone */
+
+                        if ($contract->getMilestoneProposal() != null) {
+
+                            foreach ($contract->getMilestoneProposal() as $proposal) {
+                                $milestone = new Milestone();
+
+                                $milestone->setDescription($proposal->getDescription());
+                                $milestone->setStatus("pending");
+                                $milestone->setComplete(false);
+                                $milestone->setStart(false);
+                                $milestone->setReleasePayment(false);
+                                $milestone->setContract($contract);
+                                $milestone->setName($proposal->getMilestoneCode());
+                                $milestone->setPrice($proposal->getAmount());
+
+                                //transfer the deliverable from proposal to milestone
+
+                                if ($proposal->hasDeliverable() != false) {
+                                    foreach ($proposal->getDeliverable() as $deliverable) {
+                                        $milestone->addDeliverable($deliverable);
+                                    }
+                                }
+                                $this->persistData($milestone);
+                            }
+                        }
+                        return new JsonResponse($this->generateUrl('manage_contract',
+                            array('contractId' => $contract->getId())));
+                    }
+
+                } else {
+                    //project is deleted
+                    return new Response(json_encode(array('status' => 'This project have been deleted')));
+                }
+
+
+            default:
+                return new Response(json_encode(array('status' => 'error occurred invalid request')));
+        }
+    }
 
 }

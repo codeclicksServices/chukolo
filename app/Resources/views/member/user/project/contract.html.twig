@@ -1,0 +1,593 @@
+{% extends 'member/base.html.twig' %}
+
+
+{% block titleText %}
+    <h1>Contract Progress </h1>
+{% endblock %}
+
+{% block breadCrumb  %}
+
+{% endblock %}
+
+{% block page %}
+<div class="container">
+    {% if contract %}
+        <div class="row">
+            <div class="col-md-3">
+                <div class="feature-content text-center">
+                    <div class="feature-icon-box">
+                        <div class="feature-icon center-block text-primary ">
+                            <i class="fa fa-binoculars"></i>
+                        </div>
+                    </div>
+                    <div class="feature-info">
+                        <h3 class="feature-heading">ACCEPT THE CONTRACT </h3>
+                        <p  class="feature-description">
+                            Carefully read the terms of this contract as stated in the contract agreement(Milestone(s) description), if you agree to the terms accept &
+                            start the project
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="feature-content text-center">
+                    <div class="feature-icon-box">
+                        <div class="feature-icon center-block">
+                            <i class="fa fa-check"></i>
+                        </div>
+                    </div> <!--  end of /.feature-icon-box  -->
+                    <div class="feature-info">
+                        <h3 class="feature-heading">REVIEW PROGRESS </h3>
+                        <p class="feature-description">
+                            As you work, it is advised you share the progress of your work with the employer to confirm that you are
+                            on track with the terms of the contract.
+                        </p>  <!--   end of /.feature-description  -->
+                    </div> <!--   end of /.feature-info  -->
+                </div> <!--  end of /.feature-content  -->
+            </div>
+            <div class="col-md-3">
+                <div class="feature-content text-center">
+                    <div class="feature-icon-box">
+                        <div class="feature-icon center-block">
+                            <i class="fa fa-bank"></i>
+                        </div>
+                    </div> <!--  end of /.feature-icon-box  -->
+                    <div class="feature-info">
+                        <h3 class="feature-heading">HANDOVER PROJECT </h3>
+                        <p class="feature-description">
+                            Once a milestone is reached & you submit all the deliverable(s) to the employer on acceptance the amount
+                            stated for the milestone would be released to you.
+                        </p>  <!--   end of /.feature-description  -->
+                    </div> <!--   end of /.feature-info  -->
+                </div> <!--  end of /.feature-content  -->
+            </div>
+            <div class="col-md-3">
+                <div class="feature-content text-center">
+                    <div class="feature-icon-box">
+                        <div class="feature-icon center-block">
+                            <i class="fa fa-money"></i>
+                        </div>
+                    </div> <!--  end of /.feature-icon-box  -->
+                    <div class="feature-info">
+                        <h3 class="feature-heading">CONTRACT COMPLETION & ACCEPTANCE  </h3>
+                        <p class="feature-description">
+                            At this stage, it is believed that you have fulfil all the contract terms and delivered all the deliverable to the employer, Once the employer accept
+                            your job the balance would be release to you.
+                        </p>  <!--   end of /.feature-description  -->
+                    </div> <!--   end of /.feature-info  -->
+                </div> <!--  end of /.feature-content  -->
+            </div>
+        </div>
+        {% if contract.acceptOffer	== 0 %}
+            <div class="row">
+                <div class="col-md-9">
+
+
+                    <div class="card alert panel-default">
+                        <div class="card-title-w-btn">
+                            <h2 class="title">{{ contract.project.name |capitalize }}</h2>
+                            <p><strong>Contract Status :</strong> <a class="btn btn-warning icon-btn" href=""><i class="fa fa-clock-o"></i>{{ contract.stage |title }}</a></p>
+                        </div>
+                        <div class="card-body">
+                            <hr />
+                            <h4 class="title text-center">Job Summary</h4>
+                            <b>Contract Description </b><br>
+                            <p>
+                                {{ contract.project.description |raw }}<br />
+                            </p>
+                            <div class="row">
+                                <div class="col-sm-6">
+
+                                    <b>Skills Required </b><br>
+                                    {% for skill in contract.project.skill %}
+                                    <a class="btn btn-sm btn-default icon-btn"  href="#">{{ skill.name |capitalize}}</a>
+                                    {% endfor %}<br>
+
+
+                                </div>
+
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-3">
+                                    <b>Total Cost</b>
+                                    <h4>{{ contract.price |price }}</h4>
+                                </div>
+                            </div>
+
+                            <hr />
+                            <h4 class="title text-center">Employer Details</h4>
+
+                            <div style="padding: .5em .5em 0 0; max-height: 11em" class="row">
+                                <div class="col-md-2">
+                                    <img src="{{ asset('assets/img/profile/pp.jpeg') }}" style="max-height: 8em" class="img-responsive img-circle center-block">
+                                    <h4 >Akoh Victor</h4>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div style="padding-left: 3em" class="reputation">
+
+                                        <ul  class="profile-badge-icon">
+                                            <li><i class="fa fa-credit-card fa-2x" aria-hidden="true"></i></li>
+                                            <li><i class="fa fa-envelope-o fa-2x" aria-hidden="true"></i></li>
+                                            <li><i class="fa fa-user fa-2x" aria-hidden="true"></i></li>
+                                            <li><i class="fa fa-phone fa-2x" aria-hidden="true"></i></li>
+                                            <li><i class="fa fa-money fa-2x" aria-hidden="true"></i></li>
+                                        </ul>
+                                        <p>Member Since :{{ contract.project.member.registered |date }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div style="padding-left: 3em" class="reputation">
+                                        <span>4.8</span>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star-o" aria-hidden="true"></i>
+                                        <i class="fa fa-star-o" aria-hidden="true"></i>
+                                        <span>33 Reviews</span>
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <hr />
+                            <h4 class="title text-center">Milestone & Deliverable</h4>
+
+
+                            {% if contract.milestoneProposal %}
+                                {% for milestone in contract.milestoneProposal %}
+                                    {% if milestone.status =="accept" and milestone.type == "offer" %}
+                                        <h5>{{ milestone.milestoneCode |capitalize }} ({{ milestone.amount |price }})</h5>
+                                        <ol >
+                                            {% if  milestone.deliverable != null %}
+                                                {% for deliverable in milestone.deliverable   %}
+                                                    <li><strong>{{ deliverable.task |upper }}</strong>
+                                                        <ol>
+                                                            <li>
+                                                                {{ deliverable.note }}
+                                                            </li>
+                                                        </ol>
+                                                    </li>
+
+                                                {% endfor %}
+                                            {% endif %}
+                                        </ol>
+
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+
+                            <hr />
+                            <h4 class="title text-center">Your Bid Details</h4>
+
+                            <b>Bid Proposal</b><br>
+                            <p>
+                                {{ contract.proposal |raw }}<br />
+                            </p>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <b>You have agreed to finish this Project in :</b>
+                                    <h4>{{ contract.duration }} day(s)</h4>
+                                </div>
+                                <div class="col-sm-5">
+                                    <b>Employer Pays : {{ contract.price |price }}</b><br />
+                                    <b>Freelancer Receives : {{ contract.value |price }}</b>
+                                    <hr />
+                                    <p>
+                                        Project Administrative Cost : {{ contract.commission |price }} <br />
+                                        which is 15% of the project worth.
+                                    </p>
+
+                                </div>
+                                <div class="col-sm-4">
+                                    {% if contract.subscription != null %}
+                                        <b>Bid Subscriptions </b><br>
+                                        {% for subscription in contract.subscription %}
+                                            {{ subscription.name |capitalize}} <span> {{ subscription.value |price}}</span><br />
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+
+
+                            <hr />
+
+                            <a href = "{{ path('accept_contract', { 'contractId': contract.id }) }}" class="btn btn-done btn-sm  btn-success">Accept Offer</a>
+                            <a  href="" class="btn btn-sm  btn-danger " >Decline</a>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+
+                </div>
+            </div>
+        {% else %}
+             <div class="row">
+                <div class="col-sm-8">
+            <div class="row">
+                <div class="card">
+                    <div class="card-title-w-btn">
+                        <h5  class="title panel panel-heading">
+                            {{ contract.project.name |upper}} for {{ contract.project.price
+                            |price }} in {{ contract.duration }} day(s)
+                        </h5>
+                        <p style="margin-top: -3.1em;margin-right: -1.4em"><a class="btn
+                        btn-primary icon-btn"
+                            ><i class="fa
+                      fa-project"></i>STATUS : {{ contract.project.state |upper }}</a></p>
+                    </div>
+
+                    <div class="panel-body">
+                        {% if contract.started == false %}
+                           <div class="alert  alert-warning">
+
+                            <h4>Next Step ?</h4>
+                            <h5>START</h5>
+                            <p style="color:#1f1f1f">You have not started working on any of the
+                                MILESTONE please indicate that you are working on a
+                                milestone by clicking on "START" on any of the milestone
+                                below. <br />
+                                NOTE: Your time have already start counting <a
+                                        class="alert-link" href="#">learn more</a>
+                                .</p>
+                        </div>
+                        {% endif %}
+                        <p>Due Date : {{ contract.project.deadline | date}}</p>
+                        <p>Start Date : {{ contract.startDate| date }}</p>
+                        <p>Remaining Working Days : 4</p>
+                        <p>Project source</p>
+                    </div>
+                    <div style="margin: 0 -1.5em -1.5em -1.5em" class="panel-footer">
+                           {% if contract.started == true %}
+                               <span>{{contract.project.completionRate }}% (complete)</span>
+                               <div class="progress progress-striped active">
+                                   <div class="progress-bar" style="width: {{ contract.project
+                                   .completionRate }}%;"></div>
+                               </div>
+                           {% endif %}
+                    </div>
+                </div>
+            </div>
+
+          <div class="row">
+              {% if contract.milestone == true %}
+                  {% for milestone in contract.milestone %}
+                      <div class="card">
+
+                          <div class="card-title-w-btn">
+                              <h5  class="title panel panel-heading">
+                                  {{ milestone.milestoneCode |upper }} | {{ milestone.name
+                                  |upper}}
+                                  ({{milestone.price  |price }})
+                              </h5>
+                              <p style="margin-top: -3em ;font-weight: bolder;
+                              "><a class="
+                              icon-btn" ><i class="fa fa-folder-open">
+
+                                      </i>STATUS : {{ milestone.status |upper
+                                      }}</a></p>
+                          </div>
+
+                          <div class="panel-body">
+
+                              <h5>Milestone Description</h5>
+                              <p>{{ milestone.description |raw }}</p>
+                              <hr />
+                              <h5>Milestone Deliverable</h5>
+
+                              <ol >
+                                  {% if  milestone.deliverable != null %}
+                                      {% for deliverable in milestone.deliverable   %}
+                                          <li style="margin-bottom: 0; padding-bottom: 0"
+                                              class="card-title-w-btn">
+                                              <strong>{{ deliverable.task |capitalize }}</strong>
+                                              <p style="margin-right: -1em"><a class="" ><i
+                                                              class="fa
+                                                  fa-folder-open"></i>Status :  {{ deliverable.status
+                                                      |capitalize }}</a>
+                                              </p>
+                                          </li>
+
+                                          <li class="row">
+                                              <div class="col-sm-1">
+                                                {% if milestone.start== true %}
+                                                  <div class="animated-checkbox">
+                                                      <label>
+                                                          <input readonly="readonly" type="checkbox"><span
+                                                                  class="label-text"></span>
+                                                      </label>
+                                                  </div>
+                                                  {% else %}
+                                                  {% endif %}
+                                              </div>
+                                              <div class="col-sm-11"> {{ deliverable.note }}</div>
+                                          </li>
+                                          <hr />
+                                      {% endfor %}
+                                  {% endif %}
+                              </ol>
+
+                          </div>
+                          <div style="margin: 0 -1.5em -1.5em -1.5em" class="panel-footer">
+                              <form style="border:dashed thin #280e0d" id="startMilestoneForm{{
+                              milestone.id
+                              }}"
+                                     class="startMilestoneForm">
+                                  <h5>How long would it take you to deliver this
+                                      milestone ?</h5>
+                                      <p class="alert-warning" id="hourDurationError"></p>
+                                  <div class="form-group">
+
+                                      <div class="input-group"><span class="input-group-addon">IN
+                                              HOURS</span>
+                                          <input class="form-control" placeholder="{{ contract
+                                          .remainingHour }}" required="required" name="durationHour"
+                                                 id="durationHour"
+                                                 type="number">
+                                          <span class="input-group-btn">
+
+                                              <input class="btn btn-success submitButton"
+                                                     value="Submit" type="button"
+                                                 onclick="submitStart({{ milestone.id }}, durationHour,{{ contract.id }})"
+                                                     >
+                                          </span>
+                                      </div>
+                                  </div>
+                                  <hr />
+                              </form>
+
+                              {% if milestone.status == "pending" %}
+                              <a href ="#start" onclick="startMilestone({{ milestone.id }})"
+                                 class="btn
+                              btn-done btn-sm
+                              btn-success startMilestoneButton">Start</a>
+                                  <a href ="#cancel" id="cancelStartMilestoneButton{{ milestone.id
+                                  }}"
+                                     onclick="cancelStartMilestone({{ milestone.id
+                                  }})"
+                                     class="btn btn-done btn-sm btn-danger
+                                     cancelStartMilestoneButton">Cancel</a>
+                              {% elseif milestone.status == "progress" %}
+                                  <span>{{ milestone
+                                      .completionRate }}% (complete)</span>
+                                  <div class="progress progress-striped active">
+                                      <div class="progress-bar" style="width: {{ milestone.completionRate }}%;"></div>
+                                  </div>
+
+                              {% elseif milestone.status == "complete" %}
+                                  <span>{{ milestone
+                                      .completionRate }}% (complete)</span>
+                                  <div class="progress progress-bar-success ">
+                                      <div class="progress-bar" style="width: {{ milestone
+                                      .completionRate }}%;"></div>
+                                  </div>
+                              <a href ="#" class="btn btn-success btn-sm  btn-success">Release Payment</a>
+                              {% endif %}
+                          </div>
+                      </div>
+
+                  {% endfor %}
+              {% else %}
+                  <div class="card" data-notify="container">
+                      <h2 class="title panel panel-heading">No milestone for this contract</h2>
+                      <div class="panel-body">
+                          <p>No milestone for this contract please contact the employer to create milestone for tis project before you can start working</p>
+                          <a href ="#" class="btn btn-done btn-sm  btn-success">Chat employer</a>
+
+                      </div>
+                  </div>
+              {% endif %}
+          </div>
+                  </div>
+                 <div class="col-sm-4">
+
+                         <div class="alert alert-dismissible alert-info">
+                             <button class="close" type="button" data-dismiss="alert">×</button>
+                             <h4>Project Delivery Guideline</h4>
+                               <ul>
+                                   <li >
+                                      Carefully go through the milestone, choose the one you please and start working on the deliverable
+                                   </li>
+                                   <li>
+                                      When you are done with the deliverable, mark it as complete ,upload the backing
+                                       document or proof of completion with comment if there is any so that the employer can
+                                       review and either "accept" or "make corrections"<br/>
+                                   </li>
+                                   <li>
+                                       When you have completed all the deliverable for that milestone submit the documents or the finished product(s) to the employer
+                                   </li>
+                                   <li>
+                                       Mark it as complete
+                                   </li>
+
+                                   <li>
+                                       Request for milestone payment (to be released to freelancer by the employer)
+                                   </li>
+                                   <li>
+                                       Repeat the same steps until all the milestone is fulfilled
+                                   </li>
+                                   <li>
+                                       Rate and review your employers conduct
+                                   </li>
+                               </ul>
+
+                         </div>
+
+                         <div class="alert alert-dismissible alert-info">
+                             <button class="close" type="button" data-dismiss="alert">×</button>
+                             <h4>Tips</h4>
+                             <p>The more jobs you complete on chukolo the better chance of getting more jobs, on that note it is important you don't just
+                                 strive to complete your project but with the listed points in mind
+                             </p>
+                             <ul style="font-weight: bolder">
+                                 <li>
+                                     On Specification
+                                 </li>
+                                 <li>
+                                     On Budget
+                                 </li>
+                                 <li>
+                                     On Time
+                                 </li>
+                             </ul>
+                             <p>These have points attached to them which in turn have the power to boost your profile or reduce your competence level.
+                             </p>
+                         </div>
+
+                 </div>
+             </div>
+
+
+        {% endif %}
+
+
+    {% else %}
+
+
+       {#this will never be true onless hacked #}
+        <div class="row">
+            <div class="col-md-8 push-sm-2">
+                <div class="card">
+                    <div class="card-title-w-btn">
+                        <h3 class="title">You have no active contract <a href="{{ path('user_dashboard') }}">Go home</a> </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $('.startMilestoneForm').hide();
+        $('.cancelStartMilestoneButton').hide();
+        $('#close').click(function(){
+            swal({
+                title: "Are you sure you wish to close this project?",
+                text: "By closing your project you will not be able to receive bids. Your project will be " +
+                "archived and cannot be reopened.",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, close it!",
+                cancelButtonText: "No, cancel Please!",
+                confirmButtonColor: "#DD6B55",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function(isConfirm) {
+                if (isConfirm) {
+
+                    //  create the ajax call that will close your project here
+
+                    swal("Closed!", "Your project has been closed.", "success");
+                } else {
+                    swal("Cancelled", "Your project is safe :)", "error");
+                }
+            });
+        });
+
+
+        function cancelStartMilestone(milestoneId) {
+            $('#startMilestoneForm'+milestoneId).hide();
+            $('#cancelStartMilestoneButton'+milestoneId).hide();
+            $('.startMilestoneButton').show();
+            return false;
+        }
+         /*actions that happens when you click start*/
+        function startMilestone(milestoneId) {
+            $('#startMilestoneForm'+milestoneId).show();
+            $('.startMilestoneButton').hide();
+            $('#cancelStartMilestoneButton'+milestoneId).show();
+            return false;
+        }
+
+        /*
+         * create one milestone and go to next
+         */
+        $('startMilestoneForm').submit(function(e) {
+
+            var val = $(this).val();
+            alert(val);
+
+
+        });
+        function submitStart(milestone,val,id) {
+            var durationHour = $(val).val();
+
+            // $('#loading_card').show();
+            $.ajax({
+
+                type: "GET",
+                url: "{{ path('manage_contract',{'contractId':"id"})
+                }}?startMilestone=1&milestoneId="+milestone+"&durationHour="+durationHour,
+                success: function(urlFromController) {
+
+                    $.notify({
+                        title: "Milestone Start : ",
+                        message: urlFromController.toString(),
+                        icon: 'fa fa-check'
+                    },{
+                        type: "info"
+                    });
+
+                    location.reload();
+                },
+                error: function (data) {
+                    $.notify({
+                        title: "Could Not Milestone Start : ",
+                        message: "Something went wrong, please contact support for resolution ",
+                        icon: 'fa fa-check'
+                    },{
+                        type: "danger"
+                    });
+                }
+            });
+        }
+        $('#demoNotify').click(function(){
+            $.notify({
+                title: "Update Complete : ",
+                message: "Something cool is just updated!",
+                icon: 'fa fa-check'
+            },{
+                type: "info"
+            });
+        });
+        /*do the validation here*/
+        $('#durationHour').change(function(){
+            //
+          // $('#hourDurationError').textContent('error occurred');
+
+            var val = $(this).val();
+           // alert(val);
+
+
+            return false;
+        });
+
+    </script>
+{% endblock %}
+
+

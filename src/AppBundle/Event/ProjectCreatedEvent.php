@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * The product created event is dispatched each time an product is created
  * in the system.
- * for the the listners to carry out post product creation actions
+ * for the the listeners to carry out post product creation actions
  */
 class ProjectCreatedEvent extends Event
 {

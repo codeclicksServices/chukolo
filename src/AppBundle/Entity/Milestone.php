@@ -25,30 +25,83 @@ class Milestone
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="integer", length=80)
-     */
-    private $amount;
 
     /**
-     * @ORM\Column(type="string", length=80)
+     * @ORM\Column(type="string",options={"comment":" value: the value starts from m1, m2, m3 etc"})
+     */
+    private $milestoneCode;
+
+    /**
+     * @ORM\Column(type="string",options={"comment":" value: this is a short description for this
+      milestone if there is only one milestone for the project its going to be the same as the
+     *     project name"})
+     */
+    private $name;
+    /**
+     * @ORM\Column(type="integer", length=80,options={"comment":"this is the amount the employer is paying for this milestone"})
+     */
+    private $price;
+
+    /**
+     * @ORM\Column(type="integer",nullable=true, length=3,options={"comment":"this is in percentage from 1 to 100 % and the value is dependent on the completed deliverble"})
+     */
+    private $completionRate;
+
+    /**
+     * @ORM\Column(type="text",options={"comment":" value: brief description of this "} )
      */
     private $description;
+    /**
+     * @ORM\Column(type="string", length=80,options={"comment":"value: pending, progress, pause,complete, delivered,paid"})
+     */
+    private $status;
+    /**
+     * @ORM\Column(type="string",nullable=true, length=80,options={"comment":"how long before you complete this milestone  value:days and hours"})
+     */
+    private $durationDay;
 
+    /**
+     * @ORM\Column(type="integer",options={"comment":"value: duration in hours "})
+     */
+    protected $durationHour;
+    /**
+     * @ORM\Column(type="integer",options={"comment":"value: total hour used "})
+     */
+    protected $usedHour;
+    /**
+     * @ORM\Column(type="integer",options={"comment":"value: hours remaining to due "})
+     */
+    protected $remainingHour;
+    
+    /**
+     * @ORM\Column(type="datetime",nullable=true,options={"comment":"the date the milestone started work on"})
+     * date created
+     */
+    protected $started;
+
+    /**
+     * @ORM\Column(type="datetime",nullable=true,options={"comment":"when to deliver this milestone"})
+     * date created
+     */
+    protected $deadline;
+
+    /**
+     * @ORM\Column(type="datetime",nullable=true,options={"comment":"actual delivery date"})
+     */
+    protected $completionDate;
     /**
      * @ORM\Column(type="smallint", length=1, options={"default":0,"comment":"used to make payment to the freelancer for the completed job"})
      */
-    protected $released;
+    protected $releasePayment;
+    /**
+     * @ORM\Column(type="smallint", length=1, options={"default":0,"comment":"used to start working on a mile stone. you cant start two milestone from the same project at the same time "})
+     */
+    protected $start;
+
     /**
      * @ORM\Column(type="smallint", length=1, options={"default":0,"comment":"this would be complete when the money have been transferred to the freelancer"})
      */
     protected $complete;
-
-    /**
-     * @ORM\Column(type="smallint",length=1, options={"default":0,"comment":"In case the employer accidentally create more than necessary mile stone"})
-     *
-     */
-    protected $cancel;
 
 
       /*
@@ -59,38 +112,41 @@ class Milestone
        */
 
     /**
-     *the person that is meant to receive the milestone i.e the freelancer
-     * @ORM\ManyToOne(targetEntity="Member", inversedBy="milestone")
-     * @ORM\JoinColumn(name="owner_id",referencedColumnName="id", nullable=false )
-     */
-    protected $owner;
-
-    /**
      * contract is the same thing as bid after is awarded
      * @ORM\ManyToOne(targetEntity="Bid", inversedBy="milestone")
      * @ORM\JoinColumn(name="contract_id",referencedColumnName="id", nullable=false )
      */
     protected $contract;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Fund", inversedBy="milestone")
-     * @ORM\JoinColumn(name="fund_id", referencedColumnName="id")
-     */
-    private $fund;
-
 
     /**
-     * receipt for the payer
-     *
-     * @ORM\OneToOne(targetEntity="Invoice", mappedBy="milestone")
+     * payer here is the member receiving bank
+     * @ORM\ManyToOne(targetEntity="Invoice", inversedBy="milestone")
+     * @ORM\JoinColumn(name="invoice_id",referencedColumnName="id" )
      */
-    private $invoice;
+    protected $invoice;
+
+
 
     /**
      *
      * @ORM\OneToMany(targetEntity="ReservedFund", mappedBy="milestone")
      */
-    private $reservedFund;
+    protected $reservedFund;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Deliverable", mappedBy="milestone")
+     */
+    protected $deliverable;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->reservedFund = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
     /**
      * Get id
      *
@@ -102,27 +158,75 @@ class Milestone
     }
 
     /**
-     * Set amount
+     * Set name
      *
-     * @param integer $amount
+     * @param string $name
      *
      * @return Milestone
      */
-    public function setAmount($amount)
+    public function setName($name)
     {
-        $this->amount = $amount;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get amount
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set price
+     *
+     * @param integer $price
+     *
+     * @return Milestone
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * Get price
      *
      * @return integer
      */
-    public function getAmount()
+    public function getPrice()
     {
-        return $this->amount;
+        return $this->price;
+    }
+
+    /**
+     * Set completionRate
+     *
+     * @param integer $completionRate
+     *
+     * @return Milestone
+     */
+    public function setCompletionRate($completionRate)
+    {
+        $this->completionRate = $completionRate;
+
+        return $this;
+    }
+
+    /**
+     * Get completionRate
+     *
+     * @return integer
+     */
+    public function getCompletionRate()
+    {
+        return $this->completionRate;
     }
 
     /**
@@ -150,100 +254,171 @@ class Milestone
     }
 
     /**
-     * Set member
+     * Set status
      *
-     * @param \AppBundle\Entity\Member $member
+     * @param string $status
      *
      * @return Milestone
      */
-    public function setMember(\AppBundle\Entity\Member $member)
+    public function setStatus($status)
     {
-        $this->member = $member;
+        $this->status = $status;
 
         return $this;
     }
 
     /**
-     * Get member
+     * Get status
      *
-     * @return \AppBundle\Entity\Member
+     * @return string
      */
-    public function getMember()
+    public function getStatus()
     {
-        return $this->member;
+        return $this->status;
     }
 
-
     /**
-     * Set released
+     * Set duration
      *
-     * @param integer $released
+     * @param string $duration
      *
      * @return Milestone
      */
-    public function setReleased($released)
+    public function setDuration($duration)
     {
-        $this->released = $released;
+        $this->duration = $duration;
 
         return $this;
     }
 
     /**
-     * Get released
+     * Get duration
+     *
+     * @return string
+     */
+    public function getDuration()
+    {
+        return $this->duration;
+    }
+
+    /**
+     * Set started
+     *
+     * @param \DateTime $started
+     *
+     * @return Milestone
+     */
+    public function setStarted($started)
+    {
+        $this->started = $started;
+
+        return $this;
+    }
+
+    /**
+     * Get started
+     *
+     * @return \DateTime
+     */
+    public function getStarted()
+    {
+        return $this->started;
+    }
+
+    /**
+     * Set deadline
+     *
+     * @param \DateTime $deadline
+     *
+     * @return Milestone
+     */
+    public function setDeadline($deadline)
+    {
+        $this->deadline = $deadline;
+
+        return $this;
+    }
+
+    /**
+     * Get deadline
+     *
+     * @return \DateTime
+     */
+    public function getDeadline()
+    {
+        return $this->deadline;
+    }
+
+    /**
+     * Set completionDate
+     *
+     * @param \DateTime $completionDate
+     *
+     * @return Milestone
+     */
+    public function setCompletionDate($completionDate)
+    {
+        $this->completionDate = $completionDate;
+
+        return $this;
+    }
+
+    /**
+     * Get completionDate
+     *
+     * @return \DateTime
+     */
+    public function getCompletionDate()
+    {
+        return $this->completionDate;
+    }
+
+    /**
+     * Set releasePayment
+     *
+     * @param integer $releasePayment
+     *
+     * @return Milestone
+     */
+    public function setReleasePayment($releasePayment)
+    {
+        $this->releasePayment = $releasePayment;
+
+        return $this;
+    }
+
+    /**
+     * Get releasePayment
      *
      * @return integer
      */
-    public function getReleased()
+    public function getReleasePayment()
     {
-        return $this->released;
+        return $this->releasePayment;
     }
 
     /**
-     * Set cancel
+     * Set start
      *
-     * @param integer $cancel
+     * @param integer $start
      *
      * @return Milestone
      */
-    public function setCancel($cancel)
+    public function setStart($start)
     {
-        $this->cancel = $cancel;
+        $this->start = $start;
 
         return $this;
     }
 
     /**
-     * Get cancel
+     * Get start
      *
      * @return integer
      */
-    public function getCancel()
+    public function getStart()
     {
-        return $this->cancel;
-    }
-
-    /**
-     * Set contract
-     *
-     * @param \AppBundle\Entity\Bid $contract
-     *
-     * @return Milestone
-     */
-    public function setContract(\AppBundle\Entity\Bid $contract)
-    {
-        $this->contract = $contract;
-
-        return $this;
-    }
-
-    /**
-     * Get contract
-     *
-     * @return \AppBundle\Entity\Bid
-     */
-    public function getContract()
-    {
-        return $this->contract;
+        return $this->start;
     }
 
     /**
@@ -270,77 +445,33 @@ class Milestone
         return $this->complete;
     }
 
+
+
     /**
-     * Set employer
+     * Set contract
      *
-     * @param \AppBundle\Entity\Member $employer
+     * @param \AppBundle\Entity\Bid $contract
      *
      * @return Milestone
      */
-    public function setEmployer(\AppBundle\Entity\Member $employer)
+    public function setContract(\AppBundle\Entity\Bid $contract)
     {
-        $this->employer = $employer;
+        $this->contract = $contract;
 
         return $this;
     }
 
     /**
-     * Get employer
+     * Get contract
      *
-     * @return \AppBundle\Entity\Member
+     * @return \AppBundle\Entity\Bid
      */
-    public function getEmployer()
+    public function getContract()
     {
-        return $this->employer;
+        return $this->contract;
     }
 
-    /**
-     * Set owner
-     *
-     * @param \AppBundle\Entity\Member $owner
-     *
-     * @return Milestone
-     */
-    public function setOwner(\AppBundle\Entity\Member $owner)
-    {
-        $this->owner = $owner;
 
-        return $this;
-    }
-
-    /**
-     * Get owner
-     *
-     * @return \AppBundle\Entity\Member
-     */
-    public function getOwner()
-    {
-        return $this->owner;
-    }
-
-    /**
-     * Set fund
-     *
-     * @param \AppBundle\Entity\Fund $fund
-     *
-     * @return Milestone
-     */
-    public function setFund(\AppBundle\Entity\Fund $fund = null)
-    {
-        $this->fund = $fund;
-
-        return $this;
-    }
-
-    /**
-     * Get fund
-     *
-     * @return \AppBundle\Entity\Fund
-     */
-    public function getFund()
-    {
-        return $this->fund;
-    }
 
     /**
      * Set invoice
@@ -367,37 +498,6 @@ class Milestone
     }
 
     /**
-     * Set reservedFund
-     *
-     * @param \AppBundle\Entity\ReservedFund $reservedFund
-     *
-     * @return Milestone
-     */
-    public function setReservedFund(\AppBundle\Entity\ReservedFund $reservedFund = null)
-    {
-        $this->reservedFund = $reservedFund;
-
-        return $this;
-    }
-
-    /**
-     * Get reservedFund
-     *
-     * @return \AppBundle\Entity\ReservedFund
-     */
-    public function getReservedFund()
-    {
-        return $this->reservedFund;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->reservedFund = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
      * Add reservedFund
      *
      * @param \AppBundle\Entity\ReservedFund $reservedFund
@@ -419,5 +519,175 @@ class Milestone
     public function removeReservedFund(\AppBundle\Entity\ReservedFund $reservedFund)
     {
         $this->reservedFund->removeElement($reservedFund);
+    }
+
+    /**
+     * Get reservedFund
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getReservedFund()
+    {
+        return $this->reservedFund;
+    }
+
+
+
+    /**
+     * Add deliverable
+     *
+     * @param \AppBundle\Entity\Deliverable $deliverable
+     *
+     * @return Milestone
+     */
+    public function addDeliverable(\AppBundle\Entity\Deliverable $deliverable)
+    {
+        $this->deliverable[] = $deliverable;
+
+        return $this;
+    }
+
+    /**
+     * Remove deliverable
+     *
+     * @param \AppBundle\Entity\Deliverable $deliverable
+     */
+    public function removeDeliverable(\AppBundle\Entity\Deliverable $deliverable)
+    {
+        $this->deliverable->removeElement($deliverable);
+    }
+
+    /**
+     * Get deliverable
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDeliverable()
+    {
+        return $this->deliverable;
+    }
+
+
+
+    
+
+    /**
+     * Set milestoneCode
+     *
+     * @param string $milestoneCode
+     *
+     * @return Milestone
+     */
+    public function setMilestoneCode($milestoneCode)
+    {
+        $this->milestoneCode = $milestoneCode;
+
+        return $this;
+    }
+
+    /**
+     * Get milestoneCode
+     *
+     * @return string
+     */
+    public function getMilestoneCode()
+    {
+        return $this->milestoneCode;
+    }
+
+    /**
+     * Set durationHour
+     *
+     * @param integer $durationHour
+     *
+     * @return Milestone
+     */
+    public function setDurationHour($durationHour)
+    {
+        $this->durationHour = $durationHour;
+
+        return $this;
+    }
+
+    /**
+     * Get durationHour
+     *
+     * @return integer
+     */
+    public function getDurationHour()
+    {
+        return $this->durationHour;
+    }
+
+    /**
+     * Set usedHour
+     *
+     * @param integer $usedHour
+     *
+     * @return Milestone
+     */
+    public function setUsedHour($usedHour)
+    {
+        $this->usedHour = $usedHour;
+
+        return $this;
+    }
+
+    /**
+     * Get usedHour
+     *
+     * @return integer
+     */
+    public function getUsedHour()
+    {
+        return $this->usedHour;
+    }
+
+    /**
+     * Set remainingHour
+     *
+     * @param integer $remainingHour
+     *
+     * @return Milestone
+     */
+    public function setRemainingHour($remainingHour)
+    {
+        $this->remainingHour = $remainingHour;
+
+        return $this;
+    }
+
+    /**
+     * Get remainingHour
+     *
+     * @return integer
+     */
+    public function getRemainingHour()
+    {
+        return $this->remainingHour;
+    }
+
+    /**
+     * Set durationDay
+     *
+     * @param string $durationDay
+     *
+     * @return Milestone
+     */
+    public function setDurationDay($durationDay)
+    {
+        $this->durationDay = $durationDay;
+
+        return $this;
+    }
+
+    /**
+     * Get durationDay
+     *
+     * @return string
+     */
+    public function getDurationDay()
+    {
+        return $this->durationDay;
     }
 }
