@@ -35,6 +35,10 @@ class Deliverable
      */
     private $status;
     /**
+     * @ORM\Column(type="string", length=80,options={"comment":"value: completion point that is  0 to max point"})
+     */
+    private $point;
+    /**
      * @ORM\Column(type="text",options={"comment":"The freelancer note or comment on this task example explaining the processes of the task or any challenge he face"} )
      */
     private $note;
@@ -52,6 +56,15 @@ class Deliverable
      * @ORM\Column(type="smallint", length=1, options={"default":0,"comment":"employer declined this for a redo"})
      */
     protected $decline;
+    /**
+     * @ORM\Column(type="smallint",options={ "default":0,"comment":"checks weather this deliverable has been reviewed by the employer"})
+     */
+    protected $reviewed;
+
+    /**
+     * @ORM\Column(type="string",nullable=true, length=100,options={"comment":"the feedback for this review"})
+     */
+    protected $reviewedMessage;
 
 
     /*relationships*/
@@ -277,5 +290,77 @@ class Deliverable
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Set reviewed
+     *
+     * @param integer $reviewed
+     *
+     * @return Deliverable
+     */
+    public function setReviewed($reviewed)
+    {
+        $this->reviewed = $reviewed;
+
+        return $this;
+    }
+
+    /**
+     * Get reviewed
+     *
+     * @return integer
+     */
+    public function getReviewed()
+    {
+        return $this->reviewed;
+    }
+
+    /**
+     * Set reviewedMessage
+     *
+     * @param string $reviewedMessage
+     *
+     * @return Deliverable
+     */
+    public function setReviewedMessage($reviewedMessage)
+    {
+        $this->reviewedMessage = $reviewedMessage;
+
+        return $this;
+    }
+
+    /**
+     * Get reviewedMessage
+     *
+     * @return string
+     */
+    public function getReviewedMessage()
+    {
+        return $this->reviewedMessage;
+    }
+
+    /**
+     * Set point
+     *
+     * @param string $point
+     *
+     * @return Deliverable
+     */
+    public function setPoint($point)
+    {
+        $this->point = $point;
+
+        return $this;
+    }
+
+    /**
+     * Get point
+     *
+     * @return string
+     */
+    public function getPoint()
+    {
+        return $this->point;
     }
 }

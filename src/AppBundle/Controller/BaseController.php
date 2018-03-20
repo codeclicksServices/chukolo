@@ -4,45 +4,102 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\Entity\ChukoloFund;
+use AppBundle\Entity\ChukoloFundLog;
+use AppBundle\Entity\ContractInvoice;
+use AppBundle\Entity\ErrorLog;
+use AppBundle\Entity\FundLog;
 use AppBundle\Entity\Invoice;
 use AppBundle\Entity\MilestoneProposal;
+use AppBundle\Entity\ProjectCommissionFund;
+use AppBundle\Entity\ProjectInvoice;
+use AppBundle\Entity\ReservedFund;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 
 class BaseController extends Controller
 {
-    protected function createInvoice($amount,$description){
-        $invoice= new Invoice();
-        $invoice->setAmount($amount);
-        $invoice->setDescription($description);
-        $invoice->setCreated();
+    protected function createContractInvoice($contract,$paid){
+        //todo currency = app currency ut now let it be ngn
+        $invoice = new ContractInvoice();
+        $invoice->setTotal($contract->getPrice());
+        $invoice->setReceiver($contract->getProject()->getMember());
+        $invoice->setStatus("on going");
+        $invoice->setCreated(new \DateTime('now'));
+        $invoice->setCurrency("ngn");
+        $invoice->setPayer($contract->getMember());
+        $invoice->setPaid($paid);
+        $invoice->setBalance($contract->getPrice());
+        $invoice->setContract($contract);
 
-        $invoice->setCurrency();
-        $invoice->setPayer();
-        $invoice->setSource();
-        $invoice->setPopName();
-    }
+        if($contract->getMilestone() != null){
+            foreach ($contract->getMilestone() as $task){
+                //here you are creating the relationship with the children
 
-    protected function createChukoloFund($amount,$description,$payer,$bid=null,$subscription=null){
-        $fund= new ChukoloFund();
+                $task->setInvoice($invoice);
 
-        $fund->setAmount($amount);
-        $fund->setDescription($description);
-        $fund->setCreated(new \DateTime("now"));
-        /*todo this currency is supoz to com from the urren y settings*/
-        $fund->setCurrency("ngn");
-        $fund->setPayer($payer);
-        /* bid here is used for the commission*/
-        if($bid !=null){
-            $fund->setBid();
-            $fund->setSource("bid_commission");
+                /*update the paid and balance for the invoice */
+                if($task->getPaid() == true){
+                    $curPaid = $invoice->getPaid();
+                    $updatedPaid =  $curPaid + $task->getPrice();
+                    $invoice->setPaid($updatedPaid);
+
+                    $curBalance = $invoice->getBalance();
+                    $updatedBalance = $curBalance -$task->getPrice();
+                    $invoice->setBalance($updatedBalance);
+
+                    /* set the status of  */
+                    if($updatedBalance==0){
+                        $invoice->setStatus("fully paid");
+                    }
+
+                }
+            }
         }
 
-        if($subscription !=null){
+       $this->persistData($invoice);
+
+    }
+    protected function updateContractInvoice($milestone){
+
+          $invoice=$milestone->getInvoice();
+
+
+
+                /* update the paid and balance for the invoice */
+
+                    $curPaid = $invoice->getPaid();
+                    $updatedPaid =  $curPaid + $milestone->getPrice();
+                    $invoice->setPaid($updatedPaid);
+
+                    $curBalance =$invoice->getBalance();
+                    $updatedBalance = $curBalance -$milestone->getPrice();
+                    $invoice->setBalance($updatedBalance);
+
+                    /* set the status of  */
+                    if($updatedBalance == 0){
+                        $invoice->setStatus("fully paid");
+                    }
+                    $this->persistData($invoice);
+
+    }
+    protected function createChukoloFund($amount,$description,$payer,$bid=null,$subscription=null){
+       // $fund= new;
+
+       /* $fund->setAmount($amount);
+        $fund->setDescription($description);
+        $fund->setCreated(new \DateTime("now"));*/
+        /*todo this currency is supoz to com from the currency settings*/
+   /*     $fund->setCurrency("ngn");
+        $fund->setPayer($payer);*/
+        /* bid here is used for the commission*/
+
+
+       /* if($subscription !=null){
             $fund->setSubscription();
 
             if($subscription->getType()==2){
@@ -50,13 +107,7 @@ class BaseController extends Controller
             }elseif ($subscription->getType()==1){
                 $fund->setSource("project_upgrade");
             }
-        }
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($fund);
-        $em->flush();
-
-
-
+        }*/
 
     }
 
@@ -98,6 +149,7 @@ class BaseController extends Controller
         $bid->setStarted(false);
         $bid->setAwarded(0);
         $bid->setBookmark(0);
+        $bid->setInitiateSource(0);
         $bid->setNumberOfMilestones(0);
 
         //this state means this bid is like a draft its not fully bod so its practically useless on less its complete
@@ -148,9 +200,7 @@ class BaseController extends Controller
                         $bid->addSubscription($feature);
                         $bid->setHasSubscriptions(1);
 
-                        $em = $this->getDoctrine()->getManager();
-                        $em->persist($bid);
-                        $em->flush();
+                     $this->persistData($bid);
                         /*this makes sure that the add process was successful */
                         if($bid->hasSubscription($feature)) {
                             /*
@@ -379,7 +429,7 @@ class BaseController extends Controller
      * @return JsonResponse|Response
      * @internal param $contract
      */
-    protected  function  startMilestone($contractId,$request){
+    protected function startMilestone($contractId,$request){
 
         /*
          * check that it is a valid request
@@ -404,6 +454,15 @@ class BaseController extends Controller
                     $this->persistData($contract);
                    }
                }
+               /* todo this function is not test its for changing the status of the deliverable for a milestone being started to working */
+                $deliverable=$milestone->getDeliverable();
+                if (!empty($deliverable)){
+                    foreach ($deliverable as $key=>$value){
+                        $value->setStatus("working");
+                    }
+                    $this->persistData($deliverable);
+                };
+
 
                 $milestone->setStart(true);
                 $milestone->setStarted(new \DateTime('now'));
@@ -437,23 +496,29 @@ class BaseController extends Controller
             return new Response(json_encode(array('error'=>'invalid request')));
         }
     }
-
-
-    protected  function  redo($bid,$request){
+    protected function redo($bid,$request){
         return new JsonResponse($this->generateUrl('homepage'));
     }
-    protected  function  CreateErrorLog($action,$location,$description){
+    protected function CreateErrorLog($action,$location,$description){
         $log= new ErrorLog();
         $log->setAction($action);
         $log->setLocation($location);
         $log->setDescription($description);
         $log->setCreated(new \DateTime("now"));
-        $em= $this->getDoctrine()->getManager();
+        $this->persistData($log);
+    }
+    protected function CreateChukoloFundLog($amount,$reason,$inflow,$description){
+        $log = new ChukoloFundLog();
+        $log->setAmount($amount);
+        $log->setDescription($description);
+        $log->setReason($reason);
+        $log->setInflow($inflow);
+        $log->setCreated(new \DateTime("now"));
 
+        $em= $this->getDoctrine()->getManager();
         $em->persist($log);
         $em->flush();
     }
-
     protected function CreateFundLog($amount,$usage,$description,$member){
         $log = new FundLog();
         $log->setAmount($amount);
@@ -465,7 +530,7 @@ class BaseController extends Controller
         $em->persist($log);
         $em->flush();
     }
-    protected  function  CreateMilestone($bid,$milestone){
+    protected function CreateMilestone($bid,$milestone){
 
         /*
        * the idea here is that a member can only create one bid for a particular project
@@ -504,8 +569,7 @@ class BaseController extends Controller
             return new Response(json_encode(array('status'=>"can't  find a valid bid for this project")));
         }
     }
-
-    protected  function  confirmBid($member,$bid,$request){
+    protected function confirmBid($member,$bid,$request){
 
         /*
          * check that it is a valid request
@@ -595,8 +659,80 @@ class BaseController extends Controller
             //return new Response(json_encode(array('failed'=>'wrong call')));
         }
     }
+    protected function completeDeliverable($contractId,$request)
+    {
+        $deliverableId=$request->query->get("deliverableId");
+        if($deliverableId !=null){
+            $Repo=$this->getDoctrine()->getRepository('AppBundle:Deliverable');
+            $deliverable = $Repo->find($deliverableId);
+            if($deliverable){
+                $deliverable->setDone(true);
+                $deliverable->setStatus($deliverableId);
+                //todo send mail to the employer
+
+               $this->persistData($deliverable);
+                return new Response(json_encode(array('status' => 'Successfully Completed please wait for the employer to accept it for it to be marked as done ')));
+            }else{
+                $this->CreateErrorLog('Deliverable completion',"manageContract. the function that generate this error is completeDeliverable(contract id    $contractId, request)","could not find the deliverable to mark as complete ");
 
 
+                return new Response(json_encode(array($deliverableId)));
+            }
+        }else{
+            return new Response(json_encode(array('status' => 'error occurred')));
+        }
+    }
+    protected function acceptDeliverable($request)
+    {
+        $deliverableId=$request->query->get("deliverableId");
+        $Repo=$this->getDoctrine()->getRepository('AppBundle:Deliverable');
+        $deliverable = $Repo->find($deliverableId);
+
+            if($deliverable){
+                $deliverable->setDone(true);
+                $deliverable->setAccept(true);
+                $deliverable->setReviewed(true);
+                $deliverable->setReviewedMessage("accepted");
+                $deliverable->setStatus('Complete');
+                $this->persistData($deliverable);
+                   /* update the milestone progress and project progress*/
+                $point=$deliverable->getPoint();
+                $milestone=$deliverable->getMilestone();
+                $curCompletionRate = $milestone->getCompletionRate();
+                $completionRate=$curCompletionRate+$point;
+                $milestone->setCompletionRate($completionRate);
+                //if this is the deliverable that complete the milestone run milestone completion task
+                if($completionRate == 100)
+                {
+                    $milestone->setCompletionDate(new \DateTime("now"));
+                    $milestone->setStatus('awaiting-payment');
+                    $milestone->setAwaitingPayment(true);
+
+                    $project=$milestone->getContract()->getProject();
+                    $curCompletionRate = $project->getCompletionRate();
+                    $completionRate=$curCompletionRate+$milestone->getPoint();
+                    $project->setCompletionRate($completionRate);
+
+                    if($completionRate == 100){
+                        $project->setCompleted(new \DateTime("now"));
+                        $project->setState('awaiting-feedback');
+                        $project->setOnGoing(false);
+                    }
+                    $this->persistData($project);
+
+                    /*send an email to employer notifying them on milestone completion*/
+                }
+                $this->persistData($milestone);
+
+                return new Response(json_encode(array('status' => 'Successful ')));
+            }else{
+                $this->CreateErrorLog('Deliverable acceptance error',"manageProject. the function that generate this error is acceptDeliverable(request)","could not find the deliverable to accept");
+
+
+                return new Response(json_encode(array('status' => 'could not find the deliverable')));
+            }
+
+    }
     /*
       these functions are for hire process
     */
@@ -712,8 +848,6 @@ class BaseController extends Controller
 
                     /* get the milestones for this bid */
                     $milestoneOffers = $repo->getBidOffers($bid);
-
-
 
                     /*
                      * this step makes sure there is an offer before you can award project
@@ -837,5 +971,133 @@ class BaseController extends Controller
         $em->persist($data);
         $em->flush();
     }
+    /*
+     * finance
+     */
 
+    /**
+     * @param $request
+     * @return Response
+     */
+    protected function ReleaseMilestonePayment($request){
+
+        $milestoneId=$request->query->get("milestoneId");
+
+        if($milestoneId !=null){
+            $Repo = $this->getDoctrine()->getRepository('AppBundle:Milestone');
+            $ReservedFund = $this->getDoctrine()->getRepository('AppBundle:ReservedFund');
+            $Invoice=$this->getDoctrine()->getRepository('AppBundle:ContractInvoice');
+
+            $milestone=$Repo->find($milestoneId);
+          if(!empty($milestone)){
+            if($milestone->getPaid() == false){
+                /*get the bid from the milestone*/
+                $bid=$milestone->getContract();
+                //todo this function (getFundReservedForBid($bid)) have not been created in reserved fund repo
+                /* reserved fund for this bid */
+                //source  is use to know which of the reserved fund you want to get for that bid
+                $source="milestone_payment";
+                $reservedFund=$ReservedFund->getFundReservedForBid($bid,$source);
+                $milestonePrice=$milestone->getPrice();
+                $milestoneValue=$milestone->getValue();
+                $milestoneCommission=$milestone->getCommission();
+
+                if(!empty($reservedFund)){
+                    if($reservedFund->getAmount() >= $milestonePrice){
+                        //take away the milestone price from the reserved fund
+                        //add the milestone value to the freelancers fund
+                        //add the milestone commission  to chukolo fund
+                        //take away milestone price from the employer reserved fund
+
+
+
+                        /*now pay project commission to chukolo*/
+                        $chukoloFund = new ProjectCommissionFund();
+                        $chukoloFund->setContract($bid);
+                        $chukoloFund->setAmount($milestoneCommission);
+                        /*todo currency should come from setting for internationalisation*/
+                        $chukoloFund->setCurrency('ngn');
+                        $chukoloFund->setDescription("project commission");
+                        $chukoloFund->setCreated(new \DateTime("now"));
+                        $chukoloFund->setPayer($reservedFund->getMember());
+                       $this->persistData($chukoloFund);
+
+                       $this->CreateChukoloFundLog($milestoneCommission,"project commission",true,"received commission for the project called   ".$bid->getProject()->getName()."");
+
+
+                        /* action on milestone mark it as paid  */
+                        $milestone->setPaid(true);
+                        $milestone->setAwaitingPayment(false);
+                        $milestone->setStatus("paid");
+                        $milestone->setComplete(true);
+                         $this->persistData($milestone);
+
+
+                        /* actions on the reserved fund */
+                        $curReservedAmount=$reservedFund->getAmount();
+                        $updatedReservedAmount=$curReservedAmount-$milestonePrice;
+                        $reservedFund->setAmount($updatedReservedAmount);
+                        $this->persistData($reservedFund);
+
+                        $freelancerFund=$bid->getMember()->getFund();
+                        /* actions on the employee fund */
+                        $employerFund=$reservedFund->getMember()->getFund();
+
+                        $curEmployeeReservedAmount = $employerFund->getReserved();
+                        $updatedEmployeeReservedAmount=$curEmployeeReservedAmount-$milestonePrice;
+                        $employerFund->setReserved($updatedEmployeeReservedAmount);
+
+
+                        $curEmployeeProjectPayment=$employerFund->getProjectPayment();
+                        $updatedEmployeeProjectPayment=$curEmployeeProjectPayment+$milestonePrice;
+                        $employerFund->setProjectPayment($updatedEmployeeProjectPayment);
+
+                        $curEmployeeBookBalance= $employerFund->getBookBalance();
+                        $updatedEmployeeBookBalance = $curEmployeeBookBalance-$milestonePrice;
+                        $employerFund->setBookBalance($updatedEmployeeBookBalance);
+
+
+                        $this->persistData($employerFund);
+
+                        $this->CreateFundLog($milestonePrice,"milestone payment","paid for a completed milestone for a project",$reservedFund->getMember());
+
+
+                        /* actions on the freelancer fund */
+                        $curFreelancerReceived = $freelancerFund->getReceived()+0;
+                        $updatedFreelancerReceived=$curFreelancerReceived+$milestoneValue;
+                        $freelancerFund->setReceived($updatedFreelancerReceived);
+
+                        $curFreelancerUsableAmount=$freelancerFund->getUsableAmount();
+                        $updatedFreelancerUsableAmount=$curFreelancerUsableAmount+$milestoneValue;
+                        $freelancerFund->setUsableAmount($updatedFreelancerUsableAmount);
+
+                        $curFreelancerBookBalance=$freelancerFund->getBookBalance();
+                        $updatedFreelancerBookBalance =$curFreelancerBookBalance+$milestoneValue;
+                        $freelancerFund->setBookBalance($updatedFreelancerBookBalance);
+
+                        $this->persistData($freelancerFund);
+                            $this->CreateFundLog($milestoneValue,"milestone payment","received for a completed milestone in project ".$bid->getProject()->getName(),$bid->getMember());
+
+
+
+                        return new Response(json_encode(array('status'=>'successful')));
+                    }else{
+                        //you have insufficient fund. fund not up to required amount this case should never happen
+                        return new Response(json_encode(array('status'=>'you have insufficient fund reserved for this milestone . fund not up to required amount')));
+                    }
+                }else{
+                    //no fund reserve for this bid
+                    return new Response(json_encode(array('status'=>'no fund reserved or this contract')));
+                }
+            }else{
+                return new Response(json_encode(array('status'=>'this milestone has been paid for')));
+            }
+          }else{
+              return new Response(json_encode(array('status'=>'cannot find this milestone')));
+          }
+
+        }else{
+            return new Response(json_encode(array('status'=>'cannot find this milestone id')));
+        }
+    }
 }

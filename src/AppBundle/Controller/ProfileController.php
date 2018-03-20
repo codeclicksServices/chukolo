@@ -2,16 +2,21 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Attachment;
 use AppBundle\Entity\Education;
+use AppBundle\Entity\ErrorLog;
 use AppBundle\Entity\Experience;
 use AppBundle\Entity\Milestone;
 use AppBundle\Controller\HireController;
 use AppBundle\Entity\Publication;
+use AppBundle\Entity\Source;
 use AppBundle\Entity\XP;
+use AppBundle\Form\Type\AttachmentType;
 use AppBundle\Form\Type\EducationType;
 use AppBundle\Form\Type\ExperienceType;
 use AppBundle\Form\Type\MilestoneType;
 use AppBundle\Form\Type\PublicationType;
+use AppBundle\Form\Type\SourceType;
 use FOS\UserBundle\Controller\ProfileController as baseProfiler;
 use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Event\FormEvent;
@@ -246,7 +251,7 @@ class ProfileController extends baseProfiler
          * paginator to use*/
         $paginator  = $this->get('knp_paginator');
           //default page limit
-         $pageLimit= 2;
+         $pageLimit= 5;
 
       /*
        * project pagination queries (i.e what actually get to the front end)
@@ -333,6 +338,15 @@ class ProfileController extends baseProfiler
         $bookMarked=$Bid->findBookMarkedProposal($project);
         $awardedProposal=$Bid->findAwardedProposal($project);
 
+        if ($request->query->get('acceptDeliverable')== 1){
+
+            return  $this->acceptDeliverable($request);
+        }
+        if ($request->query->get('releaseMilestonePayment') == 1){
+
+           return  $this->ReleaseMilestonePayment($request);
+        }
+
         return  $this->render('member/user/project/show.html.twig',array(
             'project'=>$project,
             'bookMarkedProposals'=>$bookMarked,
@@ -354,12 +368,43 @@ class ProfileController extends baseProfiler
         /*todo don't just find with the selected input check that this user actually have this awarded project */
         $contract =$Contract->find($contractId);
 
-        if ($request->query->get('startMilestone')== 1){
-         return  $this->startMilestone($contractId,$request);
+          $source  = new Source();
+           $attachment= new Attachment();
+          $urlForm  = $this->createForm(SourceType::class,$source);
+          $attachmentForm = $this->createForm(AttachmentType::class,$attachment);
+          $urlForm->handleRequest($request);
+        $attachmentForm->handleRequest($request);
+
+        if ($urlForm->isSubmitted() && $urlForm->isValid()) {
+            $source->setContract($contract);
+            $this->persistData($source);
+            // initiate the project source
+            if ($contract->getInitiateSource() == false){
+                $contract->setInitiateSource(true);
+                $this->persistData($contract);
+            }
+
         }
 
+        if ($attachmentForm->isSubmitted() && $attachmentForm->isValid()) {
+            $attachment->setCreated(new \DateTime("now"));
+            $attachment->setContract($contract);
+            $this->persistData($attachment);
+        }
+
+        if ($request->query->get('startMilestone')== 1){
+            return  $this->startMilestone($contractId,$request);
+        }
+
+        if ($request->query->get('deliverableComplete')== 1){
+
+         return  $this->completeDeliverable($contractId,$request);
+         }
+
         return  $this->render('member/user/project/contract.html.twig',array(
-         'contract'=>$contract,
+            'contract'=>$contract,
+            'urlForm'=>$urlForm->createView(),
+            'attachmentForm'=>$attachmentForm->createView()
         ));
     }
 
@@ -460,5 +505,8 @@ class ProfileController extends baseProfiler
                 return new Response(json_encode(array('status' => 'error occurred invalid request')));
         }
     }
+
+
+
 
 }

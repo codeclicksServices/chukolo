@@ -14,11 +14,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="invoice")
- * @ORM\HasLifecycleCallbacks
- * @ORM\Entity(repositoryClass="AppBundle\Repository\InvoiceRepository")
- *  @Vich\Uploadable
+*  @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="type", type="string")
+ * @ORM\DiscriminatorMap({"contract-invoice" = "AppBundle\Entity\ContractInvoice"})
  */
-class  Invoice
+abstract class  Invoice
 {
     /**
      * @ORM\Column(type="integer")
@@ -27,14 +27,20 @@ class  Invoice
      */
     protected $id;
     /**
-     *@ORM\Column(type = "string", nullable=false, options={"comment":" Amount paid"})
+     *@ORM\Column(type = "string", nullable=false, options={"comment":" total amount for this invoice "})
      *@Assert\NotBlank()
      */
-    protected $amount;
+    protected $total;
     /**
-     * @ORM\Column(type="string", nullable=false, options={"comment":"mode of payment"})
+     *@ORM\Column(type = "string", nullable=false, options={"comment":"amount paid"})
+     *@Assert\NotBlank()
      */
-    protected $description;
+    protected $paid;
+    /**
+     *@ORM\Column(type = "string", nullable=false, options={"comment":"remaining balance"})
+     *@Assert\NotBlank()
+     */
+    protected $balance;
 
     /**
      * @ORM\Column(type="string", nullable=false, options={"comment":"i.e default is ngn"})
@@ -44,14 +50,12 @@ class  Invoice
      * @ORM\Column(type="text", nullable=false, options={"comment":"who owns the source of payment "})
      */
     protected $payer;
-
     /**
-     * @ORM\Column(type="text", nullable=false,
-     *      options={"comment":"I.e what is this invoice generated for eg deposit milestone payment subscription "})
+     * @ORM\Column(type="text", nullable=false, options={"comment":"person receiving this fund "})
      */
-    protected $source;
+    protected $receiver;
     /**
-     * @ORM\Column(type="smallint", nullable=false)
+     * @ORM\Column(type="string", nullable=false,options={"comment":"I.e pending, due,paid  "})
      */
     protected $status;
     /**
@@ -59,43 +63,7 @@ class  Invoice
      * date created
      */
     protected $created;
-    /**
-     * NOTE: This is not a mapped field of entity metadata, just a simple property.
-     *
-     * @Vich\UploadableField(mapping="pop_file", fileNameProperty="popName")
-     *
-     * @var File
-     */
-    private $popFile;
 
-    /**
-     * @ORM\Column(type="string", nullable=true,length=255)
-     *
-     * @var string
-     */
-    private $popName;
-
-
-
-    /*
-     * this has a relatioship with the deposit
-     * instances for getting an invoice are when you pay for a mile stone
-     * buy a feature
-     *
-     */
-
-    /**
-     * payer here is the member receiving bank
-     * @ORM\ManyToOne(targetEntity="Deposit", inversedBy="invoice")
-     * @ORM\JoinColumn(name="deposit_id",referencedColumnName="id" )
-     */
-    protected $deposit;
-   /*
-    * one source of fund
-    * @ORM\OneToMany(targetEntity="Milestone", mappedBy="invoice")
-    *
-    */
-    protected $milestone;
 
 
 
@@ -111,51 +79,75 @@ class  Invoice
     }
 
     /**
-     * Set amount
+     * Set total
      *
-     * @param string $amount
+     * @param string $total
      *
      * @return Invoice
      */
-    public function setAmount($amount)
+    public function setTotal($total)
     {
-        $this->amount = $amount;
+        $this->total = $total;
 
         return $this;
     }
 
     /**
-     * Get amount
+     * Get total
      *
      * @return string
      */
-    public function getAmount()
+    public function getTotal()
     {
-        return $this->amount;
+        return $this->total;
     }
 
     /**
-     * Set description
+     * Set paid
      *
-     * @param string $description
+     * @param string $paid
      *
      * @return Invoice
      */
-    public function setDescription($description)
+    public function setPaid($paid)
     {
-        $this->description = $description;
+        $this->paid = $paid;
 
         return $this;
     }
 
     /**
-     * Get description
+     * Get paid
      *
      * @return string
      */
-    public function getDescription()
+    public function getPaid()
     {
-        return $this->description;
+        return $this->paid;
+    }
+
+    /**
+     * Set balance
+     *
+     * @param string $balance
+     *
+     * @return Invoice
+     */
+    public function setBalance($balance)
+    {
+        $this->balance = $balance;
+
+        return $this;
+    }
+
+    /**
+     * Get balance
+     *
+     * @return string
+     */
+    public function getBalance()
+    {
+        return $this->balance;
     }
 
     /**
@@ -207,33 +199,33 @@ class  Invoice
     }
 
     /**
-     * Set source
+     * Set receiver
      *
-     * @param string $source
+     * @param string $receiver
      *
      * @return Invoice
      */
-    public function setSource($source)
+    public function setReceiver($receiver)
     {
-        $this->source = $source;
+        $this->receiver = $receiver;
 
         return $this;
     }
 
     /**
-     * Get source
+     * Get receiver
      *
      * @return string
      */
-    public function getSource()
+    public function getReceiver()
     {
-        return $this->source;
+        return $this->receiver;
     }
 
     /**
      * Set status
      *
-     * @param integer $status
+     * @param string $status
      *
      * @return Invoice
      */
@@ -247,7 +239,7 @@ class  Invoice
     /**
      * Get status
      *
-     * @return integer
+     * @return string
      */
     public function getStatus()
     {
@@ -276,54 +268,5 @@ class  Invoice
     public function getCreated()
     {
         return $this->created;
-    }
-
-    /**
-     * Set popName
-     *
-     * @param string $popName
-     *
-     * @return Invoice
-     */
-    public function setPopName($popName)
-    {
-        $this->popName = $popName;
-
-        return $this;
-    }
-
-    /**
-     * Get popName
-     *
-     * @return string
-     */
-    public function getPopName()
-    {
-        return $this->popName;
-    }
-
-
-    /**
-     * Set deposit
-     *
-     * @param \AppBundle\Entity\Deposit $deposit
-     *
-     * @return Invoice
-     */
-    public function setDeposit(\AppBundle\Entity\Deposit $deposit = null)
-    {
-        $this->deposit = $deposit;
-
-        return $this;
-    }
-
-    /**
-     * Get deposit
-     *
-     * @return \AppBundle\Entity\Deposit
-     */
-    public function getDeposit()
-    {
-        return $this->deposit;
     }
 }

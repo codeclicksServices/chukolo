@@ -15,81 +15,94 @@
 
            <div class="row">
                <div class="col-md-4">
-                   <div class="feature-content text-center">
-                       <div class="feature-icon-box">
-                           <div class="feature-icon center-block active">
-                               <i class="fa fa-pencil"></i>
+
+                   <div class="card mb-4">
+                       <div class="card-body flexbox-b">
+                           <div class="easypie mr-4" data-percent="73" data-bar-color="#18C5A9" data-size="80" data-line-width="8">
+                               <span class="easypie-data text-success" style="font-size:28px;"><i class="fa fa-pencil"></i></span>
                            </div>
-                       </div> <!--  end of /.feature-icon-box  -->
-                       <div class="feature-info">
-                           <h3 class="feature-heading">CREATE &amp; DEPOSIT MILESTONE PAYMENT </h3>
-                           <p class="feature-description">
-                               Create a milestone payment so that {{ bid.member.firstName |title }} {{ bid.member.lastName |title }}
-                               can start working on this project right away.
-                           </p>  <!--   end of /.feature-description  -->
-                       </div> <!--   end of /.feature-info  -->
-                   </div> <!--  end of /.feature-content  -->
+                           <div>
+                               <h6 class="font-strong text-success">CREATE &amp; DEPOSIT MILESTONE PAYMENT</h6>
+                               <div class="text-muted">   Create a milestone payment so that {{ bid.member.firstName |title }} {{ bid.member.lastName |title }}
+                                   can start working on this project right away.</div>
+                           </div>
+                       </div>
+                   </div>
+
+
+
+
+
                </div>
                <div class="col-md-4">
-                   <div class="feature-content text-center">
-                       <div class="feature-icon-box">
-                           <div class="feature-icon center-block">
-                               <i class="fa fa-bank"></i>
+
+                   <div class="card mb-4">
+                       <div class="card-body flexbox-b">
+                           <div class="easypie mr-4" data-percent="73" data-bar-color="#18C5A9" data-size="80" data-line-width="8">
+                               <span class="easypie-data text-success" style="font-size:28px;"><i class="fa fa-bank"></i></span>
                            </div>
-                       </div> <!--  end of /.feature-icon-box  -->
-                       <div class="feature-info">
-                           <h3 class="feature-heading">SAVE </h3>
-                           <p class="feature-description">
-                               We securely hold your payment pending when the job will be delivered.
-                           </p>  <!--   end of /.feature-description  -->
-                       </div> <!--   end of /.feature-info  -->
-                   </div> <!--  end of /.feature-content  -->
+                           <div>
+                               <h6 class="font-strong text-success">SAVE</h6>
+                               <div class="text-muted"> We securely hold your payment pending when the job will be delivered.</div>
+                           </div>
+                       </div>
+                   </div>
+
+
                </div>
                <div class="col-md-4">
-                   <div class="feature-content text-center">
-                       <div class="feature-icon-box">
-                           <div class="feature-icon center-block">
-                               <i class="fa fa-thumbs-o-up"></i>
+
+                   <div class="card mb-4">
+                       <div class="card-body flexbox-b">
+                           <div class="easypie mr-4" data-percent="73" data-bar-color="#18C5A9" data-size="80" data-line-width="8">
+                               <span class="easypie-data text-success" style="font-size:28px;"><i class="fa fa-thumbs-o-up"></i></span>
                            </div>
-                       </div> <!--  end of /.feature-icon-box  -->
-                       <div class="feature-info">
-                           <h3 class="feature-heading">RELEASE PAYMENT</h3>
-                           <p class="feature-description">
-                               Only Release Payment to {{ bid.member.firstName |title }} {{ bid.member.lastName |title }}
-                               when you are 100% satisfied.
-                           </p>  <!--   end of /.feature-description  -->
-                       </div> <!--   end of /.feature-info  -->
-                   </div> <!--  end of /.feature-content  -->
+                           <div>
+                               <h6 class="font-strong text-success">RELEASE PAYMENT</h6>
+                               <div class="text-muted">Only Release Payment to {{ bid.member.firstName |title }} {{ bid.member.lastName |title }}
+                                   when you are 100% satisfied.</div>
+                           </div>
+                       </div>
+                   </div>
+
                </div>
            </div>
 
 
          <div class="row">
              <div class="clearix"></div>
-              {% if bid.hasMilestoneProposal %}
+                <div class="col-sm-10 col-sm-push-1">
+                      <div class="ibox">
+                       {% if bid.hasMilestoneProposal %}
+                         <div class="ibox-head">
+                             <div class="ibox-title"><h4 class="text-center">Milestone Proposal</h4> </div>
+                             <div class="ibox-tools">
+
+                                 <a class="fullscreen-link"><i class="ti-fullscreen"></i></a>
+                             </div>
+                         </div>
+                         <div class="ibox-body">
                   <div class="row">
-                      <div class="col-sm-10 col-sm-push-1 bs-component">
-                          <div class="alert alert-dismissible panel-default ">
-                              <button class="close" type="button" data-dismiss="alert">×</button>
-                              <h5>A milestone Proposal</h5>
-                              <p style="color:#1f1f1f">The freelancer {{ bid.member.firstName |title }}  {{ bid.member.lastName |title }} has proposed that you
-                                  pay milestone as stated below. If you are not okay with this proposal kindly create your own milestone<a class="alert-link" href="#">learrn more</a>.</p>
+                      <div class="alert alert-google-plus alert-fill alert-border-left alert-close alert-dismissible fade show" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span> </button><i class="font-icon font-icon-help"></i>
+
+                              <h4 class="text-center"><strong>Milestone Proposal</strong></h4><br/>
+
+                              <p> The freelancer {{ bid.member.firstName |title }}  {{ bid.member.lastName |title }} has proposed that you
+                                  pay milestone as stated below. If you are not okay with this proposal kindly create your own milestone <a class="alert-link" href="#">learrn more</a>
+
                           </div>
-                      </div>
                   </div>
-                <div class="row">
-
-                    <div class="col-sm-10 col-sm-push-1">
-
-                        <table class="table table-hover">
-                            <thead style="background-color: #222d29;color: white; font-weight: bolder;">
+                  <div class="row">
+                      <table class="table table-hover">
+                            <thead>
                             <tr>
                                 <th>Milestone(s)</th>
                                 <th>Description</th>
                                 <th>Amount</th>
                             </tr>
                             </thead>
-                            <tbody class="card">
+                            <tbody>
 
                             {% for milestoneProposal in bid.getMilestoneProposal() %}
                                 {% if milestoneProposal.status !="declined" %}
@@ -121,35 +134,45 @@
 
                             </tbody>
                         </table>
+                  </div>
 
-                    </div>
-
-                </div>
+                  </div>
 
                   {% elseif bid.hasMilestoneOffer %}
+
+                       <div class="ibox-head">
+                             <div class="ibox-title"><h4 class="text-center">Milestone Offer</h4> </div>
+                             <div class="ibox-tools">
+
+                                 <a class="fullscreen-link"><i class="ti-fullscreen"></i></a>
+                             </div>
+                         </div>
+                         <div class="ibox-body">
                       <div class="row">
-                          <div class="col-sm-10 col-sm-push-1 bs-component">
-                              <div class="alert alert-dismissible panel-default ">
-                                  <button class="close" type="button" data-dismiss="alert">×</button>
-                                  <h5>A milestone Offer</h5>
-                                  <p style="color:#1f1f1f"> You have agreed to pay {{ bid.price |price }} when this project is done and it will be paid as stated below.
-                                    <a class="alert-link" href="#">learrn more</a>.</p>
+
+                              <div class="alert alert-google-plus alert-fill alert-border-left alert-close alert-dismissible fade show" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span> </button><i class="font-icon font-icon-help"></i>
+
+                                  <h4 class="text-center"><strong>Milestone Offer</strong></h4><br/>
+
+                                  <p >You have agreed to pay {{ bid.price |price }} when this project is done and it will be paid as stated below.<a class="alert-link" href="#">learrn more</a>
                               </div>
-                          </div>
+
+
+
+
                       </div>
                       <div class="row">
 
-                          <div class="col-sm-10 col-sm-push-1">
-
                               <table class="table table-hover">
-                                  <thead style="background-color: #222d29;color: white; font-weight: bolder;">
+                                  <thead >
                                   <tr>
                                       <th>Milestone</th>
                                       <th>Description</th>
                                       <th>Amount</th>
                                   </tr>
                                   </thead>
-                                  <tbody class="card">
+                                  <tbody >
 
                                   {% for milestoneProposal in bid.getMilestoneProposal() %}
                                       {% if milestoneProposal.type =="offer" %}
@@ -158,14 +181,18 @@
                                                   {{ milestoneProposal.milestoneCode | capitalize }}
                                               </td>
                                               <td>
-                                                  {{ milestoneProposal.amount | price }}
+                                                  {{ milestoneProposal.description |raw }}
                                               </td>
-                                              <td> {{ milestoneProposal.description |raw }}</td>
+                                              <td>{{ milestoneProposal.amount | price }}</td>
                                           </tr>
                                       {% endif %}
                                   {% endfor %}
+
+
+
                                   <tr>
                                       {# it means that this user have enough money in his chukolo account to award this project #}
+                                      <td></td>
                                       {% if bid.project.member.fund.usableAmount >= bid.price %}
                                           <td>
                                               <button id="awardBidProposal" class="btn btn-success icon-btn" type="button">
@@ -174,7 +201,6 @@
                                           </td>
 
                                       {% else %}
-
                                           <td>
                                               <button id="declineBidProposal" class="btn btn-danger icon-btn" type="button">
                                                   <i class="fa fa-fw fa-lg fa-check-circle"></i>Fund Your account & Award Project
@@ -191,51 +217,56 @@
 
                                   </tbody>
                               </table>
-
-                          </div>
-
                       </div>
-
+                 </div>
 
                    {% else %}
+                         <div class="ibox-head">
+                         <div class="ibox-title"><h4 class="text-center">Milestone Proposal</h4> </div>
+                         <div class="ibox-tools">
+
+                             <a class="fullscreen-link"><i class="ti-fullscreen"></i></a>
+                         </div>
+                         </div>
+                         <div class="ibox-body">
                        <div style="padding: 2em" class="row">
-                           <div class="col-sm-8">
-                               <div id ="milestoneChoice" >
-                                   <a href="" id="createMilestone">Create Milestone</a>
 
-                                   <button id="refuseMilestoneCreation" class="btn btn-sm btn-primary">let the employer choose a convenient  milestone</button>
-                               </div>
-                               <form id="chooseNumberofMilestoneForm" class="form-horizontal">
+                           <div id ="milestoneChoice" >
+                               <a href="" id="createMilestone">Create Milestone</a>
 
-                                   <label for="select">Number Of Milestone(choose if you want to split payment or be paid at once here.
-                                       <a class="alert-link" href="#">learrn more</a> )</label>
-                                   <select class="form-control" id="selectNumberOfMilestone">
-                                       <option value="0">Make a choice</option>
-                                       <option value="1">1 Milestone</option>
-                                       <option value="2">2 Milestones</option>
-                                   </select>
+                               <button id="refuseMilestoneCreation" class="btn btn-sm btn-primary">let the employer choose a convenient  milestone</button>
+                           </div>
+                           <form id="chooseNumberofMilestoneForm" class="form-horizontal">
+
+                               <label for="select">Number Of Milestone(choose if you want to split payment or be paid at once here.
+                                   <a class="alert-link" href="#">learrn more</a> )</label>
+                               <select class="form-control" id="selectNumberOfMilestone">
+                                   <option value="0">Make a choice</option>
+                                   <option value="1">1 Milestone</option>
+                                   <option value="2">2 Milestones</option>
+                               </select>
 
 
+                           </form>
+                           <div id="createMilestoneAndNext" style="padding:1em">
+                               <form id="createMilestoneAndNextForm" class="form-horizontal">
+                                   <input type="submit" value="Create Milestone & Next" class="btn btn-primary"   />
                                </form>
-                               <div id="createMilestoneAndNext" style="padding:1em">
-                                   <form id="createMilestoneAndNextForm" class="form-horizontal">
-                                       <input type="submit" value="Create Milestone & Next" class="btn btn-primary"   />
-                                   </form>
-                               </div>
-                               <div id="milestoneOptions">
+                           </div>
+                           <div id="milestoneOptions">
                                    <hr />
                                    <h3>This is your first milestone
                                        <span>(Your first payment)</span></h3>
 
                                    <div class="bs-component">
-                                       <div class="alert alert-dismissible panel-default">
-                                           <button class="close" type="button" data-dismiss="alert">×</button>
 
-                                           <h5>hint</h5>
-                                           <p style="color:#1f1f1f">Because you chose to split your payment into two chunk, here you are required to state
+                                       <div class="alert alert-pink alert-dismissable fade show alert-bordered has-icon"><i class="la la-info alert-icon"></i>
+                                           <button class="close" data-dismiss="alert" aria-label="Close"></button><strong>Info!</strong><br><p >Because you chose to split your payment into two chunk, here you are required to state
                                                how much you want to receive first and state what you intent to use it for.</p>
                                        </div>
+
                                    </div>
+
 
                                    {{ form_start(milestoneForm, {'attr': {'class': 'form-inline','id': 'numberfMilestoneForm'}}) }}
 
@@ -255,22 +286,13 @@
                                    {{ form_end(milestoneForm) }}
 
                                </div>
-                           </div>
-                           <div class="col-sm-4">
-                               <div class="bs-component">
-                                   <div class="alert alert-dismissible panel-default">
-                                       <button class="close" type="button" data-dismiss="alert">×</button>
-                                       <h4 class="text-center">General Tips Goes Here?</h4>
-                                       <h5>tip header</h5>
-                                       <p style="color:#1f1f1f">some helpful tips   <a class="alert-link" href="#">learrn more</a>.</p>
-                                   </div>
-                               </div>
-                           </div>
+
+                       </div>
                        </div>
 
               {% endif %}
-
-
+                      </div>
+                </div>
          </div>
 </div>
 
@@ -450,8 +472,8 @@
                     type: "POST",
                     url: "{{ path('initialize-project-award', {'bidId': bid.id}) }}?awardBid="+val,
                     success: function(urlFromController) {
-                       // window.location.href = urlFromController;
-                          alert("awarded");
+                     //  window.location.href = urlFromController;
+                         alert("awarded");
                     }
                 });
             });

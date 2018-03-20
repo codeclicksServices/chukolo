@@ -44,6 +44,11 @@ class Source
      */
 
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Bid",inversedBy="source")
+     * @ORM\JoinColumn(name="contract_id", referencedColumnName="id")
+     */
+    protected $contract;
 
 
     /**
@@ -78,5 +83,29 @@ class Source
     public function getUrlLink()
     {
         return $this->urlLink;
+    }
+
+    /**
+     * Set contract
+     *
+     * @param \AppBundle\Entity\Bid $contract
+     *
+     * @return Source
+     */
+    public function setContract(\AppBundle\Entity\Bid $contract = null)
+    {
+        $this->contract = $contract;
+
+        return $this;
+    }
+
+    /**
+     * Get contract
+     *
+     * @return \AppBundle\Entity\Bid
+     */
+    public function getContract()
+    {
+        return $this->contract;
     }
 }

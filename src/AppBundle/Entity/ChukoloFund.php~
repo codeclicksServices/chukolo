@@ -14,13 +14,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="chukolo_funds")
- * @ORM\HasLifecycleCallbacks
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ChukoloFundRepository")
- *  @Vich\Uploadable
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="source", type="string")
+ * @ORM\DiscriminatorMap({"project-commission" = "AppBundle\Entity\ProjectCommissionFund","sponsorship" = "AppBundle\Entity\SponsorshipFund", "bid-subscription" = "AppBundle\Entity\BidSubscriptionFund", "project-subscription" = "AppBundle\Entity\ProjectSubscriptionFund", "membership" = "AppBundle\Entity\MembershipFund"})
  *
  * this is the table that holds the amount chukolo has made from bid project commission membership etc
  */
-class  ChukoloFund
+abstract class  ChukoloFund
 {
     /**
      * @ORM\Column(type="integer")
@@ -36,15 +36,9 @@ class  ChukoloFund
     protected $amount;
 
     /**
-     * @ORM\Column(type="string", nullable=false, options={"comment":"mode of payment"})
+     * @ORM\Column(type="string", nullable=false, options={"comment":"what is the source of the payment "})
      */
     protected $description;
-
-    /**
-     * @ORM\Column(type="text", nullable=false,
-     *     options={"comment":"where is the money coming from eg bid_commission, project_upgrade, bid_upgrade, membership "})
-     */
-    protected $source;
 
     /**
      * @ORM\Column(type="string", nullable=true, options={"comment":"the currency is  ngn for now"})
@@ -58,32 +52,12 @@ class  ChukoloFund
 
 
 
-
     /**
      *owner of the reservation
      * @ORM\ManyToOne(targetEntity="Member", inversedBy="chukoloFund")
      * @ORM\JoinColumn(name="payer_id",referencedColumnName="id", nullable=false )
      */
     protected $payer;
-
-    /**
-     * todo this is the bid that the commission is earned from
-     * this case because commission is collected from the bid it makes sense to know the source
-     * @ORM\ManyToOne(targetEntity="Bid", inversedBy="chukoloFund",cascade={"persist"})
-     * @ORM\JoinColumn(name="bid_id", referencedColumnName="id", nullable=true)
-     */
-    private $bid;
-    /**
-     *
-     * @ORM\ManyToOne(targetEntity="Subscription", inversedBy="chukoloFund",cascade={"persist"})
-     * @ORM\JoinColumn(name="subscription_id", referencedColumnName="id", nullable=true)
-     */
-    private $subscription;
-
-
-
-
-
 
 
     /**
@@ -142,30 +116,6 @@ class  ChukoloFund
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Set source
-     *
-     * @param string $source
-     *
-     * @return ChukoloFund
-     */
-    public function setSource($source)
-    {
-        $this->source = $source;
-
-        return $this;
-    }
-
-    /**
-     * Get source
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return $this->source;
     }
 
     /**
@@ -238,53 +188,5 @@ class  ChukoloFund
     public function getPayer()
     {
         return $this->payer;
-    }
-
-    /**
-     * Set bid
-     *
-     * @param \AppBundle\Entity\Bid $bid
-     *
-     * @return ChukoloFund
-     */
-    public function setBid(\AppBundle\Entity\Bid $bid = null)
-    {
-        $this->bid = $bid;
-
-        return $this;
-    }
-
-    /**
-     * Get bid
-     *
-     * @return \AppBundle\Entity\Bid
-     */
-    public function getBid()
-    {
-        return $this->bid;
-    }
-
-    /**
-     * Set subscription
-     *
-     * @param \AppBundle\Entity\Subscription $subscription
-     *
-     * @return ChukoloFund
-     */
-    public function setSubscription(\AppBundle\Entity\Subscription $subscription = null)
-    {
-        $this->subscription = $subscription;
-
-        return $this;
-    }
-
-    /**
-     * Get subscription
-     *
-     * @return \AppBundle\Entity\Subscription
-     */
-    public function getSubscription()
-    {
-        return $this->subscription;
     }
 }

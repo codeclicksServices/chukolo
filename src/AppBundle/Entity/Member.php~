@@ -1227,4 +1227,28 @@ class Member extends User
     {
         return $this->authCode;
     }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     *
+     * @return Member
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
 }

@@ -146,13 +146,6 @@ class Project
 
 
 
-
-
-
-
-
-
-
     /*
      *relationships
      */
@@ -196,6 +189,10 @@ class Project
      */
     private $reservedFund;
 
+    /**
+     * @ORM\OneToMany(targetEntity="ProjectSubscriptionFund", mappedBy="project")
+     */
+    private $projectSubscriptionFund;
 
     public function __construct() {
         $this->bid = new ArrayCollection();
@@ -1149,5 +1146,63 @@ class Project
     public function getModeratorResponse()
     {
         return $this->moderatorResponse;
+    }
+
+    /**
+     * Set point
+     *
+     * @param string $point
+     *
+     * @return Project
+     */
+    public function setPoint($point)
+    {
+        $this->point = $point;
+
+        return $this;
+    }
+
+    /**
+     * Get point
+     *
+     * @return string
+     */
+    public function getPoint()
+    {
+        return $this->point;
+    }
+
+    /**
+     * Add projectSubscriptionFund
+     *
+     * @param \AppBundle\Entity\ProjectSubscriptionFund $projectSubscriptionFund
+     *
+     * @return Project
+     */
+    public function addProjectSubscriptionFund(\AppBundle\Entity\ProjectSubscriptionFund $projectSubscriptionFund)
+    {
+        $this->projectSubscriptionFund[] = $projectSubscriptionFund;
+
+        return $this;
+    }
+
+    /**
+     * Remove projectSubscriptionFund
+     *
+     * @param \AppBundle\Entity\ProjectSubscriptionFund $projectSubscriptionFund
+     */
+    public function removeProjectSubscriptionFund(\AppBundle\Entity\ProjectSubscriptionFund $projectSubscriptionFund)
+    {
+        $this->projectSubscriptionFund->removeElement($projectSubscriptionFund);
+    }
+
+    /**
+     * Get projectSubscriptionFund
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProjectSubscriptionFund()
+    {
+        return $this->projectSubscriptionFund;
     }
 }

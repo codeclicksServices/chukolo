@@ -32,13 +32,13 @@ class  Fund
 
     /**
      * @ORM\Column(type="string", nullable=false,
-     *   options={"comment":"fund value i.e this amount is equal to the $reserved + usableAmount + paidOutAmount"})
+     *   options={"comment":"fund value i.e this amount is equal to the reserved + usableAmount + paidOutAmount"})
      */
     protected $amount;
 
     /**
      * @ORM\Column(type="string", nullable=false,
-     *   options={"comment":"this is the amount reserved that you cannot withdraw or use its either saved up for milestone suscription or about to be withdrawn"})
+     *   options={"comment":"this is the amount reserved that you cannot withdraw or use its either saved up for milestone subscription or about to be withdrawn"})
      */
     protected $reserved;
 
@@ -51,9 +51,17 @@ class  Fund
      */
     protected $withdrawn;
     /**
-     * @ORM\Column(type="integer", nullable=true, options={"comment":"this is the value for you bid upgrades "})
+     * @ORM\Column(type="integer", nullable=true, options={"comment":"this is the value for your bid upgrades "})
      */
     protected $bidUpgrade;
+    /**
+     * @ORM\Column(type="integer", nullable=true, options={"comment":"this is the value for your project upgrades "})
+     */
+    protected $projectUpgrade;
+    /**
+     * @ORM\Column(type="string", nullable=true, options={"comment":"this is the amount you spend on project"})
+     */
+    protected $projectPayment;
     /**
      * @ORM\Column(type="string", nullable=true, options={"comment":"this is the reservation amount + usable amount "})
      */
@@ -64,8 +72,8 @@ class  Fund
     protected $currency;
 
     /**
-     * @ORM\Column(type="string", nullable=false, options={"comment":"received value i.e the amount deposited or received from doing a project "})
-     * is going to be paid from the source that ph
+     * @ORM\Column(type="string", nullable=true, options={"comment":"received value i.e the amount deposited or received from doing a project "})
+     *
      */
     protected $received;
 
@@ -214,29 +222,7 @@ class  Fund
         return $this->usableAmount;
     }
 
-    /**
-     * Set paidOutAmount
-     *
-     * @param string $paidOutAmount
-     *
-     * @return Fund
-     */
-    public function setPaidOutAmount($paidOutAmount)
-    {
-        $this->paidOutAmount = $paidOutAmount;
 
-        return $this;
-    }
-
-    /**
-     * Get paidOutAmount
-     *
-     * @return string
-     */
-    public function getPaidOutAmount()
-    {
-        return $this->paidOutAmount;
-    }
 
     /**
      * Set bookBalance
@@ -578,5 +564,53 @@ class  Fund
     public function getBidUpgrade()
     {
         return $this->bidUpgrade;
+    }
+
+    /**
+     * Set projectUpgrade
+     *
+     * @param integer $projectUpgrade
+     *
+     * @return Fund
+     */
+    public function setProjectUpgrade($projectUpgrade)
+    {
+        $this->projectUpgrade = $projectUpgrade;
+
+        return $this;
+    }
+
+    /**
+     * Get projectUpgrade
+     *
+     * @return integer
+     */
+    public function getProjectUpgrade()
+    {
+        return $this->projectUpgrade;
+    }
+
+    /**
+     * Set projectPayment
+     *
+     * @param string $projectPayment
+     *
+     * @return Fund
+     */
+    public function setProjectPayment($projectPayment)
+    {
+        $this->projectPayment = $projectPayment;
+
+        return $this;
+    }
+
+    /**
+     * Get projectPayment
+     *
+     * @return string
+     */
+    public function getProjectPayment()
+    {
+        return $this->projectPayment;
     }
 }

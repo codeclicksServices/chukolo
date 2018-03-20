@@ -1,560 +1,622 @@
 {% extends 'member/base.html.twig' %}
 
- {% block titleText %}
-     <h2 id="nav-tabs">Projects</h2>
- {% endblock %}
-
 {% block page %}
-       <div class="row">
-           <div class="col-sm-9">
 
-           </div>
-           <div class="col-sm-3">
-               <ul class="nav nav-tabs  pager">
-                   <li class="active"><a href="#freelancer" data-toggle="tab"><strong>Freelancer</strong></a></li>
-                   <li><a href="#employer" data-toggle="tab"><strong>Employer</strong></a></li>
-               </ul>
-           </div>
+    <div class="row">
+        <div class="col-sm-9">
 
-       </div>
-    <div class="col-md-12">
+        </div>
+        <div class="col-md-3">
 
-      <div class="row">
-          <div class="tab-content">
 
-              <div class="tab-pane active" id="freelancer">
-                  {#  freelancer tab #}
-                  <div class="col-sm-12">
-                      {% if  myAwardedBid %}
-                      <div class="row">
-                          <div class="col-lg-8 col-sm-offset-2">
-                              {% for contract in myAwardedBid %}
-                                  {% if contract.acceptOffer == 1 %}
+            <div class="ibox-head">
 
-                                      <div class="alert panel-default" data-notify="container">
-                                          <h2 class="title panel panel-heading">{{ contract
-                                              .project.state |title}} Contract to {{
-                                              contract.project.name |title }}</h2>
-                                          <div class="panel-body">
+                <ul class="nav nav-tabs tabs-line tabs-line-2x nav-fill tabs-line-info">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#tab-freelancer" data-toggle="tab"><strong>Freelancer</strong></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#tab-employer" data-toggle="tab"><strong>Employer</strong></a>
+                    </li>
 
-
-                                              <a href = "{{ path('manage_contract', {
-                                                  'contractId': contract.id }) }}" class="btn
-                                                  btn-done btn-sm  btn-success">Manage contract</a>
-                                              <a  href="" class="btn btn-sm  btn-default" >Hide</a>
-                                          </div>
-                                      </div>
-
-                                  {% else %}
-                                      <div class="alert panel-default" data-notify="container">
-                                          <h2 class="title panel panel-heading">Awarded Contract to {{ contract.project.name |title }}</h2>
-                                          <div class="panel-body">
-                                              <p>{{ contract.project.description |nl2br }}</p>
-
-                                              <a href = "{{ path('manage_contract', { 'contractId': contract.id }) }}" class="btn btn-done btn-sm  btn-success">Accept Offer</a>
-                                              <a  href="" class="btn btn-sm  btn-danger " >Decline</a>
-                                          </div>
-                                      </div>
-
-                                  {% endif %}
-                              {% endfor %}
-                          </div>
-                      </div>
-                      {% endif %}
-
-                      <div class="bs-component">
-                          <ul class="nav nav-tabs">
-                              {% if  reviewingBids.getTotalItemCount %}
-                              <li class="active"><a href="#reviewingBids" data-toggle="tab"><strong>Bids Under Review</strong></a></li>
-                              <li><a href="#activeBids" data-toggle="tab"><strong>Active Bids</strong></a></li>
-                              <li><a href="#currentWorks" data-toggle="tab"><strong>Current Jobs</strong></a></li>
-                              <li><a href="#doneJobs" data-toggle="tab"><strong>Past Jobs</strong></a></li>
-                              {% else %}
-
-
-                              <li class="active"><a href="#activeBids" data-toggle="tab"><strong>Active Bids</strong></a></li>
-                              <li><a href="#currentWorks" data-toggle="tab"><strong>Current Jobs</strong></a></li>
-                              <li><a href="#doneJobs" data-toggle="tab"><strong>Past Jobs</strong></a></li>
-                              {% endif %}
-
-                          </ul>
-                          <div style="margin-top: 20px" class="tab-content" id="myTabContent">
-
-                              {% if  reviewingBids.getTotalItemCount %}
-                                  <div class="tab-pane fade active in" id="reviewingBids">
-                                      <table class="table table-hover">
-                                          <thead style="background-color: #222d32;color: white; font-weight: bolder;">
-                                          <tr>
-                                              <th>Bid</th>
-                                              <th>Project </th>
-                                              <th>Actions</th>
-                                          </tr>
-                                          </thead>
-
-                                          <tbody class="card">
-                                          {% if  reviewingBids.getTotalItemCount %}
-                                              {% for bid in reviewingBids %}
-                                                  <tr>
-                                                      <td>
-                                                          {{ bid.price }}
-                                                      </td>
-                                                      <td> {{ bid.project.name |title }}</td>
-
-                                                      <td  class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Select An Action</a>
-                                                          <ul class="dropdown-menu">
-                                                              <li><a  id="delete" href="#">Edit</a></li>
-                                                              <li><a  id="close" href="#">Cancel</a></li>
-                                                          </ul>
-                                                      </td>
-                                                  </tr>
-                                              {% endfor %}
-                                              <tr><td colspan="5">{{ knp_pagination_render(activeBids) }}</td></tr>
-                                          {% else %}
-                                              <tr><td colspan="5">None of your bid is being reviewed </td></tr>
-
-                                          {% endif %}
-                                          </tbody>
-                                      </table>
-                                  </div>
-                              {% endif %}
-
-                              <div class="tab-pane fade" id="activeBids">
-                                  <table class="table table-hover">
-                                      <thead style="background-color: #222d32;color: white; font-weight: bolder;">
-                                      <tr>
-                                          <th>Bids</th>
-                                          <th>Project </th>
-                                          <th>Average Bid</th>
-                                          <th>End date</th>
-                                          <th>Awarded Bids</th>
-                                          <th>Actions</th>
-                                      </tr>
-                                      </thead>
-
-                                      <tbody class="card">
-                                      {% if  activeBids.getTotalItemCount %}
-                                          {% for bid in activeBids %}
-                                              <tr>
-                                                  <td>
-                                                      {{ bid.price }}
-                                                  </td>
-                                                  <td> {{ bid.project.name |title }}</td>
-                                                  <td>
-                                                      {{ bid.project.averageBid |price }}
-                                                  </td>
-                                                  <td>{{ bid.project.bidEnd |date }}</td>
-                                                  <td>
-                                                      {{ bid.project.bid |length }}
-                                                  </td>
-                                                  <td  class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Select An Action</a>
-                                                      <ul class="dropdown-menu">
-                                                          <li><a  id="delete" href="#">Edit</a></li>
-                                                          <li><a  id="close" href="#">Withdraw</a></li>
-                                                      </ul>
-                                                  </td>
-                                              </tr>
-                                          {% endfor %}
-                                          <tr><td colspan="5">{{ knp_pagination_render(activeBids) }}</td></tr>
-                                      {% else %}
-                                          <tr><td colspan="5">You Currently have no Active Bid </td></tr>
-
-                                      {% endif %}
-                                      </tbody>
-                                  </table>
-                              </div>
-
-                              <div class="tab-pane fade" id="currentWorks">
-                                  <table class="table table-hover">
-                                      <thead style="background-color: #222d32;color: white; font-weight: bolder;">
-                                      <tr>
-                                          <th>Awarded Proposal</th>
-                                          <th>Project Name </th>
-                                          <th>Employer</th>
-                                          <th>Deadline</th>
-                                          <th>Milestones</th>
-                                          <th>Actions</th>
-                                      </tr>
-                                      </thead>
-
-                                      <tbody class="card">
-                                      {% if  currentWorks.getTotalItemCount %}
-                                          {% for contract in currentWorks %}
-                                              <tr>
-                                                  <td>
-                                                      {{ contract.id }}
-                                                  </td>
-                                                  <td> {{ contract.project.name |title }}</td>
-                                                  <td>
-                                                      {{ contract.project.member.firstName |title }}  {{ contract.project.member.lastName |title }}
-                                                  </td>
-
-                                                  <td>{{ contract.project.deadline |date }}</td>
-                                                  <td>
-                                                      {% for payment in contract.milestone %}
-                                                          <span>{{ payment.price |price
-                                                              }}</span><br>
-                                                      {% endfor %}
-                                                  </td>
-                                                  <td  class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Select An Action</a>
-                                                      <ul class="dropdown-menu">
-                                                          <li><a href={{ path
-                                                              ('manage_contract', { 'contractId':
-                                                                  contract.id }) }}
-                                                              >Manage Contract</a></li>
-
-                                                      </ul>
-                                                  </td>
-                                              </tr>
-                                          {% endfor %}
-                                          <tr><td colspan="5">{{ knp_pagination_render(currentWorks) }}</td></tr>
-                                      {% else %}
-                                          <tr><td colspan="5">You Currently have no Active Project </td></tr>
-
-                                      {% endif %}
-                                      </tbody>
-                                  </table>
-                              </div>
-
-                              <div class="tab-pane fade" id="doneJobs">
-                                  <table class="table table-hover">
-                                      <thead style="background-color: #222d32;color: white; font-weight: bolder;">
-                                      <tr>
-                                          <th>Awarded Proposal</th>
-                                          <th>Project Name </th>
-                                          <th>Employer</th>
-                                          <th>Completed</th>
-                                      </tr>
-                                      </thead>
-
-                                      <tbody class="card">
-                                      {% if  doneJobs.getTotalItemCount %}
-                                          {% for contract in doneJobs %}
-                                              <tr>
-                                                  <td>
-                                                      {{ contract.id }}
-                                                  </td>
-                                                  <td> {{ contract.project.name |title }}</td>
-                                                  <td>
-                                                      {{ contract.project.member.firstName |title }}  {{ contract.project.member.lastName |title }}
-                                                  </td>
-
-                                                  <td>{{ project.completed |date }}</td>
-                                              </tr>
-                                          {% endfor %}
-                                          <tr><td colspan="5">{{ knp_pagination_render(doneJobs) }}</td></tr>
-                                      {% else %}
-                                          <tr><td colspan="5">You Currently have no Active Project </td></tr>
-
-                                      {% endif %}
-                                      </tbody>
-                                  </table>
-                              </div>
-
-
-                          </div>
-                      </div>
-                  </div>
-              </div>
-                  {#  employer tab #}
-              <div class="tab-pane fade" id="employer">
-                  {#  employer  tab #}
-                  <div class="col-sm-12">
-                      {% if  workingProjects.getTotalItemCount %}
-                          <div class="row">
-                              <div class="col-lg-8 col-sm-offset-2">
-                                  {% for project in workingProjects %}
-                                      {% if project.started == true %}
-
-                                          <div class="alert panel-default" data-notify="container">
-                                              <h2 class="title panel panel-heading"> Monitor {{
-                                                 project.name |title }}</h2>
-                                              <div class="panel-body">
-
-
-                                                  <a href = "{{ path('manage_user_project', { 'id': project.id }) }}" class="btn
-                                                  btn-done btn-sm  btn-success">Manage contract</a>
-                                                  <a  href="" class="btn btn-sm  btn-default" >Hide</a>
-                                              </div>
-                                          </div>
-
-
-                                      {% endif %}
-                                  {% endfor %}
-                              </div>
-                          </div>
-                      {% endif %}
-                      {% if pendingProject %}
-                         <div class="row">
-                             <div class="col-lg-8 col-sm-offset-2">
-                                 {% for project in pendingProject %}
-
-                                     {% if project.moderated %}
-                                         {% if project.moderatorResponse == "decline" %}
-
-                                             <div style="color: white;background-color: #ee2d4d;
-                                                     background-image: url({{ asset('assets/img/bg') }});
-                                                     background-attachment: fixed;" class="alert alert-danger" data-notify="container">
-                                                 <h3 style="padding-left: 30%">Something's wrong somewhere </h3>
-                                                 <p style="font-weight: bolder;color: white">Your
-                                                     project did
-                                                     not meet
-                                                     chukolo project standard. Please edit your
-                                                     project. Try being more elaborate and clear in
-                                                     your project description so that the
-                                                     freelancers can understand your need.
-                                                     <a class="alert-link" href="#">learn more</a>
-                                                 </p>
-
-                                                 <a href = "{{ path('project_edit', { 'id': project.id }) }}" class="btn
-                                                  btn-done btn-sm  btn-success">Update Project</a>
-                                                 <a  href="" class="btn btn-sm  btn-danger" >Cancel
-                                                     Project</a>
-                                             </div>
-
-                                         {% else %}
-                                             <div style="color: white;background-color: #004a43;
-                                                     background-image: url({{ asset('assets/img/bg') }});
-                                                     background-attachment: fixed;" class="alert alert-success"
-                                                  data-notify="container">
-                                                 <h3 style="padding-left: 30%">All set we are ready to go  </h3>
-                                                 <p style="font-weight: bolder">Your project is open for bidding.Yoi
-                                                     would start receiving proposals from our
-                                                     talented freelancers in no time
-
-                                                 </p>
-                                                 <hr />
-                                                 <a href = "{{ path('manage_user_project', { 'id': project.id }) }}" class="btn
-                                                  btn-done btn-sm  btn-success">Manage Project</a>
-                                                 <a  href="" class="btn btn-sm  btn-default"  >Upgrade project</a>
-                                             </div>
-                                         {% endif %}
-                                     {% else %}
-
-                                         <div style="color: white;background-color: #004a43;
-                                                 background-image: url({{ asset('assets/img/bg') }});
-                                                 background-attachment: fixed;" class="alert alert-info" data-notify="container">
-                                             <h3 style="padding-left: 30%">Review in Progress . . .</h3>
-                                             <p style="font-weight: bolder; color: white">Your
-                                                 project is
-                                                 being reviewed, before
-                                                 you say jack it will be up for bidding
-                                             </p>
-                                             <hr />
-                                             <a href = "{{ path('manage_user_project', { 'id': project.id }) }}" class="btn
-                                                  btn-done btn-sm  btn-success">Manage Project</a>
-                                             <a  href="" class="btn btn-sm  btn-default"  >Upgrade project</a>
-                                         </div>
-
-                                     {% endif %}
-                                 {% endfor %}
-                             </div>
-                         </div>
-                      {% endif %}
-
-
-                      {# project tab #}
-                      <div class="bs-component">
-                          <ul class="nav nav-tabs">
-                              <li class="active"><a href="#open" data-toggle="tab"><strong>Open</strong></a></li>
-                              <li><a href="#workInProgress" data-toggle="tab"><strong>Work In Project </strong></a></li>
-                              <li><a href="#pastWork" data-toggle="tab"><strong>Past Project</strong></a></li>
-
-                          </ul>
-                          <div style="margin-top: 20px" class="tab-content" id="myTabContent">
-                              <div class="row">
-
-                              </div>
-                              <div class="tab-pane fadeInDown active in" id="open">
-
-
-                                  <table class="table table-hover">
-                                      <thead style="background-color: #222d32;color: white; font-weight: bolder;"><tr><th>Project Name </th><th>Bids</th><th>Average Bid</th><th>Bid endDate</th><th>Actions</th></tr></thead>
-                                      <tbody class="card">
-                                      {% if  openProjects.getTotalItemCount %}
-                                          {% for project in openProjects %}
-                                              <tr>
-                                                  <td><a  href={{ path('manage_user_project', { 'id': project.id }) }}> {{ project.name |title }}</a></td>
-                                                  <td>{{ project.bid |length }}</td>
-                                                  <td>{{ project.averageBid }}</td>
-                                                  <td>{{ project.bidEnd |date }}</td>
-                                                  <td  class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Select An Action</a>
-                                                      <ul class="dropdown-menu">
-                                                          <li><a href={{ path('manage_user_project', { 'id': project.id }) }} >Project Details</a></li>
-                                                          <li><a href={{ path('manage_user_project', { 'id': project.id }) }} data-toggle="tab">Upgrade Project</a></li>
-                                                          <li><a href={{ path('project_edit', { 'id': project.id }) }} >Edit</a></li>
-                                                          <li><a  id="delete" href="#">Delete</a></li>
-                                                          <li><a  id="close" href="#">Close</a></li>
-                                                      </ul>
-                                                  </td>
-                                              </tr>
-                                          {% endfor %}
-                                          <tr><td colspan="5">{{ knp_pagination_render(openProjects) }}</td></tr>
-                                      {% else %}
-                                          <tr><td colspan="5">You Currently have no project open for bidding </td></tr>
-
-                                      {% endif %}
-                                      </tbody>
-                                  </table>
-
-
-
-                              </div>
-
-                              <div class="tab-pane fade" id="workInProgress">
-
-                                  <table class="table table-hover">
-                                      <thead style="background-color: #222d32;color: white; font-weight: bolder;">
-                                      <tr>
-                                          <th>Project Name </th>
-                                          <th>Freelancer(s)</th>
-                                          <th>Awarded Bid</th>
-                                          <th>Deadline</th>
-                                          <th>Milestones</th>
-                                          <th>Actions</th>
-                                      </tr>
-                                      </thead>
-
-                                      <tbody class="card">
-                                      {% if  workingProjects.getTotalItemCount %}
-                                          {% for project in workingProjects %}
-                                              <tr>
-                                                  <td><a  href={{ path('manage_user_project', { 'id': project.id }) }}> {{ project.name |title }}</a></td>
-                                                  <td>
-                                                      {% for  bid in project.bid %}
-
-                                                          {% if  bid.state =='contract' %}
-                                                              {{ bid.member.firstName |title }}
-                                                              {{ bid.member.lastName |title }}
-                                                          {% endif %}
-
-                                                      {% endfor %}
-
-                                                  </td>
-                                                  <td>
-                                                      {% for  bid in project.bid %}
-
-                                                          {% if  bid.state =='contract' %}
-                                                              <h4>{{ bid.id }}</h4>
-                                                          {% endif %}
-
-                                                      {% endfor %}
-                                                  </td>
-                                                  <td>{{ project.deadline |date }}</td>
-                                                  <td>
-                                                      {% for  bid in project.bid %}
-
-                                                          {% if  bid.state =='contract' %}
-                                                              <h4>contact id # {{ bid.id }}</h4>
-                                                              {% for milestone in bid.milestone %}
-                                                                  <span>{{ milestone.price |price
-                                                                      }}</span><br>
-                                                              {% endfor %}
-
-                                                          {% endif %}
-
-
-                                                      {% endfor %}
-                                                  </td>
-                                                  <td  class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Select An Action</a>
-                                                      <ul class="dropdown-menu">
-                                                          <li><a href={{ path
-                                                              ('manage_user_project', { 'id':
-                                                                  project.id }) }} >Manage
-                                                                  Contract</a></li>
-                                                          <li><a  id="delete" href="#">Pause</a></li>
-                                                          <li><a  id="close" href="#">Close</a></li>
-                                                      </ul>
-                                                  </td>
-                                              </tr>
-                                          {% endfor %}
-                                          <tr><td colspan="5">{{ knp_pagination_render(workingProjects) }}</td></tr>
-                                      {% else %}
-                                          <tr><td colspan="5">You Currently have no Active Project </td></tr>
-
-                                      {% endif %}
-                                      </tbody>
-                                  </table>
-                              </div>
-
-                              <div class="tab-pane fade" id="pastWork">
-                                  <table class="table table-hover">
-                                      <thead style="background-color: #222d32;color: white; font-weight: bolder;">
-                                      <tr>
-                                          <th>Project Name </th>
-                                          <th>Freelancer(s)</th>
-                                          <th>Awarded Bid</th>
-                                          <th>Deadline</th>
-                                          <th>Milestones</th>
-
-                                      </tr>
-                                      </thead>
-
-                                      <tbody class="card">
-                                      {% if  pastProjects.getTotalItemCount %}
-                                          {% for project in pastProjects %}
-                                              <tr>
-                                                  <td><a  href={{ path('manage_user_project', { 'id': project.id }) }}> {{ project.name |title }}</a></td>
-                                                  <td>
-                                                      {% for  bid in project.bid %}
-
-                                                          {% if  bid.state =='contract' %}
-                                                              {{ project.bid.member.firstName |title }}
-                                                              {{ project.bid.member.lastName |title }}
-                                                          {% endif %}
-
-                                                      {% endfor %}
-
-                                                  </td>
-                                                  <td>
-                                                      {% for  bid in project.bid %}
-
-                                                          {% if  bid.state =='contract' %}
-                                                              <h4>{{ bid.id }}</h4>
-                                                          {% endif %}
-
-                                                      {% endfor %}
-                                                  </td>
-                                                  <td>{{ project.deadline |date }}</td>
-                                                  <td>
-                                                      {% for  bid in project.bid %}
-
-                                                          {% if  bid.state =='contract' %}
-                                                              <h4>contact id # {{ bid.id }}</h4>
-                                                              {% for milestone in bid.milestone %}
-                                                                  <span>{{ milestone.amount |price }}</span><br>
-                                                              {% endfor %}
-
-                                                          {% endif %}
-
-
-                                                      {% endfor %}
-                                                  </td>
-
-                                              </tr>
-                                          {% endfor %}
-                                          <tr><td colspan="5">{{ knp_pagination_render(pastProjects) }}</td></tr>
-                                      {% else %}
-                                          <tr><td colspan="5">You have not completed any job on chukolo yet </td></tr>
-
-                                      {% endif %}
-                                      </tbody>
-                                  </table>
-                              </div>
-
-                          </div>
-                      </div>
-                      {# end project tab #}
-
-
-
-
-                  </div>
-              </div>
-
-
-          </div>
-      </div>
+                </ul>
+            </div>
+        </div>
     </div>
+
+
+
+
+    <div class="ibox-body">
+        <div class="tab-content">
+            <div class="tab-pane fade show active text-center" id="tab-freelancer">
+                {% if  myAwardedBid %}
+                    <div class="row">
+                        <div class="col-lg-8 col-sm-offset-2">
+                            {% for contract in myAwardedBid %}
+                                {% if contract.acceptOffer == 1 %}
+
+                                    <div class="alert panel-default" data-notify="container">
+                                        <h2 class="title panel panel-heading">{{ contract
+                                            .project.state |title}} Contract to {{
+                                            contract.project.name |title }}</h2>
+                                        <div class="panel-body">
+
+
+                                            <a href = "{{ path('manage_contract', {
+                                                'contractId': contract.id }) }}" class="btn
+                                                  btn-done btn-sm  btn-success">Manage contract</a>
+                                            <a  href="" class="btn btn-sm  btn-default" >Hide</a>
+                                        </div>
+                                    </div>
+
+                                {% else %}
+                                    <div class="alert panel-default" data-notify="container">
+                                        <h2 class="title panel panel-heading">Awarded Contract to {{ contract.project.name |title }}</h2>
+                                        <div class="panel-body">
+                                            <p>{{ contract.project.description |nl2br }}</p>
+
+                                            <a href = "{{ path('manage_contract', { 'contractId': contract.id }) }}" class="btn btn-done btn-sm  btn-success">Accept Offer</a>
+                                            <a  href="" class="btn btn-sm  btn-danger " >Decline</a>
+                                        </div>
+                                    </div>
+
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+
+                <section class="tabs-section">
+                    <div class="tabs-section-nav">
+                        <div class="tbl">
+                            <ul class="nav" role="tablist">
+                                {% if  reviewingBids.getTotalItemCount %}
+                                    <li class="nav-item">
+                                        <a class="nav-link active" href="#reviewingBids" role="tab" data-toggle="tab">
+									<span class="nav-link-in">
+										Bids Under Review
+										<span class="label label-pill label-warning">{{  reviewingBids.getTotalItemCount }}</span>
+									</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link " href="#activeBids" role="tab" data-toggle="tab">
+									<span class="nav-link-in">Active Bids<span class="label label-pill label-danger">{{  activeBids.getTotalItemCount }}</span>
+									</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#currentWorks" role="tab" data-toggle="tab">
+									<span class="nav-link-in">Current Jobs<span class="label label-pill label-success">{{  currentWorks.getTotalItemCount }}</span>
+									</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#doneJobs" role="tab" data-toggle="tab">
+									<span class="nav-link-in">Past Jobs <span class="label label-pill label-info">{{  doneJobs.getTotalItemCount }}</span>
+									</span>
+                                        </a>
+                                    </li>
+
+                                {% else %}
+
+                                    <li class="nav-item">
+                                        <a class="nav-link active" href="#activeBids" role="tab" data-toggle="tab">
+									<span class="nav-link-in">Active Bids<span class="label label-pill label-danger">{{  activeBids.getTotalItemCount }}</span>
+									</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#currentWorks" role="tab" data-toggle="tab">
+									<span class="nav-link-in">Current Jobs<span class="label label-pill label-success">{{  currentWorks.getTotalItemCount }}</span>
+									</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#doneJobs" role="tab" data-toggle="tab">
+									<span class="nav-link-in">Past Jobs <span class="label label-pill label-info">{{  doneJobs.getTotalItemCount }}</span>
+									</span>
+                                        </a>
+                                    </li>
+
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="tab-content">
+                        {% if  reviewingBids.getTotalItemCount %}
+                        <div role="tabpanel" id="reviewingBids" class='tab-pane fade in active show'>
+
+                            <table id="table-sm" class="table  table-hover table-sm">
+                                <thead>
+                                <tr>
+                                    <th>Bid</th>
+                                    <th>Project</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+
+                                {% for bid in reviewingBids %}
+                                    <tr>
+                                        <td>
+                                            {{ bid.price }}
+                                        </td>
+                                        <td> {{ bid.project.name |title }}</td>
+
+                                        <td  class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Select An Action</a>
+                                            <ul class="dropdown-menu">
+                                                <li><a  id="delete" href="#">Edit</a></li>
+                                                <li><a  id="close" href="#">Cancel</a></li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                <tr><td colspan="3">{{ knp_pagination_render(activeBids) }}</td></tr>
+
+
+                                </tbody>
+                            </table>
+
+
+
+
+                        </div>
+                        {% endif %}
+
+                        <div role="tabpanel" id="activeBids"
+
+                                {% if  reviewingBids.getTotalItemCount %}
+                             class="tab-pane fade " >
+                            {% else %}
+                                class="tab-pane fade in active show" >
+                            {% endif %}
+                            <table class="table  table-hover table-sm">
+                                <thead >
+                                <tr>
+                                    <th>Bids</th>
+                                    <th>Project </th>
+                                    <th>Average Bid</th>
+                                    <th>Bid End date</th>
+                                    <th>People Bidding</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                {% if  activeBids.getTotalItemCount %}
+                                    {% for bid in activeBids %}
+                                        <tr>
+                                            <td>
+                                                {{ bid.price }}
+                                            </td>
+                                            <td> {{ bid.project.name |title }}</td>
+                                            <td>
+                                                {{ bid.project.averageBid |price }}
+                                            </td>
+                                            <td>{{ bid.project.bidEnd |date }}</td>
+                                            <td>
+                                                {{ bid.project.bid |length }}
+                                            </td>
+                                            <td  class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Select An Action</a>
+                                                <ul class="dropdown-menu">
+                                                    <li><a  id="delete" href="#">Edit</a></li>
+                                                    <li><a  id="close" href="#">Withdraw</a></li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    <tr><td colspan="6">{{ knp_pagination_render(activeBids) }}</td></tr>
+                                {% else %}
+                                    <tr><td colspan="6">You Currently have no Active Bid </td></tr>
+
+                                {% endif %}
+                                </tbody>
+                            </table>
+                        </div><!--.tab-pane-->
+                        <div role="tabpanel" class="tab-pane fade" id="currentWorks">
+                            <table class="table  table-hover table-sm">
+                                {% if  currentWorks.getTotalItemCount %}
+                                <thead>
+                                <tr>
+                                    <th>Awarded Proposal</th>
+                                    <th>Project Name </th>
+                                    <th>Employer</th>
+                                    <th>Deadline</th>
+                                    <th>Milestones</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    {% for contract in currentWorks %}
+                                        <tr>
+                                            <td>
+                                                {{ contract.id }}
+                                            </td>
+                                            <td> {{ contract.project.name |title }}</td>
+                                            <td>
+                                                {{ contract.project.member.firstName |title }}  {{ contract.project.member.lastName |title }}
+                                            </td>
+
+                                            <td>{{ contract.project.deadline |date }}</td>
+                                            <td>
+                                                {% for payment in contract.milestone %}
+                                                    <span>{{ payment.price |price
+                                                        }}</span><br>
+                                                {% endfor %}
+                                            </td>
+                                            <td  class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Select An Action</a>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href={{ path
+                                                        ('manage_contract', { 'contractId':
+                                                            contract.id }) }}
+                                                        >Manage Contract</a></li>
+
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    <tr><td colspan="5">{{ knp_pagination_render(currentWorks) }}</td></tr>
+                                {% else %}
+                                    <tr><td colspan="5">You Currently have no Active Job </td></tr>
+
+                                {% endif %}
+                                </tbody>
+                            </table>
+                        </div><!--.tab-pane-->
+                        <div role="tabpanel" class="tab-pane fade" id="doneJobs">
+                            <table class="table  table-hover table-sm">
+                                {% if  doneJobs.getTotalItemCount %}
+                                <thead>
+                                <tr>
+                                    <th>Awarded Proposal</th>
+                                    <th>Project Name </th>
+                                    <th>Employer</th>
+                                    <th>Completed</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    {% for contract in doneJobs %}
+                                        <tr>
+                                            <td>
+                                                {{ contract.id }}
+                                            </td>
+                                            <td> {{ contract.project.name |title }}</td>
+                                            <td>
+                                                {{ contract.project.member.firstName |title }}  {{ contract.project.member.lastName |title }}
+                                            </td>
+
+                                            <td>{{ project.completed |date }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    <tr><td colspan="4">{{ knp_pagination_render(doneJobs) }}</td></tr>
+                                {% else %}
+                                    <tr><td colspan="4">You Currently have not completed any project. </td></tr>
+
+                                {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div><!--.tab-content-->
+                 </section>
+            </div>
+
+{#employee section #}
+
+            <div class="tab-pane fade text-center" id="tab-employer">
+                {% if  workingProjects.getTotalItemCount %}
+                    <div class="row">
+                        <div class="col-lg-8 col-sm-offset-2">
+                            {% for project in workingProjects %}
+                                {% if project.started == true %}
+
+                                    <div class="alert panel-default" data-notify="container">
+                                        <h2 class="title panel panel-heading"> Monitor {{
+                                            project.name |title }}</h2>
+                                        <div class="panel-body">
+
+
+                                            <a href = "{{ path('manage_user_project', { 'id': project.id }) }}" class="btn
+                                                  btn-done btn-sm  btn-success">Manage contract</a>
+                                            <a  href="" class="btn btn-sm  btn-default" >Hide</a>
+                                        </div>
+                                    </div>
+
+
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+                {% if pendingProject %}
+                    <div class="row">
+                        <div class="col-lg-8 col-sm-offset-2">
+                            {% for project in pendingProject %}
+
+                                {% if project.moderated %}
+                                    {% if project.moderatorResponse == "decline" %}
+
+                                        <div style="color: white;background-color: #ee2d4d;
+                                                background-image: url({{ asset('assets/img/bg') }});
+                                                background-attachment: fixed;" class="alert alert-danger" data-notify="container">
+                                            <h3 style="padding-left: 30%">Something's wrong somewhere </h3>
+                                            <p style="font-weight: bolder;color: white">Your
+                                                project did
+                                                not meet
+                                                chukolo project standard. Please edit your
+                                                project. Try being more elaborate and clear in
+                                                your project description so that the
+                                                freelancers can understand your need.
+                                                <a class="alert-link" href="#">learn more</a>
+                                            </p>
+
+                                            <a href = "{{ path('project_edit', { 'id': project.id }) }}" class="btn
+                                                  btn-done btn-sm  btn-success">Update Project</a>
+                                            <a  href="" class="btn btn-sm  btn-danger" >Cancel
+                                                Project</a>
+                                        </div>
+
+                                    {% else %}
+                                        <div style="color: white;background-color: #004a43;
+                                                background-image: url({{ asset('assets/img/bg') }});
+                                                background-attachment: fixed;" class="alert alert-success"
+                                             data-notify="container">
+                                            <h3 style="padding-left: 30%">All set we are ready to go  </h3>
+                                            <p style="font-weight: bolder">Your project is open for bidding.Yoi
+                                                would start receiving proposals from our
+                                                talented freelancers in no time
+
+                                            </p>
+                                            <hr />
+                                            <a href = "{{ path('manage_user_project', { 'id': project.id }) }}" class="btn
+                                                  btn-done btn-sm  btn-success">Manage Project</a>
+                                            <a  href="" class="btn btn-sm  btn-default"  >Upgrade project</a>
+                                        </div>
+                                    {% endif %}
+                                {% else %}
+
+                                    <div style="color: white;background-color: #004a43;
+                                            background-image: url({{ asset('assets/img/bg') }});
+                                            background-attachment: fixed;" class="alert alert-info" data-notify="container">
+                                        <h3 style="padding-left: 30%">Review in Progress . . .</h3>
+                                        <p style="font-weight: bolder; color: white">Your
+                                            project is
+                                            being reviewed, before
+                                            you say jack it will be up for bidding
+                                        </p>
+                                        <hr />
+                                        <a href = "{{ path('manage_user_project', { 'id': project.id }) }}" class="btn
+                                                  btn-done btn-sm  btn-success">Manage Project</a>
+                                        <a  href="" class="btn btn-sm  btn-default"  >Upgrade project</a>
+                                    </div>
+
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+
+
+                <section class="tabs-section">
+                    <div class="tabs-section-nav">
+                        <div class="tbl">
+                            <ul class="nav" role="tablist">
+
+
+                                    <li class="nav-item">
+                                        <a class="nav-link active" href="#open" role="tab" data-toggle="tab">
+									<span class="nav-link-in">Open<span class="label label-pill label-danger">{{  openProjects.getTotalItemCount }}</span>
+									</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#workInProgress" role="tab" data-toggle="tab">
+									<span class="nav-link-in">Work In Project<span class="label label-pill label-success">{{  workingProjects.getTotalItemCount }}</span>
+									</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#pastWork" role="tab" data-toggle="tab">
+									<span class="nav-link-in"><strong>Past Project</strong> <span class="label label-pill label-info">{{  pastProjects.getTotalItemCount }}</span>
+									</span>
+                                        </a>
+                                    </li>
+
+
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="tab-content">
+
+                        <div role="tabpanel" id="open" class="tab-pane fade in active show" >
+
+                            <table class="table  table-hover table-sm">
+                                <thead ><tr><th>Project Name </th><th>Bids</th><th>Average Bid</th><th>Bid endDate</th><th>Actions</th></tr></thead>
+                                <tbody >
+                                {% if  openProjects.getTotalItemCount %}
+                                    {% for project in openProjects %}
+                                        <tr>
+                                            <td><a  href={{ path('manage_user_project', { 'id': project.id }) }}> {{ project.name |title }}</a></td>
+                                            <td>{{ project.bid |length }}</td>
+                                            <td>{{ project.averageBid }}</td>
+                                            <td>{{ project.bidEnd |date }}</td>
+                                            <td  class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Select An Action</a>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href={{ path('manage_user_project', { 'id': project.id }) }} >Project Details</a></li>
+                                                    <li><a href={{ path('manage_user_project', { 'id': project.id }) }} data-toggle="tab">Upgrade Project</a></li>
+                                                    <li><a href={{ path('project_edit', { 'id': project.id }) }} >Edit</a></li>
+                                                    <li><a  id="delete" href="#">Delete</a></li>
+                                                    <li><a  id="close" href="#">Close</a></li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    <tr><td colspan="5">{{ knp_pagination_render(openProjects) }}</td></tr>
+                                {% else %}
+                                    <tr><td colspan="5">You Currently have no project open for bidding </td></tr>
+
+                                {% endif %}
+                                </tbody>
+                            </table>
+
+
+                        </div><!--.tab-pane-->
+                        <div role="tabpanel" class="tab-pane fade" id="workInProgress">
+                            <table class="table  table-hover table-sm">
+                                <thead>
+                                <tr>
+                                    <th>Project Name </th>
+                                    <th>Freelancer(s)</th>
+                                    <th>Awarded Bid</th>
+                                    <th>Deadline</th>
+                                    <th>Milestones</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+
+                                <tbody class="card">
+                                {% if  workingProjects.getTotalItemCount %}
+                                    {% for project in workingProjects %}
+                                        <tr>
+                                            <td><a  href={{ path('manage_user_project', { 'id': project.id }) }}> {{ project.name |title }}</a></td>
+                                            <td>
+                                                {% for  bid in project.bid %}
+
+                                                    {% if  bid.state =='contract' %}
+                                                        {{ bid.member.firstName |title }}
+                                                        {{ bid.member.lastName |title }}
+                                                    {% endif %}
+
+                                                {% endfor %}
+
+                                            </td>
+                                            <td>
+                                                {% for  bid in project.bid %}
+
+                                                    {% if  bid.state =='contract' %}
+                                                        <h4>{{ bid.id }}</h4>
+                                                    {% endif %}
+
+                                                {% endfor %}
+                                            </td>
+                                            <td>{{ project.deadline |date }}</td>
+                                            <td>
+                                                {% for  bid in project.bid %}
+
+                                                    {% if  bid.state =='contract' %}
+                                                        <h4>contact id # {{ bid.id }}</h4>
+                                                        {% for milestone in bid.milestone %}
+                                                            <span>{{ milestone.price |price
+                                                                }}</span><br>
+                                                        {% endfor %}
+
+                                                    {% endif %}
+
+
+                                                {% endfor %}
+                                            </td>
+                                            <td  class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Select An Action</a>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href={{ path
+                                                        ('manage_user_project', { 'id':
+                                                            project.id }) }} >Manage
+                                                            Contract</a></li>
+                                                    <li><a  id="delete" href="#">Pause</a></li>
+                                                    <li><a  id="close" href="#">Close</a></li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    <tr><td colspan="5">{{ knp_pagination_render(workingProjects) }}</td></tr>
+                                {% else %}
+                                    <tr><td colspan="5">You Currently have no Active Project </td></tr>
+
+                                {% endif %}
+                                </tbody>
+                            </table>
+                        </div><!--.tab-pane-->
+                        <div role="tabpanel" class="tab-pane fade" id="pastWork">
+                            <table class="table  table-hover table-sm">
+                                <thead>
+                                <tr>
+                                    <th>Project Name </th>
+                                    <th>Freelancer(s)</th>
+                                    <th>Awarded Bid</th>
+                                    <th>Deadline</th>
+                                    <th>Milestones</th>
+
+                                </tr>
+                                </thead>
+
+                                <tbody class="card">
+                                {% if  pastProjects.getTotalItemCount %}
+                                    {% for project in pastProjects %}
+                                        <tr>
+                                            <td><a  href={{ path('manage_user_project', { 'id': project.id }) }}> {{ project.name |title }}</a></td>
+                                            <td>
+                                                {% for  bid in project.bid %}
+
+                                                    {% if  bid.state =='contract' %}
+                                                        {{ project.bid.member.firstName |title }}
+                                                        {{ project.bid.member.lastName |title }}
+                                                    {% endif %}
+
+                                                {% endfor %}
+
+                                            </td>
+                                            <td>
+                                                {% for  bid in project.bid %}
+
+                                                    {% if  bid.state =='contract' %}
+                                                        <h4>{{ bid.id }}</h4>
+                                                    {% endif %}
+
+                                                {% endfor %}
+                                            </td>
+                                            <td>{{ project.deadline |date }}</td>
+                                            <td>
+                                                {% for  bid in project.bid %}
+
+                                                    {% if  bid.state =='contract' %}
+                                                        <h4>contact id # {{ bid.id }}</h4>
+                                                        {% for milestone in bid.milestone %}
+                                                            <span>{{ milestone.amount |price }}</span><br>
+                                                        {% endfor %}
+
+                                                    {% endif %}
+
+
+                                                {% endfor %}
+                                            </td>
+
+                                        </tr>
+                                    {% endfor %}
+                                    <tr><td colspan="5">{{ knp_pagination_render(pastProjects) }}</td></tr>
+                                {% else %}
+                                    <tr><td colspan="5">You have not completed any job on chukolo yet </td></tr>
+
+                                {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div><!--.tab-content-->
+                </section>
+
+            </div>
+
+        </div>
+    </div>
+
+
 {% endblock %}
 
 
@@ -588,6 +650,8 @@
                 }
             });
         });
+
+
 
         $('#delete').click(function(){
 

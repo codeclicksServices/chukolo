@@ -35,17 +35,16 @@ class BidType extends AbstractType
 
         $builder
             ->add('price',  IntegerType::class, array(
-                'attr'=>array("class"=>"form-control","placeholder"=>"You would receive"),
+                'attr'=>array("class"=>"form-control form-control-rounded form-control-air","placeholder"=>"You would receive"),
                 'label' => false,
             ))
             ->add('duration',  IntegerType::class, array(
-                'attr'=>array("class"=>"form-control","placeholder"=>"Deliver in days"),
+                'attr'=>array("class"=>"form-control form-control-rounded form-control-air","placeholder"=>"Deliver in days"),
                 'label' => false,
             ))
             ->add('proposal', TextareaType::class, array(
-                'attr' => array('class' => 'form-control',
+                'attr' => array('class' => 'form-control-line has-success',
                     "placeholder"=>"Describe why you should be awarded this project",'cols' => 77,'rows' => 7),
-
                 'label' => false,
             ))
             //on select it should updte the numberOfMilestones to this number

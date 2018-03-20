@@ -33,7 +33,7 @@ class Attachment
     protected $id;
     /**
      * @ORM\Column(type="string", nullable=false,length=255)
-     *
+     *for describing the document
      * @var string
      */
     private $title;

@@ -41,9 +41,17 @@ class Milestone
      * @ORM\Column(type="integer", length=80,options={"comment":"this is the amount the employer is paying for this milestone"})
      */
     private $price;
+    /**
+     * @ORM\Column(type="integer",nullable=true,options={"comment":"value: this is the value that would be paid to chukolo account as commission for this project" })
+     */
+    protected $commission;
+    /**
+     * @ORM\Column(type="string",options={"comment":"value: bid price - commission this is what will be paid to the freelancer " })
+     */
+    protected $value;
 
     /**
-     * @ORM\Column(type="integer",nullable=true, length=3,options={"comment":"this is in percentage from 1 to 100 % and the value is dependent on the completed deliverble"})
+     * @ORM\Column(type="integer",nullable=true, length=3,options={"comment":"this is in percentage from 1 to 100 % and the value is dependent on the completed deliverable point "})
      */
     private $completionRate;
 
@@ -102,7 +110,22 @@ class Milestone
      * @ORM\Column(type="smallint", length=1, options={"default":0,"comment":"this would be complete when the money have been transferred to the freelancer"})
      */
     protected $complete;
-
+    /**
+     * @ORM\Column(type="smallint", length=1, options={"default":0,"comment":"used to trigger payment after the milestone is completed "})
+     */
+    protected $awaitingPayment;
+    /**
+     * @ORM\Column(type="smallint", length=1, options={"default":0,"comment":"used this value if the employer release the payment"})
+     */
+    protected $paid;
+    /**
+     * @ORM\Column(type="smallint", length=1, options={"default":0,"comment":"used rending payment"})
+     */
+    protected $refundRequest;
+    /**
+     * @ORM\Column(type="string", length=80,options={"comment":"value: point here is added up to complete the over all project progress"})
+     */
+    private $point;
 
       /*
        * relationship
@@ -121,7 +144,7 @@ class Milestone
 
     /**
      * payer here is the member receiving bank
-     * @ORM\ManyToOne(targetEntity="Invoice", inversedBy="milestone")
+     * @ORM\ManyToOne(targetEntity="ContractInvoice", inversedBy="milestone")
      * @ORM\JoinColumn(name="invoice_id",referencedColumnName="id" )
      */
     protected $invoice;
@@ -689,5 +712,151 @@ class Milestone
     public function getDurationDay()
     {
         return $this->durationDay;
+    }
+
+    /**
+     * Set point
+     *
+     * @param string $point
+     *
+     * @return Milestone
+     */
+    public function setPoint($point)
+    {
+        $this->point = $point;
+
+        return $this;
+    }
+
+    /**
+     * Get point
+     *
+     * @return string
+     */
+    public function getPoint()
+    {
+        return $this->point;
+    }
+
+
+
+    /**
+     * Set commission
+     *
+     * @param integer $commission
+     *
+     * @return Milestone
+     */
+    public function setCommission($commission)
+    {
+        $this->commission = $commission;
+
+        return $this;
+    }
+
+    /**
+     * Get commission
+     *
+     * @return integer
+     */
+    public function getCommission()
+    {
+        return $this->commission;
+    }
+
+    /**
+     * Set value
+     *
+     * @param string $value
+     *
+     * @return Milestone
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get value
+     *
+     * @return string
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    /**
+     * Set awaitingPayment
+     *
+     * @param integer $awaitingPayment
+     *
+     * @return Milestone
+     */
+    public function setAwaitingPayment($awaitingPayment)
+    {
+        $this->awaitingPayment = $awaitingPayment;
+
+        return $this;
+    }
+
+    /**
+     * Get awaitingPayment
+     *
+     * @return integer
+     */
+    public function getAwaitingPayment()
+    {
+        return $this->awaitingPayment;
+    }
+
+    /**
+     * Set paid
+     *
+     * @param integer $paid
+     *
+     * @return Milestone
+     */
+    public function setPaid($paid)
+    {
+        $this->paid = $paid;
+
+        return $this;
+    }
+
+    /**
+     * Get paid
+     *
+     * @return integer
+     */
+    public function getPaid()
+    {
+        return $this->paid;
+    }
+
+    /**
+     * Set refundRequest
+     *
+     * @param integer $refundRequest
+     *
+     * @return Milestone
+     */
+    public function setRefundRequest($refundRequest)
+    {
+        $this->refundRequest = $refundRequest;
+
+        return $this;
+    }
+
+    /**
+     * Get refundRequest
+     *
+     * @return integer
+     */
+    public function getRefundRequest()
+    {
+        return $this->refundRequest;
     }
 }

@@ -18,7 +18,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ChukoloBankRepository")
  *  @Vich\Uploadable
  *
- * anytime a payment is made an earning is crated
  */
 class  ChukoloBank
 {
@@ -70,9 +69,6 @@ class  ChukoloBank
      *  @ORM\OneToMany(targetEntity="Withdrawal", mappedBy="initiatingBank")
      */
     protected $withdrawal;
-
-
-
 
 
 

@@ -34,11 +34,11 @@ class MilestoneProposalType extends AbstractType
         $builder
 
             ->add('amount',  TextType::class, array(
-                'attr' => array('class'=>'form-control',"placeholder"=>"amount"),
+                'attr' => array('class'=>'form-control mb-2 mr-sm-2 mb-sm-0',"placeholder"=>"amount"),
             ))
 
             ->add('description', TextareaType::class, array(
-                'attr' => array('class' => 'form-control',"placeholder"=>"Describe the task to be done for here"),
+                'attr' => array('class' => 'form-control mb-2 mr-sm-2 mb-sm-0',"placeholder"=>"Describe the task to be done for here"),
 
             ));
     }

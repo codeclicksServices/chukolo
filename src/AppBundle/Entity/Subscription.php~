@@ -92,9 +92,9 @@ class Subscription
     private $reservedFund;
 
     /**
-     * @ORM\OneToMany(targetEntity="ChukoloFund", mappedBy="subscription")
+     * @ORM\OneToMany(targetEntity="ProjectSubscriptionFund", mappedBy="subscription")
      */
-    private $chukoloFund;
+    private $projectSubscriptionFund;
 
 
 
@@ -509,5 +509,39 @@ class Subscription
     public function getChukoloFund()
     {
         return $this->chukoloFund;
+    }
+
+    /**
+     * Add projectSubscriptionFund
+     *
+     * @param \AppBundle\Entity\ProjectSubscriptionFund $projectSubscriptionFund
+     *
+     * @return Subscription
+     */
+    public function addProjectSubscriptionFund(\AppBundle\Entity\ProjectSubscriptionFund $projectSubscriptionFund)
+    {
+        $this->projectSubscriptionFund[] = $projectSubscriptionFund;
+
+        return $this;
+    }
+
+    /**
+     * Remove projectSubscriptionFund
+     *
+     * @param \AppBundle\Entity\ProjectSubscriptionFund $projectSubscriptionFund
+     */
+    public function removeProjectSubscriptionFund(\AppBundle\Entity\ProjectSubscriptionFund $projectSubscriptionFund)
+    {
+        $this->projectSubscriptionFund->removeElement($projectSubscriptionFund);
+    }
+
+    /**
+     * Get projectSubscriptionFund
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProjectSubscriptionFund()
+    {
+        return $this->projectSubscriptionFund;
     }
 }

@@ -55,13 +55,14 @@ class Bid implements TimeStampInterface
      */
     protected $commission;
     /**
-     * @ORM\Column(type="text",nullable=true,options={"comment":"value: short note why you should get the job"})
-     */
-    protected $proposal;
-    /**
      * @ORM\Column(type="string",options={"comment":"value: bid price - commission this is what will be paid to the freelancer " })
      */
     protected $value;
+    /**
+     * @ORM\Column(type="text",nullable=true,options={"comment":"value: short note why you should get the job"})
+     */
+    protected $proposal;
+
     /**
      * @ORM\Column(type="integer",options={"comment":"value: for defining how many times the payment should be broken down i.e the maximum number of milestones " })
      */
@@ -162,7 +163,12 @@ class Bid implements TimeStampInterface
     protected $started;
 
     /**
-     *relaships
+     * @ORM\Column(type="smallint",options={"comment":"used for creating contract source Location where to access the project"})
+     */
+    protected $initiateSource;
+
+    /**
+     *relationships
      * project
      * who is biding
      * subscriptions
@@ -181,6 +187,12 @@ class Bid implements TimeStampInterface
      *  @ORM\OneToMany(targetEntity="Attachment", mappedBy="contract")
      */
     protected $attachment;
+
+
+    /**
+     *  @ORM\OneToMany(targetEntity="Source", mappedBy="contract")
+     */
+    protected $source;
 
     /**
      * member here is the bidder
@@ -211,10 +223,14 @@ class Bid implements TimeStampInterface
     private $reservedFund;
 
     /**
-     * @ORM\OneToMany(targetEntity="ChukoloFund", mappedBy="bid")
+     * @ORM\OneToMany(targetEntity="ProjectCommissionFund", mappedBy="contract")
      */
-    private $chukoloFund;
+    private $commissionFund;
 
+    /**
+     * @ORM\OneToMany(targetEntity="ContractInvoice", mappedBy="contract")
+     */
+    private $contractInvoice;
 
 
     /**
@@ -1310,5 +1326,165 @@ class Bid implements TimeStampInterface
     public function getModeratorMessage()
     {
         return $this->moderatorMessage;
+    }
+
+    /**
+     * Set initiateSource
+     *
+     * @param integer $initiateSource
+     *
+     * @return Bid
+     */
+    public function setInitiateSource($initiateSource)
+    {
+        $this->initiateSource = $initiateSource;
+
+        return $this;
+    }
+
+    /**
+     * Get initiateSource
+     *
+     * @return integer
+     */
+    public function getInitiateSource()
+    {
+        return $this->initiateSource;
+    }
+
+    /**
+     * Add source
+     *
+     * @param \AppBundle\Entity\Source $source
+     *
+     * @return Bid
+     */
+    public function addSource(\AppBundle\Entity\Source $source)
+    {
+        $this->source[] = $source;
+
+        return $this;
+    }
+
+    /**
+     * Remove source
+     *
+     * @param \AppBundle\Entity\Source $source
+     */
+    public function removeSource(\AppBundle\Entity\Source $source)
+    {
+        $this->source->removeElement($source);
+    }
+
+    /**
+     * Get source
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
+     * Add commissionFund
+     *
+     * @param \AppBundle\Entity\ProjectCommissionFund $commissionFund
+     *
+     * @return Bid
+     */
+    public function addCommissionFund(\AppBundle\Entity\ProjectCommissionFund $commissionFund)
+    {
+        $this->commissionFund[] = $commissionFund;
+
+        return $this;
+    }
+
+    /**
+     * Remove commissionFund
+     *
+     * @param \AppBundle\Entity\ProjectCommissionFund $commissionFund
+     */
+    public function removeCommissionFund(\AppBundle\Entity\ProjectCommissionFund $commissionFund)
+    {
+        $this->commissionFund->removeElement($commissionFund);
+    }
+
+    /**
+     * Get commissionFund
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCommissionFund()
+    {
+        return $this->commissionFund;
+    }
+
+    /**
+     * Add projectInvoice
+     *
+     * @param \AppBundle\Entity\ProjectInvoice $projectInvoice
+     *
+     * @return Bid
+     */
+    public function addProjectInvoice(\AppBundle\Entity\ProjectInvoice $projectInvoice)
+    {
+        $this->projectInvoice[] = $projectInvoice;
+
+        return $this;
+    }
+
+    /**
+     * Remove projectInvoice
+     *
+     * @param \AppBundle\Entity\ProjectInvoice $projectInvoice
+     */
+    public function removeProjectInvoice(\AppBundle\Entity\ProjectInvoice $projectInvoice)
+    {
+        $this->projectInvoice->removeElement($projectInvoice);
+    }
+
+    /**
+     * Get projectInvoice
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProjectInvoice()
+    {
+        return $this->projectInvoice;
+    }
+
+    /**
+     * Add contractInvoice
+     *
+     * @param \AppBundle\Entity\ContractInvoice $contractInvoice
+     *
+     * @return Bid
+     */
+    public function addContractInvoice(\AppBundle\Entity\ContractInvoice $contractInvoice)
+    {
+        $this->contractInvoice[] = $contractInvoice;
+
+        return $this;
+    }
+
+    /**
+     * Remove contractInvoice
+     *
+     * @param \AppBundle\Entity\ContractInvoice $contractInvoice
+     */
+    public function removeContractInvoice(\AppBundle\Entity\ContractInvoice $contractInvoice)
+    {
+        $this->contractInvoice->removeElement($contractInvoice);
+    }
+
+    /**
+     * Get contractInvoice
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getContractInvoice()
+    {
+        return $this->contractInvoice;
     }
 }

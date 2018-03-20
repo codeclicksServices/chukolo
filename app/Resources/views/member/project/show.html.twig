@@ -12,75 +12,66 @@
 
         <div style="margin-top: 3em" class="container">
 
-                <div class="panel panel-default">
+
                     <div class="panel-heading text-center">
                         <h2 class="panel-title">{{ project.name }}</h2>
                     </div>
-                    <div class="panel-body">
-                        <div class="row">
 
+                        <div class="row mb-4">
+                            <div class="col-lg-3 col-md-3">
+                                <div class="card mb-4">
+                                    <div class="card-body flexbox-b">
+                                        <div class="easypie mr-4" data-percent="42">
+                                            <div class="widget-small info coloured-icon"><i class="icon fa fa-users fa-3x"></i> </div>
+                                        </div>
 
-                            <div class="col-md-3">
-                                <div class="widget-small info coloured-icon"><i class="icon fa fa-users fa-3x"></i>
-                                    <div class="info">
-                                        <h4>Bids</h4>
-                                        <p><b>{{ bid_count }}</b></p>
+                                        <div>
+                                            <b class="font-strong text-success">{{ bid_count }}</b>
+                                            <div class="text-muted"><h4> Bids</h4></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="widget-small info coloured-icon"><i class="icon fa fa-crosshairs fa-3x"></i>
-                                    <div class="info">
-                                        <h4>Average Bids</h4>
-                                        <p><b>{{ project.averageBid }}</b></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="widget-small danger coloured-icon"><i class="icon fa fa-money fa-3x"></i>
-                                    <div class="info">
-                                        <h4>Budget</h4>
-                                        <p><b>{{ project.budget.minPrice |price }}  -  {{ project.budget.maxPrice |price }}</b></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="widget-small primary coloured-icon "><i class="icon fa fa-hourglass-start fa-3x"></i>
-                                    <div class="info">
-                                        <h4>{{ project.state |title }}</h4>
-                                        <p><b>{{ project.created |date }}</b></p>
-                                    </div>
-                                </div>
-                            </div>
+                            <div class="col-lg-3 col-md-3">
+                                <div class="card mb-4">
+                                    <div class="card-body flexbox-b">
+                                        <div class="easypie mr-4" data-percent="42">
+                                            <div class="widget-small info coloured-icon"><i class="icon fa fa-crosshairs fa-3x"></i> </div>
+                                        </div>
 
+                                        <div>
+                                            <h3 class="font-strong text-success"><b>{{ project.averageBid }}</b></h3>
+                                            <div class="text-muted"><h4>Average Bids</h4></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3">
+                            <div class="card mb-4">
+                                <div class="card-body flexbox-b">
+                                    <div class="easypie mr-4">
+                                        <div class="widget-small danger coloured-icon"><i class="icon fa fa-money fa-3x"></i></div>
+                                    </div>
+                                    <div><b>{{ project.budget.minPrice |price }}  -  {{ project.budget.maxPrice |price }}</b> <div class="text-muted"> <h4>Budget</h4></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                 {% if project.biddable %}
-                        {% if hasUserBid %}
-                            {% if hasUserBid.step == 5 %}
-                                {#finished the bid creation process#}
-                                <a href="{{ path('bid_project', { 'projectId': project.id }) }}" class="btn btn-black">Bid Details
-                                    {% else %}
+                            <div class="col-lg-3 col-md-3">
+                                <div class="card mb-4">
+                                    <div class="card-body flexbox-b">
+                                        <div class="easypie mr-4">
+                                            <div class="widget-small primary coloured-icon "><i class="icon fa fa-hourglass-start fa-3x"></i></div>
+                                        </div>
+                                        <div>
+                                            <b> {{ project.created |date }}</b> <div class="text-muted"> <h4>{{ project.state |title }}</h4></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                                <a href="{{ path('bid_project', { 'projectId': project.id }) }}" class="btn btn-black">Bid for this project</a>
-                            {% endif %}
-
-                        {% else %}
-                        <a href="{{ path('bid_project', { 'projectId': project.id }) }}" class="btn btn-black">Bid for this project</a>
-
-                    {% endif %}
-                            {% else %}
-                                <a href="{{ path('project_create') }}"><i class="fa fa-circle-o"></i>Create Similar Project</a>
-                        {% endif %}
-                        <hr />
-
-                    </div>
-
-                </div>
-
-
-
-
-                <div class="card">
+                       <div class="card">
                     <div class="card-title">
                         <h3 class="title text-center">Project Details</h3>
 
@@ -91,7 +82,22 @@
                         <p>Required skills</p>
                         {% for skill in project.skill %}
                             <a  href="#">{{ skill.name}}</a>
-                        {% endfor %}
+                        {% endfor %}<br />
+                        {% if project.biddable %}
+                        {% if hasUserBid %}
+                        {% if hasUserBid.step == 4 %}
+
+                        <a href="{{ path('bid_project', { 'projectId': project.id }) }}" class="btn btn-black">Bid Details</a>
+                            {% else %}
+                                <a href="{{ path('bid_project', { 'projectId': project.id }) }}" class="btn btn-black">Complete Bid</a>
+                            {% endif %}
+
+                            {% else %}
+                                <a href="{{ path('bid_project', { 'projectId': project.id }) }}" class="btn btn-black">Bid for this project</a>
+                            {% endif %}
+                            {% else %}
+                                <a href="{{ path('project_create') }}"><i class="fa fa-circle-o"></i>Create Similar Project</a>
+                            {% endif %}
 
                     </div>
 
@@ -122,57 +128,60 @@
                     </div>
                 </div>
 
+{% if project.bid |length %}
+            <div class="ibox ibox">
+                <div class="ibox-head">
+                    <div class="ibox-title">{{ project.bid |length }} Freelancers Biding for this project</div>
 
-            <div class="panel panel-default">
-                <div class="panel-heading text-center">
-                    <h2 class="panel-title">{{ project.bid |length }} Freelancers Biding for this project</h2>
                 </div>
+                <div class="ibox-body">
+                    <ul class="media-list media-list-divider">
+                        {% for bid in project.bid %}
+                            <li class="media">
+                                <div class="col-md-2">
+                                    <img src="{{ asset('assets/img/profile/m.jpeg') }}"
+                                         style="max-height: 8em" class="img-responsive img-circle center-block">
+                                </div>
+                                <div class="col-sm-6">
+                                    <h4>{{ bid.member.username  }}</h4>
+
+                                    <div style="padding-left: 3em" class="reputation">
+                                        <ul  class="profile-badge-icon">
+                                            <li><i class="fa fa-credit-card fa-2x" aria-hidden="true"></i></li>
+                                            <li><i class="fa fa-envelope-o fa-2x" aria-hidden="true"></i></li>
+                                            <li><i class="fa fa-user fa-2x" aria-hidden="true"></i></li>
+                                            <li><i class="fa fa-phone fa-2x" aria-hidden="true"></i></li>
+                                            <li><i class="fa fa-money fa-2x" aria-hidden="true"></i></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <h4>{{ bid.value |price }}</h4>
+                                    <p> in {{ bid.duration }} Days</p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div style="padding-left: 3em" class="reputation">
+                                        <span>4.8</span>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star-o" aria-hidden="true"></i>
+                                        <i class="fa fa-star-o" aria-hidden="true"></i>
+                                        <span>33 Reviews</span>
 
 
-                <div class="panel-body">
-                   {% for bid in project.bid %}
-                       <div style="border-bottom: solid thin #a5a5a5; padding:  .5em .5em 0 0; max-height: 11em" class="row">
-                           <div class="col-md-2">
-                               <img src="{{ asset('assets/img/profile/m.jpeg') }}"
-                                    style="max-height: 8em" class="img-responsive img-circle center-block">
-                           </div>
-                           <div class="col-sm-6">
-                               <h4>{{ bid.member.username  }}</h4>
+                                    </div>
 
-                               <div style="padding-left: 3em" class="reputation">
-                                   <ul  class="profile-badge-icon">
-                                       <li><i class="fa fa-credit-card fa-2x" aria-hidden="true"></i></li>
-                                       <li><i class="fa fa-envelope-o fa-2x" aria-hidden="true"></i></li>
-                                       <li><i class="fa fa-user fa-2x" aria-hidden="true"></i></li>
-                                       <li><i class="fa fa-phone fa-2x" aria-hidden="true"></i></li>
-                                       <li><i class="fa fa-money fa-2x" aria-hidden="true"></i></li>
-                                   </ul>
-                               </div>
-                           </div>
-                           <div class="col-sm-2">
-                               <h4>{{ bid.value |price }}</h4>
-                               <p> in {{ bid.duration }} Days</p>
-                           </div>
-                           <div class="col-sm-2">
-                               <div style="padding-left: 3em" class="reputation">
-                                   <span>4.8</span>
-                                   <i class="fa fa-star" aria-hidden="true"></i>
-                                   <i class="fa fa-star" aria-hidden="true"></i>
-                                   <i class="fa fa-star" aria-hidden="true"></i>
-                                   <i class="fa fa-star-o" aria-hidden="true"></i>
-                                   <i class="fa fa-star-o" aria-hidden="true"></i>
-                                   <span>33 Reviews</span>
-
-
-                               </div>
-
-                           </div>
-                       </div>
-                    {% endfor %}
-                 </div>
-
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
+{% else %}
+    <h2>Oh Nice !!!, No Bid yet let me quickly bid for this project </h2>
 
+            {% endif %}
         </div>
 
     {% endif %}

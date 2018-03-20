@@ -43,4 +43,21 @@ public function getMyReserveFundForBid($member,$bid,$subscription) {
             ->getResult();
     }
 
+    /*todo when getting a fund reserved for this bid make sure it get only the one reserved for milestone payment and not subscription*/
+    public function  getFundReservedForBid($bid,$source) {
+        return $this
+            ->createQueryBuilder('e')
+            ->select('e')
+            ->where('e.bid = :bid')
+            ->andWhere('e.source = :source')
+            ->andWhere('e.status != :deleted')
+            ->setParameter('deleted',"deleted")
+            ->setParameter('bid', $bid)
+            ->setParameter('source', $source)
+            ->orderBy('e.id', 'DESC')
+            ->getQuery()
+            /*todo check what happens when the record is more than one */
+            ->getSingleResult();
+
+    }
 }

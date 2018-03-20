@@ -46,7 +46,7 @@ class  ChukoloInvoice
     protected $payer;
 
     /**
-     * @ORM\Column(type="text", nullable=false, options={"comment":"I.e what is this invoice generated for eg deposit milestone payment suscription "})
+     * @ORM\Column(type="text", nullable=false, options={"comment":"I.e what is this invoice generated for eg deposit milestone payment subscription "})
      */
     protected $source;
     /**

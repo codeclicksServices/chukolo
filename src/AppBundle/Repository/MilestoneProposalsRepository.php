@@ -23,7 +23,6 @@ class MilestoneProposalsRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('type',"offer")
             ->setParameter('active',"accept")
             ->setParameter('bid', $bid)
-
             ->orderBy('e.id', 'ASC')
             ->getQuery()
             ->getResult();

@@ -82,7 +82,6 @@
             <div class="row">
                 <div class="col-md-9">
 
-
                     <div class="card alert panel-default">
                         <div class="card-title-w-btn">
                             <h2 class="title">{{ contract.project.name |capitalize }}</h2>
@@ -256,8 +255,84 @@
                         <p>Due Date : {{ contract.project.deadline | date}}</p>
                         <p>Start Date : {{ contract.startDate| date }}</p>
                         <p>Remaining Working Days : 4</p>
-                        <p>Project source</p>
-                    </div>
+                        <hr />
+                        <h4>Project source</h4>
+                        <div style="border: thin solid #e89059; padding: 0.7em; background-color: #fafafa" class="row">
+
+                            <div  id="addUrlForm" >
+                                {{ form_start(urlForm, {'attr': {'id': 'urlForm'}}) }}
+
+
+                                    <div class="col-sm-9">
+                                        <div class="form-group">
+                                            <label class="control-label">Web address (URL)</label>
+                                            <div  style="color: red">
+                                                {{ form_errors(urlForm.urlLink) }}
+                                            </div>
+                                            {{ form_widget(urlForm.urlLink) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+
+                                        <div style="margin-top: 3em" class="btn-group">
+                                            <input type="submit" value="Save" class="btn btn-primary" id="urlCommit"  />
+                                            <a id="spinUrl" class=" btn btn-primary spinners" href="#ok">
+                                                <i class="fa fa-circle-o-notch fa-spin fa-1x fa-fw "></i>
+                                                <span class="sr-only">Saving...</span></a>
+
+                                        </div>
+                                    </div>
+
+
+                                {{ form_end(urlForm) }}
+                            </div>
+
+                        </div>
+<br />
+                        <div style="border: thin solid #e89059; padding: 0.7em; background-color: #fafafa" class="row">
+                            <Label>Project files</Label>
+                            <div  id="addAttachmentForm" >
+                                {{ form_start(attachmentForm, {'attr': {'id': 'attachmentForm'}}) }}
+
+                               <div class="row">
+                                   <div class="col-sm-11">
+                                       <div class="form-group">
+                                           <label class="control-label">Describe this attachment </label>
+                                           <div  style="color: red">
+                                               {{ form_errors(attachmentForm.title) }}
+                                           </div>
+                                           {{ form_widget(attachmentForm.title) }}
+                                       </div>
+                                   </div>
+
+                               </div>
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <div class="form-group">
+                                            <label class="control-label">Upload a file</label>
+                                            <div  style="color: red">
+                                                {{ form_errors(attachmentForm.file) }}
+                                            </div>
+                                            {{ form_widget(attachmentForm.file) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+
+                                        <div style="margin-top: 3em" class="btn-group">
+                                            <input type="submit" value="Save" class="btn btn-primary" id="urlCommit"  />
+                                            <a id="spinAttachment" class=" btn btn-primary spinners" href="#ok">
+                                                <i class="fa fa-circle-o-notch fa-spin fa-1x fa-fw "></i>
+                                                <span class="sr-only">Saving...</span></a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                {{ form_end(attachmentForm) }}
+                            </div>
+
+                        </div>
+
+                        </div>
                     <div style="margin: 0 -1.5em -1.5em -1.5em" class="panel-footer">
                            {% if contract.started == true %}
                                <span>{{contract.project.completionRate }}% (complete)</span>
@@ -293,6 +368,22 @@
 
                               <h5>Milestone Description</h5>
                               <p>{{ milestone.description |raw }}</p>
+                             {% if milestone.started %}
+                                 <div class="row">
+                                     <div class="col-sm-3">
+                                         <p>Started : {{ milestone.started |date }}</p>
+                                     </div>
+                                     <div class="col-sm-3">
+                                         <p>Deadline: {{ milestone.deadline |date }}</p>
+                                     </div>
+                                     <div class="col-sm-3">
+
+                                     </div>
+                                     <div class="col-sm-3">
+
+                                     </div>
+                                 </div>
+                              {% endif %}
                               <hr />
                               <h5>Milestone Deliverable</h5>
 
@@ -314,11 +405,14 @@
                                                 {% if milestone.start== true %}
                                                   <div class="animated-checkbox">
                                                       <label>
-                                                          <input readonly="readonly" type="checkbox"><span
-                                                                  class="label-text"></span>
+                                                      {% if deliverable.done %}
+                                                          <cite>Being reviewed</cite>
+                                                          {% else %}
+                                                          <input value="{{ deliverable.id }}"     readonly="readonly" type="checkbox" class="completeDeliverable"><span class="label-text"> </span>
+                                                          {% endif %}
                                                       </label>
                                                   </div>
-                                                  {% else %}
+
                                                   {% endif %}
                                               </div>
                                               <div class="col-sm-11"> {{ deliverable.note }}</div>
@@ -483,6 +577,12 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript">
+
+        /* hide spinners */
+        $('#spinUrl').hide();
+        $('#spinAttachment').hide();
+
+
         $('.startMilestoneForm').hide();
         $('.cancelStartMilestoneButton').hide();
         $('#close').click(function(){
@@ -586,6 +686,90 @@
 
             return false;
         });
+        /*
+         *save attachment
+         */
+        $('#attachmentForm').submit(function(e) {
+            $('#spinAttachment').show();
+
+
+           // e.preventDefault();
+
+            var url = "{{ path('manage_contract', { 'contractId': contract.id}) }}";
+            var formSerialize = $(this).serialize();
+
+            $.post(url, formSerialize, function(response) {
+                $('#spinAttachment').hide();
+
+
+                $('#publicationForm').trigger("reset");
+            }, 'JSON');
+        });
+        /*
+         *save url
+         */
+        $('#urlForm').submit(function(e) {
+            $('#spinUrl').show();
+
+
+            e.preventDefault();
+
+            var url = "{{ path('manage_contract', { 'contractId': contract.id}) }}";
+            var formSerialize = $(this).serialize();
+
+            $.post(url, formSerialize, function(response) {
+                $('#spinUrl').hide();
+
+
+
+                $('#publicationForm').trigger("reset");
+            }, 'JSON');
+        });
+        /*
+        * mark a deliverable done
+        */
+        $('.completeDeliverable').bind('click', function() {
+            if($(this).is(":checked")) {
+
+                // get the value of the checked deliverable
+                var val = $(this).val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path('manage_contract',{'contractId': contract.id})
+                    }}?deliverableComplete=1&deliverableId="+val,
+                    success: function(data) {
+
+                        $.notify({
+                            title: "Deliverable Completion : ",
+                            message: data.toString(),
+                            icon: 'fa fa-check'
+                        },{
+                            type: "info"
+                        });
+                    },
+                    error: function (data) {
+                        $.notify({
+                            title: "Something broke: ",
+                            message:   url.toString(),
+                            icon: 'fa fa-check'
+                        },{
+                            type: "warning"
+                        });
+
+                    }
+                });
+            } else {
+                // checkbox is not checked
+                $.notify({
+                    title: "error : ",
+                    message: "no clicked yet ",
+                    icon: 'fa fa-check'
+                },{
+                    type: "danger"
+                });
+            }
+        })
 
     </script>
 {% endblock %}

@@ -8,249 +8,598 @@
     <title>Chukolo |Earn from your skill</title>
     {% block stylesheets %}
         <!-- CSS-->
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
 
 
-        <link href="{{ asset('assets/css/profile/style.css') }}" rel="stylesheet">
-        <link href="{{ asset('assets/css/profile/animate.css') }}" rel="stylesheet">
-        <link href="{{ asset('assets/css/chuma.css') }}" rel="stylesheet">
-        <link href="{{ asset('assets/css/dashboard/main.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/dashboard/line-awesome.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/dashboard/themify-icons.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/dashboard/animate.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/dashboard/toastr.min.css') }}" rel="stylesheet">
 
 
 
-        <!-- Font-icon css-->
-        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="{{ asset('assets/css/dashboard/start/pages/others.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/dashboard/start/font-awesome.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/dashboard/bootstrap-select.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/dashboard/start/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/dashboard/start/slick.min.css') }}" rel="stylesheet">
 
+        <link href="{{ asset('assets/css/dashboard/start/pages/profile.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/dashboard/start/fancybox.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/dashboard/start/pages/activity.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/dashboard/start/pages/widgets.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/dashboard/start/jquery-steps.min.css') }}" rel="stylesheet">
+
+
+
+
+
+
+        {# mains #}
+
+
+        <link href="{{ asset('assets/css/dashboard/main.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/css/dashboard/start/main.css') }}" rel="stylesheet">
 
     {% endblock %}
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries-->
-    <!--if lt IE 9
-    script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
-    script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
-    -->
-    <script type="text/javascript" src="{{ asset('assets/js/profile/modernizr.custom.97074.js') }}"></script>
 </head>
-<body style="background-color: #fafafa;color: #6f4e37"  class="sidebar-mini fixed">
+<body class="with-side-menu horizontal-navigation" >
+{#class=""#}
+<header class="site-header  header ">
+    <div class="container-fluid">
+        <a href="#" class="site-logo">
+            <img class="hidden-md-down" src="img/logo-2.png" alt="CHUKOLO">
+            <img class="hidden-lg-down" src="img/logo-2-mob.png" alt="CH">
+        </a>
 
-<div style="background-color: #fafafa" class="wrapper">
+        <button id="show-hide-sidebar-toggle" class="show-hide-sidebar">
+            <span>toggle menu</span>
+        </button>
 
+        <button class="hamburger hamburger--htla">
+            <span>toggle menu</span>
+        </button>
 
+        <div class="site-header-content">
+            <div class="site-header-content-in">
+                <div class="site-header-shown">
 
-    <header class="main-header hidden-print"><a class="logo" href="#">Chukolo</a>
-        <nav class="navbar navbar-static-top">
-            <!-- Sidebar toggle button-->
-
-            <a class="sidebar-toggle" href="#" data-toggle="offcanvas"></a>
-
-            <!-- Navbar Right Menu-->
-            <div class="navbar-custom-menu">
-                <ul class="top-nav">
-                    <!--Notification Menu-->
-                    <li class="dropdown "><a class="dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
-                            {% if app.user.fund %}
-                            {{ app.user.fund.usableAmount |price }}
-
-                              {% else %}
-                                No acount for you
-                            {% endif %}
+                    <div class="dropdown dropdown-notification messages">
+                        <a href="#"
+                           class="header-alarm dropdown-toggle active"
+                           id="dd-messages"
+                           data-toggle="dropdown"
+                           aria-haspopup="true"
+                           aria-expanded="false">
+                            <i class="font-icon font-icon-comments active"></i>
                         </a>
-                        <ul style="padding: 1em"  class="dropdown-menu">
-                            <li style="padding: 2em 1.5em .2em">
-                                 <i style="padding-left: 1.3em" class="fa fa-credit-card-alt fa-3x text-info" aria-hidden="true"></i>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-messages" aria-labelledby="dd-messages">
+                            <div class="dropdown-menu-messages-header">
+                                <ul class="nav" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active"
+                                           data-toggle="tab"
+                                           href="#tab-incoming"
+                                           role="tab">
+                                            Inbox
+                                            <span class="label label-pill label-danger">8</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link"
+                                           data-toggle="tab"
+                                           href="#tab-outgoing"
+                                           role="tab">Outbox</a>
+                                    </li>
+                                </ul>
+                                <!--<button type="button" class="create">
+                                    <i class="font-icon font-icon-pen-square"></i>
+                                </button>-->
+                            </div>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tab-incoming" role="tabpanel">
+                                    <div class="dropdown-menu-messages-list">
+                                        <a href="{{ path('message_inbox') }}" class="mess-item">
+                                            <span class="avatar-preview avatar-preview-32"><img src="img/photo-64-2.jpg" alt=""></span>
+                                            <span class="mess-item-name">Tim Collins</span>
+                                            <span class="mess-item-txt">Morgan was bothering about something!</span>
+                                        </a>
+                                        <a href="#" class="mess-item">
+                                            <span class="avatar-preview avatar-preview-32"><img src="img/avatar-2-64.png" alt=""></span>
+                                            <span class="mess-item-name">Christian Burton</span>
+                                            <span class="mess-item-txt">Morgan was bothering about something! Morgan was bothering about something.</span>
+                                        </a>
+                                        <a href="#" class="mess-item">
+                                            <span class="avatar-preview avatar-preview-32"><img src="img/photo-64-2.jpg" alt=""></span>
+                                            <span class="mess-item-name">Tim Collins</span>
+                                            <span class="mess-item-txt">Morgan was bothering about something!</span>
+                                        </a>
+                                        <a href="#" class="mess-item">
+                                            <span class="avatar-preview avatar-preview-32"><img src="img/avatar-2-64.png" alt=""></span>
+                                            <span class="mess-item-name">Christian Burton</span>
+                                            <span class="mess-item-txt">Morgan was bothering about something...</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab-outgoing" role="tabpanel">
+                                    <div class="dropdown-menu-messages-list">
+                                        <a href="#" class="mess-item">
+                                            <span class="avatar-preview avatar-preview-32"><img src="img/avatar-2-64.png" alt=""></span>
+                                            <span class="mess-item-name">Christian Burton</span>
+                                            <span class="mess-item-txt">Morgan was bothering about something! Morgan was bothering about something...</span>
+                                        </a>
+                                        <a href="#" class="mess-item">
+                                            <span class="avatar-preview avatar-preview-32"><img src="img/photo-64-2.jpg" alt=""></span>
+                                            <span class="mess-item-name">Tim Collins</span>
+                                            <span class="mess-item-txt">Morgan was bothering about something! Morgan was bothering about something.</span>
+                                        </a>
+                                        <a href="#" class="mess-item">
+                                            <span class="avatar-preview avatar-preview-32"><img src="img/avatar-2-64.png" alt=""></span>
+                                            <span class="mess-item-name">Christian Burtons</span>
+                                            <span class="mess-item-txt">Morgan was bothering about something!</span>
+                                        </a>
+                                        <a href="#" class="mess-item">
+                                            <span class="avatar-preview avatar-preview-32"><img src="img/photo-64-2.jpg" alt=""></span>
+                                            <span class="mess-item-name">Tim Collins</span>
+                                            <span class="mess-item-txt">Morgan was bothering about something!</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dropdown-menu-notif-more">
+                                <a href="#">See more</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dropdown dropdown-notification notif">
+                        <a href="#"
+                           class="header-alarm dropdown-toggle active"
+                           id="dd-notification"
+                           data-toggle="dropdown"
+                           aria-haspopup="true"
+                           aria-expanded="false">
+                            <i class="font-icon-alarm"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-notif" aria-labelledby="dd-notification">
+                            <div class="dropdown-menu-notif-header">
+                                Notifications
+                                <span class="label label-pill label-danger">4</span>
+                            </div>
+                            <div class="dropdown-menu-notif-list">
+                                <div class="dropdown-menu-notif-item">
+                                    <div class="photo">
+                                        <img src="img/photo-64-1.jpg" alt="">
+                                    </div>
+                                    <div class="dot"></div>
+                                    <a href="#">Morgan</a> was bothering about something
+                                    <div class="color-blue-grey-lighter">7 hours ago</div>
+                                </div>
+                                <div class="dropdown-menu-notif-item">
+                                    <div class="photo">
+                                        <img src="img/photo-64-2.jpg" alt="">
+                                    </div>
+                                    <div class="dot"></div>
+                                    <a href="#">Lioneli</a> had commented on this <a href="#">Super Important Thing</a>
+                                    <div class="color-blue-grey-lighter">7 hours ago</div>
+                                </div>
+                                <div class="dropdown-menu-notif-item">
+                                    <div class="photo">
+                                        <img src="img/photo-64-3.jpg" alt="">
+                                    </div>
+                                    <div class="dot"></div>
+                                    <a href="#">Xavier</a> had commented on the <a href="#">Movie title</a>
+                                    <div class="color-blue-grey-lighter">7 hours ago</div>
+                                </div>
+                                <div class="dropdown-menu-notif-item">
+                                    <div class="photo">
+                                        <img src="img/photo-64-4.jpg" alt="">
+                                    </div>
+                                    <a href="#">Lionely</a> wants to go to <a href="#">Cinema</a> with you to see <a href="#">This Movie</a>
+                                    <div class="color-blue-grey-lighter">7 hours ago</div>
+                                </div>
+                            </div>
+                            <div class="dropdown-menu-notif-more">
+                                <a href="#">See more</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dropdown dropdown-notification notif">
+                        <a href="#"
+                           class="header-alarm dropdown-toggle active"
+                           id="dd-notification"
+                           data-toggle="dropdown"
+                           aria-haspopup="true"
+                           aria-expanded="false">
+                            <i class="font-icon-alarm"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-notif" aria-labelledby="dd-notification">
+                            <div class="dropdown-menu-notif-header">
+                               Project Feeds
+                                <span class="label label-pill label-danger">4</span>
+                            </div>
+                            <div class="dropdown-menu-notif-list">
+                                <div class="dropdown-menu-notif-item">
+                                    <div class="photo">
+                                        <img src="img/photo-64-1.jpg" alt="">
+                                    </div>
+                                    <div class="dot"></div>
+                                    <a href="#">Morgan</a> was bothering about something
+                                    <div class="color-blue-grey-lighter">7 hours ago</div>
+                                </div>
+                                <div class="dropdown-menu-notif-item">
+                                    <div class="photo">
+                                        <img src="img/photo-64-2.jpg" alt="">
+                                    </div>
+                                    <div class="dot"></div>
+                                    <a href="#">Lioneli</a> had commented on this <a href="#">Super Important Thing</a>
+                                    <div class="color-blue-grey-lighter">7 hours ago</div>
+                                </div>
+                                <div class="dropdown-menu-notif-item">
+                                    <div class="photo">
+                                        <img src="img/photo-64-3.jpg" alt="">
+                                    </div>
+                                    <div class="dot"></div>
+                                    <a href="#">Xavier</a> had commented on the <a href="#">Movie title</a>
+                                    <div class="color-blue-grey-lighter">7 hours ago</div>
+                                </div>
+                                <div class="dropdown-menu-notif-item">
+                                    <div class="photo">
+                                        <img src="img/photo-64-4.jpg" alt="">
+                                    </div>
+                                    <a href="#">Lionely</a> wants to go to <a href="#">Cinema</a> with you to see <a href="#">This Movie</a>
+                                    <div class="color-blue-grey-lighter">7 hours ago</div>
+                                </div>
+                            </div>
+                            <div class="dropdown-menu-notif-more">
+                                <a href="#">See more</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dropdown dropdown-notification mega-menu">
 
-                                 <p style="font-size: x-small;font-style: italic;align-content: center; padding-top: 1em">Make a deposit to have fund available in your account</p>
-                                <hr />
-                            </li>
-                            <li><a class="media" href="{{ path('finance_dashboard') }}"><span class="block">Finances</span></a></li>
-                            <li><a class="media" href="{{ path('transaction_history') }}"><span class="block">Transaction History</span></a></li>
-                            <li><a class="media" href="{{ path('verify_payment') }}"><span class="block">Verify Payment Method</span></a></li>
-                            <li><a class="media" href="{{ path('withdraw_fund') }}"><span class="block">Withdraw Money</span></a></li>
-                        </ul>
-                    </li>
+
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >  <span class="font-icon font-icon-widget"> </span>  </a>
+
+                            <div class="dropdown-menu">
+                                <div class="dropdown-arrow"></div>
+                                <div class="mega-toolbar-menu">
+                                    <div class="d-flex">
+                                        <a class="mega-toolbar-item" href="javascript:;">
+                                            <div class="item-icon"><i class="ti-file"></i></div>
+                                            <div class="item-name">Jobs Near Me</div>
+                                            <div class="item-text">Get it down locally</div>
+                                            <div class="item-details">74 New</div>
+                                        </a>
+                                        <a class="mega-toolbar-item" href={{ path("exhibition-dashboard") }}>
+                                            <div class="item-icon"><i class="ti-shopping-cart-full"></i></div>
+                                            <div class="item-name">Exhibition</div>
+                                            <div class="item-text">Lorem Ipsum is simply dummy.</div>
+                                            <div class="item-details">125 Showcase</div>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex">
+                                        <a class="mega-toolbar-item" href={{ path("community-dashboard") }}>
+                                            <div class="item-icon"><i class="ti-wallet"></i></div>
+                                            <div class="item-name">Community People</div>
+                                            <div class="item-text">Lorem Ipsum is simply dummy.</div>
+                                            <div class="item-details">+1200<sup>$</sup></div>
+                                        </a>
+                                        <a class="mega-toolbar-item" href="javascript:;">
+                                            <div class="item-icon"><i class="ti-support"></i></div>
+                                            <div class="item-name">Support</div>
+                                            <div class="item-text">Lorem Ipsum is simply dummy.</div>
+                                            <div class="item-details">54 New Ticket</div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
 
 
-                    <!--Notification Menu-->
-                    <li class="dropdown notification-menu"><a class="dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-th fa-lg" aria-hidden="true"></i></a>
-                        <ul style="padding: 1em" class="dropdown-menu">
+                    </div>
 
+                    <div class="dropdown dropdown-notification dropdown-user">
+                        <a class="nav-link dropdown-toggle link" data-toggle="dropdown">
+                            <img src="assets/img/users/admin-image.png" alt="" />
 
-                            <li>
-                                <a class="media" href="javascript:;">
-                                    <span class="media-left media-icon"><span class="fa-stack fa-lg">
-                                            <i class="fa fa-circle fa-stack-2x text-info"></i>
-                                            <i class="fa fa-map-marker fa-stack-1x fa-inverse"></i>
-                                        </span></span>
-                                    <div style="padding-top: 0.6em"  class="media-body"><span class="block">Jobs Near Me </span></div>
+                        </a>
+                        <div class="dropdown-menu dropdown-arrow dropdown-menu-right admin-dropdown-menu">
+                            <div class="dropdown-arrow"></div>
+                            <div class="dropdown-header">
+                                <div class="admin-avatar">
+                                    <img src="assets/img/users/admin-image.png" alt="image" />
+                                </div>
+                                <div>
+                                    <h5 class="font-strong text-white">{{ app.user }}</h5>
+                                    <div>
+                                        <span class="admin-badge mr-3"><i class="ti-alarm-clock mr-2"></i>30m.</span>
+                                        <span class="admin-badge"><i class="ti-lock mr-2"></i>Safe Mode</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="admin-menu-features">
+                                <a class="admin-features-item" href="{{ path("my_profile", { 'userName': app.user }) }}"><i class="ti-user"></i>
+                                    <span>PROFILE</span>
                                 </a>
-                            </li>
-
-
-                            <li>
-                                <a class="media" href={{ path("exhibition-dashboard") }}>
-                                    <span class="media-left media-icon"><span class="fa-stack fa-lg">
-                                            <i class="fa fa-circle fa-stack-2x text-danger"></i>
-                                            <i class="fa fa fa-trophy fa-stack-1x fa-inverse"></i>
-
-                                        </span></span>
-                                    <div style="padding-top: 0.6em" class="media-body"><span class="block">Exhibition</span></div>
+                                <a class="admin-features-item" href="javascript:;"><i class="ti-support"></i>
+                                    <span>SUPPORT</span>
                                 </a>
-                            </li>
-
-                            <li>
-                                <a class="media" href={{ path("community-dashboard") }}>
-                                    <span class="media-left media-icon"><span class="fa-stack fa-lg">
-                                            <i class="fa fa-circle fa-stack-2x text-warning"></i>
-                                            <i class="fa fa-comments-o fa-stack-1x fa-inverse"></i>
-
-                                        </span></span>
-                                    <div style="padding-top: 0.6em"  class="media-body"><span class="block">Community People </span></div>
+                                <a class="admin-features-item"  href={{ path('user_settings') }}><i class="ti-settings"></i>
+                                    <span>SETTINGS</span>
                                 </a>
-                            </li>
+                            </div>
+                            <div class="admin-menu-content">
+                                <div class="text-muted mb-2">Your Wallet</div>
+                                <div><i class="ti-wallet h1 mr-3 text-light"></i>
+                                   <a href="{{ path('finance_dashboard') }}">
+                                        <span class="h2 text-success">
 
-                        </ul>
-                    </li>
-                    <!--Notification Menu-->
-                    <li class="dropdown notification-menu"><a  href="{{ path('message_inbox') }}" ><i class="fa fa-envelope-o fa-lg"></i></a>
+                                        {% if app.user.fund %}
+                                            {{ app.user.fund.usableAmount |price }}
 
-                    </li>
-                    <!-- User Menu-->
-                    <li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user fa-lg"></i></a>
-                        <ul class="dropdown-menu settings-menu">
-                            <li><a href={{ path('user_settings') }}><i class="fa fa-cog fa-lg"></i> Settings</a></li>
-                            <li><a href="{{ path("my_profile", { 'userName': app.user }) }}"><i class="fa fa-user fa-lg"></i> Profile</a></li>
-                            <li>
-                                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                                    <a href= "{{ path('fos_user_security_logout') }}">
-                                        <i class="fa fa-sign-out fa-lg" aria-hidden="true"></i>
-                                        Logout
-                                    </a>
+                                        {% else %}
+                                            No account for you
+                                        {% endif %}
+                                    </span>
+                                   </a>
+                                </div>
+                                <div class="d-flex justify-content-between mt-2">
+                                    <a class="text-muted" href="{{ path('finance_dashboard') }}">Earnings history</a>
 
-                                {% endif %}
+                                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
 
-                        </ul>
-                    </li>
+                                        <a class="d-flex align-items-center" href= "{{ path('fos_user_security_logout') }}">Logout<i class="ti-shift-right ml-2 font-20"></i></a>
+                                    {% endif %}
 
-
-                </ul>
-            </div>
-
-        </nav>
-    </header>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
 
-    <!-- Side-left-->
-    <aside  class="main-sidebar  hidden-print">
-        <section class="sidebar">
-            <div class="user-panel">
-                <div class="pull-left image"><img class="img-circle" src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg" alt="User Image"></div>
-                <div class="pull-left info">
-                    <p>Chuma Akoh</p>
-                    <p class="designation">Full Stack Developer</p>
-                </div>
-            </div>
-            <!-- Sidebar Menu-->
-            <ul class="sidebar-menu">
-                {% block menu %}
+                    <button type="button" class="burger-right">
+                        <i class="font-icon-menu-addl"></i>
+                    </button>
+                </div><!--.site-header-shown-->
 
-                    <li class="active"><a href="{{ path("user_dashboard") }}"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
+                <div class="mobile-menu-right-overlay"></div>
+                <div class="site-header-collapsed">
+                    <div class="site-header-collapsed-in">
 
-                    <li class="treeview"><a href="#"><i class="fa fa-navicon"></i><span>Work</span><i class="fa fa-angle-right"></i></a>
-                        <ul class="treeview-menu">
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Project With My Skills</a></li>
-                            <li><a href={{ path("brows_jobs") }} ><i class="fa fa-circle-o"></i>Brows Projects</a></li>
-                            <li><a href="#"target="_blank"><i class="fa fa-circle-o"></i> Brows Local Jobs</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Brows Categories</a></li>
-                        </ul>
-                    </li>
-                    <li class="treeview"><a href="#"><i class="fa fa-th-list"></i><span>Hire A freelancer</span><i class="fa fa-angle-right"></i></a>
-                        <ul class="treeview-menu">
-                            <li><a href="{{ path('project_create') }}"><i class="fa fa-circle-o"></i> Start a Project</a></li>
-                            <li><a href="table-data-table.html"><i class="fa fa-circle-o"></i> Post Local Job</a></li>
+                                <!-- START TOP-LEFT TOOLBAR-->
+                        <div class="dropdown dropdown-typical">
+                            <a class="dropdown-toggle"   href="{{ path("user_dashboard") }}" >
+                                <span class="font-icon font-icon-dashboard"> Dashboard</span>
+                            </a>
+                        </div>
 
-                        </ul>
-                    </li>
-                    <li class="treeview"><a href="#"><i class="fa fa-th-list"></i><span>Explore</span><i class="fa fa-angle-right"></i></a>
-                        <ul class="treeview-menu">
+                        <div class="dropdown dropdown-typical">
+                            <a class="dropdown-toggle"   href="{{ path("brows_user_project") }}" >
+                                <span class="font-icon font-icon-case-3"> My Project</span>
+                            </a>
+                        </div>
 
-                            <li><a href={{ path("exhibition-dashboard") }}><i class="fa fa-circle-o"></i>Exhibition</a></li>
-                            <li><a href="table-data-table.html"><i class="fa fa-circle-o"></i> Brows Directory</a></li>
 
-                        </ul>
-                    </li>
-                    <li class="treeview"><a href="#"><i class="fa fa-support"></i><span>Help</span><i class="fa fa-angle-right"></i></a>
-                        <ul class="treeview-menu">
-                            <li><a href="blank-page.html"><i class="fa fa-circle-o"></i> Get Support</a></li>
-                            <li><a href="page-login.html"><i class="fa fa-circle-o"></i> How Chukolo Works</a></li>
-                            <li><a href="page-lockscreen.html"><i class="fa fa-circle-o"></i> Frequently Asked Questions</a></li>
-                            <li><a href="page-user.html"><i class="fa fa-circle-o"></i> Fees And Charges</a></li>
-                            <li><a href="page-invoice.html"><i class="fa fa-circle-o"></i> Disputes</a></li>
+                         <div  class="help-dropdown">
+                            <button type="button">
+                                <i class="font-icon font-icon-help"></i> <strong>Help</strong>
+                            </button>
+                            <div class="help-dropdown-popup">
+                                <div class="help-dropdown-popup-side">
+                                    <ul>
+                                        <li><a href="#">Getting Started</a></li>
+                                        <li><a href="#" class="active">Creating a new project</a></li>
+                                        <li><a href="#">Adding customers</a></li>
+                                        <li><a href="#">Settings</a></li>
+                                        <li><a href="#">Importing data</a></li>
+                                        <li><a href="#">Exporting data</a></li>
+                                    </ul>
+                                </div>
+                                <div class="help-dropdown-popup-cont">
+                                    <div class="help-dropdown-popup-cont-in">
+                                        <div class="jscroll">
+                                            <a href="#" class="help-dropdown-popup-item">
+                                                Lorem Ipsum is simply
+                                                <span class="describe">Lorem Ipsum has been the industry's standard dummy text </span>
+                                            </a>
+                                            <a href="#" class="help-dropdown-popup-item">
+                                                Contrary to popular belief
+                                                <span class="describe">Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC</span>
+                                            </a>
+                                            <a href="#" class="help-dropdown-popup-item">
+                                                The point of using Lorem Ipsum
+                                                <span class="describe">Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text</span>
+                                            </a>
+                                            <a href="#" class="help-dropdown-popup-item">
+                                                Lorem Ipsum
+                                                <span class="describe">There are many variations of passages of Lorem Ipsum available</span>
+                                            </a>
+                                            <a href="#" class="help-dropdown-popup-item">
+                                                Lorem Ipsum is simply
+                                                <span class="describe">Lorem Ipsum has been the industry's standard dummy text </span>
+                                            </a>
+                                            <a href="#" class="help-dropdown-popup-item">
+                                                Contrary to popular belief
+                                                <span class="describe">Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC</span>
+                                            </a>
+                                            <a href="#" class="help-dropdown-popup-item">
+                                                The point of using Lorem Ipsum
+                                                <span class="describe">Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text</span>
+                                            </a>
+                                            <a href="#" class="help-dropdown-popup-item">
+                                                Lorem Ipsum
+                                                <span class="describe">There are many variations of passages of Lorem Ipsum available</span>
+                                            </a>
+                                            <a href="#" class="help-dropdown-popup-item">
+                                                Lorem Ipsum is simply
+                                                <span class="describe">Lorem Ipsum has been the industry's standard dummy text </span>
+                                            </a>
+                                            <a href="#" class="help-dropdown-popup-item">
+                                                Contrary to popular belief
+                                                <span class="describe">Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC</span>
+                                            </a>
+                                            <a href="#" class="help-dropdown-popup-item">
+                                                The point of using Lorem Ipsum
+                                                <span class="describe">Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text</span>
+                                            </a>
+                                            <a href="#" class="help-dropdown-popup-item">
+                                                Lorem Ipsum
+                                                <span class="describe">There are many variations of passages of Lorem Ipsum available</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!--.help-dropdown-->
 
-                        </ul>
-                    </li>
-                {% endblock %}
+
+                        <div class="site-header-search-container">
+                            <form class="site-header-search closed">
+                                <input type="text" placeholder="Search"/>
+                                <button type="submit">
+                                    <span class="font-icon-search"></span>
+                                </button>
+                                <div class="overlay"></div>
+                            </form>
+                        </div>
+
+                    </div><!--.site-header-collapsed-in-->
+                </div><!--.site-header-collapsed-->
+            </div><!--site-header-content-in-->
+        </div><!--.site-header-content-->
+
+
+    </div><!--.container-fluid-->
+</header><!--.site-header-->
+
+<div class="mobile-menu-left-overlay"></div>
+
+<nav class=" nav side-menu">
+    <ul class="side-menu-list">
+
+
+        <li class="red">
+            <a href="{{ path("user_dashboard") }}">
+                <i class="font-icon font-icon-dashboard"></i>
+                <span class="lbl">Dashboard</span>
+            </a>
+        </li>
+        <li class="brown with-sub">
+	            <span>
+	                <i class="font-icon glyphicon glyphicon-tint"></i>
+	                <span class="lbl">Work</span>
+	            </span>
+            <ul>
+                <li><a href="theme-side-ebony-clay.html"><span class="lbl">Project With My Skills</span></a></li>
+                <li><a href={{ path("brows_jobs") }}><span class="lbl">Browse Projects</span></a></li>
+                <li><a href="theme-side-caesium-dark-caribbean.html"><span class="lbl">Browse Local Project</span></a></li>
+                <li><a href="theme-side-tin.html"><span class="lbl">Browse Categories</span></a></li>
+
             </ul>
-        </section>
-{% block sidebar %}
+        </li>
+        <li class="purple with-sub">
+	            <span>
+	                <i class="font-icon font-icon-comments active"></i>
+	                <span class="lbl">Hire A Freelancer</span>
+	            </span>
+            <ul>
+                <li><a  href="{{ path('project_create') }}"><span class="lbl">Start A Project</span></a></li>
+                <li><a href="chat.html"><span class="lbl">Post A Local Project</span></a></li>
+
+            </ul>
+        </li>
+
+        <li class="gold with-sub">
+	            <span>
+	                <i class="font-icon font-icon-edit"></i>
+	                <span class="lbl">Explore</span>
+	            </span>
+            <ul>
+                <li><a href={{ path("exhibition-dashboard") }}><span class="lbl">Exhibition</span></a></li>
+                <li><a href="ui-buttons.html"><span class="lbl">Browse Directory</span></a></li>
+
+            </ul>
+        </li>
+
+
+
+    </ul>
+
+    <section>
+
+        <ul class="side-menu-list">
+            <li class="orange-red with-sub">
+	            <span>
+	                <i class="font-icon font-icon-help"></i>
+	                <span class="lbl">Help</span>
+	            </span>
+                <ul>
+                    <li><a href="documentation.html"><span class="lbl">Get Support</span></a></li>
+                    <li><a href="faq.html"><span class="lbl">How Chukolo Works</span></a></li>
+                    <li><a href="faq-search.html"><span class="lbl">Frequently Asked Questions</span></a></li>
+                    <li><a href="faq.html"><span class="lbl">Fees $ Dues</span></a></li>
+                    <li><a href="faq-search.html"><span class="lbl">Dispute Resolution</span></a></li>
+                </ul>
+            </li>
+
+        </ul>
+    </section>
+</nav><!--.side-menu-->
+{% block pageNavigation %}
 
 {% endblock %}
-    </aside>
+<div class="page-content">
 
+    <div class="container-fluid">
+      {#  <div class="page-heading">
+            <h1 class="page-title">Pills</h1>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="index-2.html"><i class="la la-home font-20"></i></a>
+                </li>
 
+            </ol>
+        </div>#}
 
-    {# page haven #}
-    <div style="padding: 0; margin: 0"  class="content-wrapper">
-
-
-        <div class="page-title hidden-print" style="padding: .2em 1em 0 2em; margin: 3em 0 2em 0;
-              background-color: white; min-height: 4.5em">
-
-
-
-                <ul style="background: none;" class="nav nav-tabs" >
-
-                    {% block breadCrumb %}
-
-                        <li><a class="btn btn-default" href="{{ path("user_dashboard") }}">Dashboard</a></li>
-                        <li><a class="btn btn-default" href="{{ path("brows_user_project") }}">My Project</a></li>
-                        <li><a class="btn btn-default" href="#">Feed Back</a></li>
-                    {% endblock %}
-                </ul>
-            {% block titleText %}
+            {% block page %}
 
             {% endblock %}
-
         </div>
-
-
-        {% block page %}
-        {% endblock %}
-    </div>
-
-
-
-</div>
+  <!--.container-fluid-->
+</div><!--.page-content-->
 
 
 
 {% block javascripts %}
-    <script src="{{ asset('assets/js/dashboard/jquery-2.1.4.min.js') }}"></script>
-    <script src="{{ asset('assets/js/dashboard/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('assets/js/dashboard/plugins/pace.min.js') }}"></script>
-    <script src="{{ asset('assets/js/dashboard/main.js') }}"></script>
+
+
+    <script src="{{ asset('assets/js/dashboard/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/start/popper.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/start/tether.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/start/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/start/plugins.js') }}"></script>
+
+    <script src="{{ asset('assets/js/dashboard/app.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/start/app.js') }}"></script>
+
     <script src="{{ asset('assets/js/chuma.js') }}"></script>
-    <script type="text/javascript">$('body').removeClass("sidebar-mini").addClass("sidebar-collapse");</script>
-    <script src="{{ asset('assets/js/dashboard/plugins/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ asset('assets/js/dashboard/plugins/select2.min.js') }}"></script>
-
-    <script type="text/javascript" src="{{ asset('assets/js/dashboard/plugins/bootstrap-notify.min.js') }}"></script>
 
 
 
+    <script src="{{ asset('assets/js/dashboard/metisMenu.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/jquery.slimscroll.min.js') }}"></script>
 
-    <script src="{{ asset('assets/js/profile/hoverdir.js') }}"></script>
-    <script src="{{ asset('assets/js/profile/script.js') }}"></script>
-    <script src="{{ asset('assets/js/profile/owl.carousel.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/toastr.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/bootstrap-select.min.js') }}"></script>
+
+
+    <script src="{{ asset('assets/js/dashboard/toastr.min.js') }}"></script>
 
 
 

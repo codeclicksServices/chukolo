@@ -38,7 +38,7 @@ class ErrorLog
     */
     protected $action;
     /**
-     * @ORM\Column(type="text",options={"comment":"value:eg bidding, project creation,fund deposit, fund withrawal etc"})
+     * @ORM\Column(type="text",options={"comment":"value:eg bidding, project creation,fund deposit, fund withdrawal etc"})
      */
     protected $location;
     /**
